@@ -4,9 +4,61 @@
 
 {% block body %}
 
-    <h1>Welcome from Index Register page</h1>
+<!-- main secion -->
+<section id="main">
+    <div class="container-xxl mt-5">
+        <div class="row justify-content-between">
+            <div class="col-md-6 col-lg-7 text-center">
+                <header>
+                    <h1 class="text-md-start text-center">Zarejestruj się już teraz aby zarządzać swoim budżetem.</h1>
+                </header>
+                <ul class="text-start">
+                    <li><i class="demo-icon icon-ok"><span>Zbierz wszystkie swoje przychody w jednym miejscu.</span></i>
+                    </li>
+                    <li><i class="demo-icon icon-ok"><span>Rozsądnie kalkuluj swoje wydatki.</span></i></li>
+                    <li><i class="demo-icon icon-ok"><span>Analizuj swój budżet aby lepiej nim zarządzać.</span></i>
+                    </li>
+                    <li><i class="demo-icon icon-ok"><span>Zacznij już dzisiaj korzystać z aplikacji Twój
+                                budżet.</span></i></li>
+                </ul>
+                <img class="img-fluid d-none d-lg-block p-5" src="img/mainChart.png" alt="main chart">
+            </div>
+            <!-- fomrm & inputs -->
+            <div class="col-md-6 col-lg pe-3">
+                <form method="POST" action="includes/signup.inc.php" class="needs-validation" novalidate>
+                    <div class="mb-3 mt-5">
+                        <label for="inputName1" class="form-label fs-5">Podaj nazwę użytkownika</label>
+                        <input type="text" name="uid" value="" class="form-control fs-5 pt-3 pb-3 shadow-none"
+                            id="inputName1" minlength="4" required>
+                        <div class="invalid-feedback">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputEmail1" class="form-label fs-5">Podaj swój adres email</label>
+                        <input type="email" name="email" value="" class="form-control fs-5 pt-3 pb-3 shadow-none"
+                            id="inputEmail1" aria-describedby="emailHelp" required>
+                        <div class="invalid-feedback">
 
-    
-    <a href="signup/new">Sign up</a>
+                        </div>
+                        <div id="emailHelp" class="form-text">Nigdy nie udostepnimy nikomu twojego adresu</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputPassword1" class="form-label fs-5">Utwórz swoje hasło</label>
+                        <input type="password" name="passwd" class="form-control fs-5 pt-3 pb-3 shadow-none"
+                            id="inputPassword1" minlength="8" required>
+                        <div class="invalid-feedback">
+                            Wprowadź poprawne hasło (min. 8 znaków)
+                        </div>
+                    </div>
+                    <button type="submit" name="submit" class="btn btn-light p-3" onclick="clearInputs();">Zarejestruj
+                        się</button>
+                </form>
+                <script src="js/script.js"></script>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- <a href="signup/new">Sign up</a> -->
 
 {% endblock %}
