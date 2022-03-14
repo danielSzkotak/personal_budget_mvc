@@ -1,0 +1,90 @@
+[13-Mar-2022 15:24:13 UTC] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 D:\Ampps\www\public\index.php(39): Core\Router->dispatch()
+#1 {main}
+Thrown in 'D:\Ampps\www\Core\Router.php' on line 130
+[13-Mar-2022 15:33:27 UTC] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 D:\Ampps\www\public\index.php(39): Core\Router->dispatch()
+#1 {main}
+Thrown in 'D:\Ampps\www\Core\Router.php' on line 130
+[13-Mar-2022 15:33:57 UTC] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 D:\Ampps\www\public\index.php(39): Core\Router->dispatch()
+#1 {main}
+Thrown in 'D:\Ampps\www\Core\Router.php' on line 130
+[13-Mar-2022 17:32:12 UTC] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 D:\Ampps\www\public\index.php(39): Core\Router->dispatch()
+#1 {main}
+Thrown in 'D:\Ampps\www\Core\Router.php' on line 130
+[13-Mar-2022 20:49:13 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 D:\xampp\htdocs-login\public\index.php(39): Core\Router->dispatch('js/hideShowPass...')
+#1 {main}
+Thrown in 'D:\xampp\htdocs-login\Core\Router.php' on line 130
+[13-Mar-2022 20:49:23 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 D:\xampp\htdocs-login\public\index.php(39): Core\Router->dispatch('js/hideShowPass...')
+#1 {main}
+Thrown in 'D:\xampp\htdocs-login\Core\Router.php' on line 130
+[13-Mar-2022 20:49:26 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 D:\xampp\htdocs-login\public\index.php(39): Core\Router->dispatch('js/hideShowPass...')
+#1 {main}
+Thrown in 'D:\xampp\htdocs-login\Core\Router.php' on line 130
+[13-Mar-2022 20:49:27 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 D:\xampp\htdocs-login\public\index.php(39): Core\Router->dispatch('js/hideShowPass...')
+#1 {main}
+Thrown in 'D:\xampp\htdocs-login\Core\Router.php' on line 130
+[13-Mar-2022 20:49:28 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 D:\xampp\htdocs-login\public\index.php(39): Core\Router->dispatch('js/hideShowPass...')
+#1 {main}
+Thrown in 'D:\xampp\htdocs-login\Core\Router.php' on line 130
+[13-Mar-2022 20:49:30 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 D:\xampp\htdocs-login\public\index.php(39): Core\Router->dispatch('js/hideShowPass...')
+#1 {main}
+Thrown in 'D:\xampp\htdocs-login\Core\Router.php' on line 130
+[13-Mar-2022 20:49:31 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 D:\xampp\htdocs-login\public\index.php(39): Core\Router->dispatch('js/hideShowPass...')
+#1 {main}
+Thrown in 'D:\xampp\htdocs-login\Core\Router.php' on line 130
+[13-Mar-2022 20:49:33 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 D:\xampp\htdocs-login\public\index.php(39): Core\Router->dispatch('js/hideShowPass...')
+#1 {main}
+Thrown in 'D:\xampp\htdocs-login\Core\Router.php' on line 130
+[13-Mar-2022 20:57:37 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 D:\xampp\htdocs-login\public\index.php(39): Core\Router->dispatch('js/hideShowPass...')
+#1 {main}
+Thrown in 'D:\xampp\htdocs-login\Core\Router.php' on line 130
+[13-Mar-2022 20:57:44 Europe/Berlin] Uncaught exception: 'PDOException' with message 'SQLSTATE[HY000] [1045] Access denied for user 'mvcuser'@'localhost' (using password: YES)'
+Stack trace: #0 D:\xampp\htdocs-login\Core\Model.php(28): PDO->__construct('mysql:host=loca...', 'mvcuser', 'secret')
+#1 D:\xampp\htdocs-login\App\Models\User.php(85): Core\Model::getDB()
+#2 D:\xampp\htdocs-login\App\Controllers\Account.php(22): App\Models\User::emailExists('japitole@gmail....')
+#3 [internal function]: App\Controllers\Account->validateEmailAction()
+#4 D:\xampp\htdocs-login\Core\Controller.php(48): call_user_func_array(Array, Array)
+#5 D:\xampp\htdocs-login\Core\Router.php(121): Core\Controller->__call('validateEmail', Array)
+#6 D:\xampp\htdocs-login\public\index.php(39): Core\Router->dispatch('account/validat...')
+#7 {main}
+Thrown in 'D:\xampp\htdocs-login\Core\Model.php' on line 28
+[13-Mar-2022 20:57:54 Europe/Berlin] Uncaught exception: 'PDOException' with message 'SQLSTATE[HY000] [1045] Access denied for user 'mvcuser'@'localhost' (using password: YES)'
+Stack trace: #0 D:\xampp\htdocs-login\Core\Model.php(28): PDO->__construct('mysql:host=loca...', 'mvcuser', 'secret')
+#1 D:\xampp\htdocs-login\App\Models\User.php(85): Core\Model::getDB()
+#2 D:\xampp\htdocs-login\App\Controllers\Account.php(22): App\Models\User::emailExists('japitole@gmail....')
+#3 [internal function]: App\Controllers\Account->validateEmailAction()
+#4 D:\xampp\htdocs-login\Core\Controller.php(48): call_user_func_array(Array, Array)
+#5 D:\xampp\htdocs-login\Core\Router.php(121): Core\Controller->__call('validateEmail', Array)
+#6 D:\xampp\htdocs-login\public\index.php(39): Core\Router->dispatch('account/validat...')
+#7 {main}
+Thrown in 'D:\xampp\htdocs-login\Core\Model.php' on line 28
+[13-Mar-2022 20:57:57 Europe/Berlin] Uncaught exception: 'PDOException' with message 'SQLSTATE[HY000] [1045] Access denied for user 'mvcuser'@'localhost' (using password: YES)'
+Stack trace: #0 D:\xampp\htdocs-login\Core\Model.php(28): PDO->__construct('mysql:host=loca...', 'mvcuser', 'secret')
+#1 D:\xampp\htdocs-login\App\Models\User.php(85): Core\Model::getDB()
+#2 D:\xampp\htdocs-login\App\Controllers\Account.php(22): App\Models\User::emailExists('japitole@gmail....')
+#3 [internal function]: App\Controllers\Account->validateEmailAction()
+#4 D:\xampp\htdocs-login\Core\Controller.php(48): call_user_func_array(Array, Array)
+#5 D:\xampp\htdocs-login\Core\Router.php(121): Core\Controller->__call('validateEmail', Array)
+#6 D:\xampp\htdocs-login\public\index.php(39): Core\Router->dispatch('account/validat...')
+#7 {main}
+Thrown in 'D:\xampp\htdocs-login\Core\Model.php' on line 28
+[13-Mar-2022 20:59:36 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 D:\xampp\htdocs-login\public\index.php(39): Core\Router->dispatch('js/hideShowPass...')
+#1 {main}
+Thrown in 'D:\xampp\htdocs-login\Core\Router.php' on line 130
+[13-Mar-2022 21:01:56 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 D:\xampp\htdocs-login\public\index.php(39): Core\Router->dispatch('js/hideShowPass...')
+#1 {main}
+Thrown in 'D:\xampp\htdocs-login\Core\Router.php' on line 130

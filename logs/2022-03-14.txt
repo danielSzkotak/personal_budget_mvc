@@ -1,0 +1,8 @@
+[14-Mar-2022 21:13:20 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 D:\xampp\htdocs-login\public\index.php(39): Core\Router->dispatch('favicon.ico')
+#1 {main}
+Thrown in 'D:\xampp\htdocs-login\Core\Router.php' on line 130
+[14-Mar-2022 21:18:30 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 D:\xampp\htdocs-budget\public\index.php(39): Core\Router->dispatch('js/hideShowPass...')
+#1 {main}
+Thrown in 'D:\xampp\htdocs-budget\Core\Router.php' on line 130
