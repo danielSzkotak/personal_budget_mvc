@@ -3,19 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.min.css">
+   <link rel="stylesheet" href="css/custom.css">
+   <link rel="stylesheet" href="css/fontello.css" type="text/css">
 </head>
 <body>
-    <nav>
-        <a href="/">Home</a>
-    </nav>
 
-    {% block body %}
-    {% endblock %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <div class="mainContainer mb-5">
+        <nav class="navbar navbar-expand-md navbar-light">
+            <div class="container-xxl p-2 mt-2 mb-5">
+               <a href="/" class="navbar-brand" >
+                  <img src="img/budget.png" alt="" width="100" height="100" class="d-inline-block align-text-bottom">
+                  <span class="text-primary display-2">
+                     twój <span class="text-success">budżet</span>
+                  </span>
+               </a>
+               <!-- toggle button for mobile nav -->
+               <button class="navbar-toggler align-self-end mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon fs-3"></span>
+                </button>
+      
+               <!-- navbar links -->
+               <div class="collapse navbar-collapse mb-1 justify-content-end align-self-end" id="navbarText">
+                  <ul class="navbar-nav mb-lg-0">
+                     <li class="nav-item">
+                        <a href="#" class="nav-link text-primary mt-2 me-3">Ciekawe linki</a>
+                     </li>
+                     <li class="nav-item">
+                        <a href="#" class="nav-link text-primary mt-2 me-3">Pomoc</a>
+                     </li>
+                     <li class="nav-item d-md-none">
+                        <a href="#" class="nav-link active">Zaloguj się</a>
+                     </li>
+                     <li class="nav-item ms-2 d-none d-md-inline">
+                        <a href="#" class="btn btn-outline-light fw-normal bg-light text-primary pt-3 pb-3 ps-4 pe-4" aria-current="page">Zaloguj się</a>
+                     </li>
+                  </ul>
+               </div>
+            </div>
+         </nav>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        {% block body %}
+        {% endblock %}
 
-    {% block footer %}
-    {% endblock %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        {% block footer %}
+        {% endblock %}
+
+    </div>
+    <footer>
+        <div class="container-fluid my-5 text-white text-center pt-5 pb-5 bg-dark">
+           <p class="fs-1 fw-bold">Profesjonalnie buduj swój kapitał osobisty!</p>
+        </div>
+        <div class="my-5">
+           <h5 class="text-center fs-6">© 2021 Twój budżet osobisty. All rights reserved.</h5>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>    
 </body>
 </html>

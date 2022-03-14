@@ -6,3 +6,23 @@ Thrown in 'D:\xampp\htdocs-login\Core\Router.php' on line 130
 Stack trace: #0 D:\xampp\htdocs-budget\public\index.php(39): Core\Router->dispatch('js/hideShowPass...')
 #1 {main}
 Thrown in 'D:\xampp\htdocs-budget\Core\Router.php' on line 130
+[14-Mar-2022 21:34:19 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 D:\xampp\htdocs-budget\public\index.php(39): Core\Router->dispatch('signup/css/cust...')
+#1 {main}
+Thrown in 'D:\xampp\htdocs-budget\Core\Router.php' on line 130
+[14-Mar-2022 21:34:19 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 D:\xampp\htdocs-budget\public\index.php(39): Core\Router->dispatch('signup/css/main...')
+#1 {main}
+Thrown in 'D:\xampp\htdocs-budget\Core\Router.php' on line 130
+[14-Mar-2022 21:34:19 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 D:\xampp\htdocs-budget\public\index.php(39): Core\Router->dispatch('signup/css/font...')
+#1 {main}
+Thrown in 'D:\xampp\htdocs-budget\Core\Router.php' on line 130
+[14-Mar-2022 21:34:19 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 D:\xampp\htdocs-budget\public\index.php(39): Core\Router->dispatch('js/hideShowPass...')
+#1 {main}
+Thrown in 'D:\xampp\htdocs-budget\Core\Router.php' on line 130
+[14-Mar-2022 21:36:44 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched.'
+Stack trace: #0 D:\xampp\htdocs-budget\public\index.php(39): Core\Router->dispatch('img/budget.png')
+#1 {main}
+Thrown in 'D:\xampp\htdocs-budget\Core\Router.php' on line 130
