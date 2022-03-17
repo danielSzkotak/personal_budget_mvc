@@ -53,7 +53,7 @@ class Signup extends \Core\Controller
             exit;
             
         } else {
-            View::renderTemplate('Signup/new.html',[
+            View::renderTemplate('Home/index.html',[
                 'user' => $user
             ]);
         }

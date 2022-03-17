@@ -33,16 +33,16 @@ class User extends \Core\Model
 
             if(empty($this->errors)){
 
-                $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
+                $password = password_hash($this->password, PASSWORD_DEFAULT);
 
-                $sql = "INSERT INTO users (name, email, password_hash) VALUES (:name, :email, :password_hash)";
+                $sql = "INSERT INTO users (username, password, email) VALUES (:username, :password, :email)";
 
                 $db = static::getDB();
                 $stmt = $db->prepare($sql);
 
-                $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
+                $stmt->bindValue(':username', $this->username, PDO::PARAM_STR);
                 $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
-                $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
+                $stmt->bindValue(':password', $password, PDO::PARAM_STR);
 
                 return $stmt->execute();
             }
@@ -52,7 +52,7 @@ class User extends \Core\Model
 
     public function validate(){
         // Name
-        if ($this->name == '') {
+        if ($this->username == '') {
             $this->errors[] = 'Name is required';
         }
  

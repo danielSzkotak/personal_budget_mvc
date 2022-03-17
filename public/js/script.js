@@ -19,6 +19,7 @@
  })()
 
 
+
 function clearInputs(){
   var forms = document.querySelectorAll('.needs-validation');
   Array.prototype.slice.call(forms)
