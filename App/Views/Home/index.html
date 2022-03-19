@@ -33,7 +33,7 @@
                     <div class="mb-3 mt-5">
                         <label for="inputName1" class="form-label fs-5">Podaj nazwę użytkownika</label>
                         <input type="text" name="username" value="{{ user.name }}" class="form-control fs-5 pt-3 pb-3 shadow-none"
-                            id="inputName" minlength="4" required>                       
+                            id="inputName" minlength="2" required>                       
                     </div>
                     <div class="mb-3">
                         <label for="inputEmail1" class="form-label fs-5">Podaj swój adres email</label>
@@ -52,11 +52,10 @@
                         </div>
                      
                         {% if user.errors is not empty %}
-                        <ul>
                             {% for error in user.errors %}
-                                <li>{{ error }}</li>
+                                <p class="fs-5 text-danger">{{ error }}</p>
                             {% endfor %}
-                        </ul>
+                       
                         {% endif %}
 
                     </div>

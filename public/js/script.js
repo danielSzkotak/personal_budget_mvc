@@ -38,7 +38,7 @@ $.validator.addMethod('validPassword',
       }
       return true;
   },
-  'Hasło musi zawierać conajmniej jedną cyfrę'
+  'Hasło musi zawierać conajmniej jedną literę i cyfrę'
 
 );
 
@@ -47,7 +47,7 @@ $(document).ready(function(){
       rules: {
           username: {
           required: true, 
-          minlength: 4                    
+          minlength: 2                    
           },
           email: {
               required: true,
