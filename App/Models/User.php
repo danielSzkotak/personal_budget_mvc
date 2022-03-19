@@ -80,7 +80,7 @@ class User extends \Core\Model
 
      public static function emailExists($email)
     {
-        $sql = 'SELECT * FROM users WHERE email = :email';
+        $sql = 'SELECT email FROM users WHERE email = :email';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);

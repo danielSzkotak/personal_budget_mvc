@@ -1,3 +1,86 @@
+
+//Eye password
+const togglePassword = document.querySelector('#togglePassword');
+const password = document.querySelector('#inputPassword');
+                
+  togglePassword.addEventListener('click', function (e) {
+  // toggle the type attribute
+  const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+  password.setAttribute('type', type);
+  // toggle the eye slash icon
+  this.classList.toggle('fa-eye-slash');
+  });
+//---end-----
+
+//Jquery Validation
+$.validator.setDefaults({
+  errorClass: 'invalid-feedback',
+  highlight: function(element){
+      $(element)
+          .addClass('is-invalid');
+  },
+  unhighlight: function(element){
+      $(element)
+          .removeClass('is-invalid')
+          .addClass('is-valid')
+  },
+});
+
+$.validator.addMethod('validPassword',
+  function(value, element, param){
+      if (value != '') {
+          if (value.match(/.*[a-z]+.*/i) == null) {
+              return false;
+          }
+          if (value.match(/.*\d+.*/) == null) {
+              return false;
+          }
+      }
+      return true;
+  },
+  'Hasło musi zawierać conajmniej jedną cyfrę'
+
+);
+
+$(document).ready(function(){
+  $('#formSignup').validate({
+      rules: {
+          username: {
+          required: true, 
+          minlength: 4                    
+          },
+          email: {
+              required: true,
+              email: true,
+              remote: '/account/validate-email'
+          },
+          password: {
+              required: true,
+              minlength: 6,
+              validPassword: true
+          }
+      },
+      messages: {
+          email: {
+              required: 'To pole jest wymagane',
+              remote: 'Ten adres email jest już zajęty',
+              email: 'Wprowadź prawidłowy adres email'
+          },
+          username: {
+              required: 'To pole jest wymagane',
+              minlength: 'Wprowadź minimum 4 znaki'
+          },
+          password: {
+              required: 'To pole jest wymagane',
+              minlength: 'Wprowadź minimum 6 znaków'
+          }
+          
+      }
+  });           
+});
+//---end---
+
+
 //Bootstrap validation
 (function () {
    'use strict'
@@ -9,7 +92,6 @@
      .forEach(function (form) {
        form.addEventListener('submit', function (event) {
          if (!form.checkValidity()) {
-           
            event.preventDefault()
            event.stopPropagation()   
          }
@@ -17,7 +99,7 @@
        }, false)
      })
  })()
-
+ //------end---------
 
 
 function clearInputs(){
