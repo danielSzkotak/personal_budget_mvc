@@ -50,6 +50,25 @@ class User extends \Core\Model
             return false;
     }
 
+    public function copyCategories()
+    {         
+                $sql = "
+                
+                INSERT INTO expenses_category_assigned_to_users (user_id, name) SELECT users.id, expenses_category_default.name FROM expenses_category_default, users WHERE users.username=:username;
+
+                INSERT INTO incomes_category_assigned_to_users (user_id, name) SELECT users.id, incomes_category_default.name FROM incomes_category_default, users WHERE users.username=:username;
+
+                INSERT INTO payment_methods_assigned_to_users (user_id, name) SELECT users.id, payment_methods_default.name FROM payment_methods_default, users WHERE users.username=:username;
+                
+                ";
+
+                $db = static::getDB();
+
+                $stmt = $db->prepare($sql);
+                $stmt->bindValue(':username', $this->username, PDO::PARAM_STR);
+                $stmt->execute();                        
+    }
+
     public function validate(){
         // Name
         if ($this->username == '') {
@@ -70,7 +89,7 @@ class User extends \Core\Model
         }
  
         if (strlen($this->password) < 6) {
-            $this->errors[] = 'Haśło powinno mięć min. 6 znaków';
+            $this->errors[] = 'Hasło powinno mięć min. 6 znaków';
         }
  
         if (preg_match('/.*[a-z]+.*/i', $this->password) == 0) {
