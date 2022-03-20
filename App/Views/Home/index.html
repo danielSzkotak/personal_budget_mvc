@@ -4,9 +4,137 @@
 
 {% block body %}
 
-    <h1>Welcome</h1>
+{% block footer %}
 
-    
-    <a href="signup/new">Sign up</a>
+{% endblock %}
 
+<!-- main secion -->
+<section id="main">
+    <div class="container-xxl mt-5">
+        <div class="row justify-content-between">
+            <div class="col-md-6 col-lg-7 text-center">
+                <header>
+                    <h1 class="text-md-start text-center">Zarejestruj się już teraz aby zarządzać swoim budżetem.</h1>
+                </header>
+                <ul class="text-start">
+                    <li><i class="demo-icon icon-ok"><span>Zbierz wszystkie swoje przychody w jednym miejscu.</span></i>
+                    </li>
+                    <li><i class="demo-icon icon-ok"><span>Rozsądnie kalkuluj swoje wydatki.</span></i></li>
+                    <li><i class="demo-icon icon-ok"><span>Analizuj swój budżet aby lepiej nim zarządzać.</span></i>
+                    </li>
+                    <li><i class="demo-icon icon-ok"><span>Zacznij już dzisiaj korzystać z aplikacji Twój
+                                budżet.</span></i></li>
+                </ul>
+                <img class="img-fluid d-none d-lg-block p-5" src="img/mainChart.png" alt="main chart">
+            </div>
+            <!-- fomrm & inputs -->
+            <div class="col-md-6 col-lg pe-3">
+                <form method="POST" action="/signup/create" id="formSignup">
+                    <div class="mb-3 mt-5">
+                        <label for="inputName1" class="form-label fs-5">Podaj nazwę użytkownika</label>
+                        <input type="text" name="username" value="{{ user.name }}" class="form-control fs-5 pt-3 pb-3 shadow-none"
+                            id="inputName" minlength="4" required>                       
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputEmail1" class="form-label fs-5">Podaj swój adres email</label>
+                        <input type="email" name="email" value="{{ user.email }}" class="form-control fs-5 pt-3 pb-3 shadow-none"
+                            id="inputEmail" aria-describedby="emailHelp" required>   
+                        <div id="emailHelp" class="form-text">Nigdy nie udostepnimy nikomu twojego adresu</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputPassword1" class="form-label fs-5">Utwórz swoje hasło</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="far fa-eye" id="togglePassword" style="cursor: pointer;"></i>
+                            </span>
+                        <input type="password" name="password" class="form-control fs-5 pt-3 pb-3 shadow-none"
+                            id="inputPassword" minlength="6" autocomplete="current-password" spellcheck="false" autocorrect="off" autocapitalize="off" required>      
+                        </div>
+                     
+                        {% if user.errors is not empty %}
+                            {% for error in user.errors %}
+                                <p class="fs-5 text-danger">{{ error }}</p>
+                            {% endfor %}
+                       
+                        {% endif %}
+
+                    </div>
+                    <button type="submit" name="submit" class="btn btn-light p-3">Zarejestruj
+                        się</button>
+                </form>
+            </div>           
+        </div>
+    </div>
+</section>
+
+<script>
+    //Jquery Validation
+$.validator.setDefaults({
+  errorClass: 'invalid-feedback',
+  highlight: function(element){
+      $(element)
+          .addClass('is-invalid');
+  },
+  unhighlight: function(element){
+      $(element)
+          .removeClass('is-invalid')
+          .addClass('is-valid')
+  },
+});
+
+$.validator.addMethod('validPassword',
+  function(value, element, param){
+      if (value != '') {
+          if (value.match(/.*[a-z]+.*/i) == null) {
+              return false;
+          }
+          if (value.match(/.*\d+.*/) == null) {
+              return false;
+          }
+      }
+      return true;
+  },
+  'Hasło musi zawierać conajmniej jedną literę i cyfrę'
+
+);
+
+$(document).ready(function(){
+  $('#formSignup').validate({
+      rules: {
+          username: {
+          minlength: 4, 
+          required: true 
+                             
+          },
+          email: {
+              required: true,
+              email: true,
+              remote: '/account/validate-email'
+          },
+          password: {
+              required: true,
+              minlength: 6, 
+              validPassword: true
+          }
+      },
+      messages: {
+          email: {
+              required: 'To pole jest wymagane',
+              remote: 'Ten adres email jest już zajęty',
+              email: 'Wprowadź prawidłowy adres email'
+          },
+          username: {
+              required: 'To pole jest wymagane',
+              minlength: 'Wprowadź minimum 4 znaki'
+          },
+          password: {
+              required: 'To pole jest wymagane',
+              minlength: 'Wprowadź minimum 6 znaków'
+          }
+          
+      }
+  });           
+});
+//---end---
+</script>
 {% endblock %}

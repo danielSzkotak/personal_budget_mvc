@@ -1,0 +1,155 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Condensed&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Encode+Sans:wght@700&display=swap');
+
+.mainContainer{
+  margin-left: 1rem;
+  margin-right: 1rem;
+} 
+
+.navbar .display-2{
+   font-family: 'Ubuntu Condensed', sans-serif;
+}
+
+ul .btn,
+form .btn
+{
+   font-family: 'Montserrat', sans-serif;
+   font-size: 0.85rem;
+}
+
+.nav-link{
+   font-family: 'Montserrat', sans-serif;
+   font-size: 0.85rem;
+}
+
+@media screen and (min-width: 760px) {
+   .nav-link:hover {
+   border-bottom: 2px solid rgb(37, 37, 37);
+   padding-bottom: 0.3rem;
+   }
+}
+
+@media screen and (max-width: 760px) {
+   .nav-link:hover {
+     opacity: 0.75;
+   }
+}
+
+
+#main h1{
+   font-family: 'Encode Sans', sans-serif;
+   margin-bottom: 2rem;
+}
+
+#tables h1{
+   margin-bottom: 1rem;
+}
+
+
+.dupa a{
+   font-family: 'Encode Sans', sans-serif;
+}
+
+ul.text-start{
+   padding-left: 0;
+}
+
+
+#main li{
+   display: inline-block;
+   padding-top: 0;
+   padding-bottom: 0;
+   font-size: 1.5rem;
+   text-decoration: none;
+   letter-spacing: 0.5px;
+   margin-bottom: 0.4rem;
+}
+
+@media screen and (max-width: 600px) {
+   #main li span {
+     font-size: 1.05rem;
+     letter-spacing: 0;
+     left: 3px;
+   }
+ }
+
+ @media screen and (min-width:601px) and (max-width: 990px) {
+   #main li span {
+     font-size: 1.25rem;
+     letter-spacing: 0;
+     left: 3px;
+   }
+ }
+
+li span{
+   position: relative;
+   left: 10px;
+}
+
+i{
+   font-style: normal;
+}
+ 
+label{
+   color: rgb(128, 128, 128);
+   font-family: 'Montserrat', sans-serif;
+   font-size: 1rem;
+} 
+
+.rotate{
+   transition: 0.70s;
+  -webkit-transition: 0.70s;
+  -moz-transition: 0.70s;
+  -ms-transition: 0.70s;
+  -o-transition: 0.70s;
+  display: block;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.rotate:hover{
+   transition: 0.70s;
+  -webkit-transition: 0.70s;
+  -moz-transition: 0.70s;
+  -ms-transition: 0.70s;
+  -o-transition: 0.70s;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.rotate{
+   position: relative;
+   top: 0.3rem;
+}
+
+.dupa a{
+   text-decoration: none;
+   opacity: 0.95;
+}
+
+.dupa a:hover{
+   opacity: 1;
+}
+
+table th{
+   width: 60%;
+}
+
+#showBalanceContainer{
+   /* display: none; */
+}
+
+.selectPeriod {
+   display: none;
+}
+
+#addExpenseParagraph{
+   color: rgb(85, 144, 85);
+   display: none;
+}
+

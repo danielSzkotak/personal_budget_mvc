@@ -48,12 +48,13 @@ class Signup extends \Core\Controller
         $user = new User($_POST);
 
         if($user->save()){
-           
+
+            $user->copyCategories();
             header('Location: http://' . $_SERVER['HTTP_HOST'] . '/signup/success', true, 303);
             exit;
             
         } else {
-            View::renderTemplate('Signup/new.html',[
+            View::renderTemplate('Home/index.html',[
                 'user' => $user
             ]);
         }
