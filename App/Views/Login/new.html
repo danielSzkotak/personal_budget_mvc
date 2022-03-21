@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Log in{% endblock %}
+
+{% block body %}
+
+    <!-- main secion -->
+<section id="main">
+    <div class="container-xxl mt-5">
+        <div class="row justify-content-between">
+            <div class="col-md-6 col-lg-7 text-center">
+                <header>
+                    <h1 class="text-md-start text-center">Zaloguj się już teraz aby zarządzać swoim budżetem.</h1>
+                </header>
+                <ul class="text-start">
+                    <li><i class="demo-icon icon-ok"><span>Zbierz wszystkie swoje przychody w jednym miejscu.</span></i>
+                    </li>
+                    <li><i class="demo-icon icon-ok"><span>Rozsądnie kalkuluj swoje wydatki.</span></i></li>
+                    <li><i class="demo-icon icon-ok"><span>Analizuj swój budżet aby lepiej nim zarządzać.</span></i>
+                    </li>
+                    <li><i class="demo-icon icon-ok"><span>Zacznij już dzisiaj korzystać z aplikacji Twój
+                                budżet.</span></i></li>
+                </ul>
+                <img class="img-fluid d-none d-lg-block p-5" src="img/mainChart.png" alt="main chart">
+            </div>
+            <!-- fomrm & inputs -->
+            <div class="col-md-6 col-lg pe-3">
+                <form method="POST" action="/login/create" class="needs-validation" id="formSignup" novalidate>
+                    {% if session.username %}
+                        <h1 class="text-md-start text-center text-success">Udana rejestracja, możesz się zalogować</h1>
+                    {% endif %}
+                    
+                    <div class="mb-3">
+                        <label for="inputEmail1" class="form-label fs-5">Podaj swój adres email</label>
+                        <input type="email" name="email" value="{{ email }}" class="form-control fs-5 pt-3 pb-3 shadow-none"
+                            id="inputEmail" aria-describedby="emailHelp" required>
+                        <div class="invalid-feedback">
+                        </div>
+                       
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputPassword1" class="form-label fs-5">Podaj swoje hasło</label>
+                        <input type="password" name="password" class="form-control fs-5 pt-3 pb-3 shadow-none"
+                            id="inputPassword" required>
+                        <div class="invalid-feedback">                                             
+                        </div>
+                    </div>
+                    <button type="submit" name="submit" class="btn btn-light p-3">Zaloguj się
+                    </button>
+                </form>
+                <script src="js/script.js"></script>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

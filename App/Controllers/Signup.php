@@ -49,9 +49,10 @@ class Signup extends \Core\Controller
 
         if($user->save()){
 
-            $user->copyCategories();
-            header('Location: http://' . $_SERVER['HTTP_HOST'] . '/signup/success', true, 303);
-            exit;
+            $user->copyCategories();  
+            $_SESSION['username'] = $user->username;        
+            $this->redirect('/login/new');
+            //exit;
             
         } else {
             View::renderTemplate('Home/index.html',[
@@ -60,7 +61,7 @@ class Signup extends \Core\Controller
         }
     }
 
-    public function successAction(){
-        View::renderTemplate('Signup/success.html');
-    }
+    // public function successAction(){
+    //     View::renderTemplate('Login/new.html');
+    // }
 }
