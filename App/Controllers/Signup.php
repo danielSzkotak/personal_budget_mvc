@@ -61,7 +61,5 @@ class Signup extends \Core\Controller
         }
     }
 
-    // public function successAction(){
-    //     View::renderTemplate('Login/new.html');
-    // }
+   
 }

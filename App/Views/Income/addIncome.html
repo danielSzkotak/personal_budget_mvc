@@ -1,0 +1,180 @@
+{% extends "baseAfterLogin.html" %}
+
+{% block title %}Dodaj przychód{% endblock %}
+
+
+
+{% block body %}
+
+{% block footer %}
+
+{% endblock %}
+
+<!-- main secion -->
+<section id="main">
+    <div class="container-xxl mt-5">
+       <div class="row align-items-start">
+          <div class="col-lg-6 align-self-start dupa">
+             <header>
+
+                <!-- <?php
+                echo "<span><h1 class='text-start'>Witaj <span class='text-success'>" . $_SESSION['useruid'] . "</span></h1></span>";
+                ?> -->
+
+             </header>
+             <div class="row">
+                <a href="addIncome.php" class="col bg-light mb-2 me-2 p-5 rounded-3 text-center text-white text-nowrap fs-2">
+                   Dodaj przychód
+                </a>
+                <a href="addExpense.php" class="col bg-secondary mb-2 me-2 p-5 rounded-3 text-center text-white text-nowrap fs-2">
+                   Dodaj rozchód
+                </a>
+             </div>
+             <div class="row">
+                <a href="balancePeriod.php" class="col bg-info me-2 p-5 rounded-3 text-center text-nowrap text-white fs-2">
+                   Przeglądaj bilans
+                </a>
+             </div>
+          </div>
+          <div class="col ms-lg-5 mt-5 mt-lg-0">
+             <header>
+                <h1 class="text-start">Dodaj przychód</h1>
+             </header>
+
+             <form action="includes/addIncome.inc.php" method="POST" class="needs-validation" id="addIncomeForm" novalidate>
+                <div class="mb-3 mt-5">
+                   <label for="inputIncome1" class="form-label">Podaj kwotę przychodu</label>
+                   <input type="number" name="incomeAmount" class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputExpense1" step="any" min="0.01" required>
+                </div>
+                <div class="mb-3">
+                   <label for="inputDate1" class="form-label">Wprowadź datę przychodu</label>
+
+                   <!-- <input type="date" name="incomeDate" value="<?php echo date('Y-m-d'); ?>" class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputDateIncome" aria-describedby="emailHelp" required> -->
+
+                   <input type="date" name="incomeDate" value="" class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputDateIncome" aria-describedby="emailHelp" required>
+
+                </div>
+                <div class="mb-3">
+                   <label for="selectIncomeCategory" class="form-label">Wybierz kategorię</label>
+                   <select name="incomeCategory"  class="form-select fs-5 pt-3 pb-3" id="selectedIncomeCategory" aria-label="Default select example" required>
+
+                      <!-- <?php
+                      foreach ($_SESSION['incomeUserCat'] as $row) {
+                      ?>
+                         <option value="<?php echo $row['id'].'|'.$row['name']; ?>"> <?php echo $row['name']; ?> </option>
+                      <?php
+                      }
+                      ?> -->
+
+                   </select>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                   <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                         <div class="modal-header">
+                            <h4 class="modal-title text-success" id="exampleModalLabel">Dodano przychód</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                         </div>
+
+                         <div class="modal-body">
+                         <h5 class="text-start">Data: <?php if(isset($_SESSION['modal_date'])) echo $_SESSION['modal_date']; unset($_SESSION['modal_date']);?></h5>
+
+                         <h5 class="text-start">Kategoria: <?php if(isset($_SESSION['modal_categoryName'])) echo $_SESSION['modal_categoryName']; unset($_SESSION['modal_categoryName']);?></h5>
+
+                         <h5 class="text-start">Kwota: <?php if(isset($_SESSION['modal_amount'])) echo $_SESSION['modal_amount'].' zł'; unset($_SESSION['modal_amount']);?></h5>
+                         </div>
+                         
+                         <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Zamknij</button>                
+                         </div>
+                      </div>
+                   </div>
+                </div>              
+                <!-- End of Modal -->
+
+                <button type="submit" name="submitIncome" id="myButton" class="btn btn-light p-3" data-bs-toggle="modal">Dodaj przychód</button>
+
+                <button type="button" class="btn btn-danger p-3" onclick="clearInputs()">Wyczyść pola</button>
+
+             </form>
+
+             <!-- <script src="js/script.js"></script> -->
+          </div>
+       </div>
+    </div>
+ </section>
+<!-- end of main section -->
+
+<script>
+    //Jquery Validation
+$.validator.setDefaults({
+  errorClass: 'invalid-feedback',
+  highlight: function(element){
+      $(element)
+          .addClass('is-invalid');
+  },
+  unhighlight: function(element){
+      $(element)
+          .removeClass('is-invalid')
+          .addClass('is-valid')
+  },
+});
+
+$.validator.addMethod('validPassword',
+  function(value, element, param){
+      if (value != '') {
+          if (value.match(/.*[a-z]+.*/i) == null) {
+              return false;
+          }
+          if (value.match(/.*\d+.*/) == null) {
+              return false;
+          }
+      }
+      return true;
+  },
+  'Hasło musi zawierać conajmniej jedną literę i cyfrę'
+
+);
+
+$(document).ready(function(){
+  $('#formSignup').validate({
+      rules: {
+          username: {
+          minlength: 4, 
+          required: true 
+                             
+          },
+          email: {
+              required: true,
+              email: true,
+              remote: '/account/validate-email'
+          },
+          password: {
+              required: true,
+              minlength: 6, 
+              validPassword: true
+          }
+      },
+      messages: {
+          email: {
+              required: 'To pole jest wymagane',
+              remote: 'Ten adres email jest już zajęty',
+              email: 'Wprowadź prawidłowy adres email'
+          },
+          username: {
+              required: 'To pole jest wymagane',
+              minlength: 'Wprowadź minimum 4 znaki'
+          },
+          password: {
+              required: 'To pole jest wymagane',
+              minlength: 'Wprowadź minimum 6 znaków'
+          }
+          
+      }
+  });           
+});
+//---end---
+</script>
+{% endblock %}

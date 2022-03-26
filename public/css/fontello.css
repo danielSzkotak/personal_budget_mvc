@@ -63,6 +63,7 @@
 .icon-wallet:before { content: '\e806'; } /* '' */
 .icon-ok:before { content: '\e807';} /* '' */
 .icon-cog:before { content: '\e808'; 
+  font-size: 2.0rem;
   color: rgb(61, 61, 61);
 } /* '' */
 .icon-money:before { content: '\f0d6'; } /* '' */

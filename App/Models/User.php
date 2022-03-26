@@ -122,12 +122,13 @@ class User extends \Core\Model
      */
     public static function findByEmail($email)
     {
-        $sql = 'SELECT email FROM users WHERE email = :email';
+        $sql = 'SELECT * FROM users WHERE email = :email';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':email', $email, PDO::PARAM_STR);
 
+        //
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
 
         $stmt->execute();
@@ -148,24 +149,12 @@ class User extends \Core\Model
         $user = static::findByEmail($email);
 
         if ($user) {
-            if (password_verify($password, $user->password_hash)) {
+            if (password_verify($password, $user->password)) {
                 return $user;
-            }
+            }      
         }
 
         return false;
     }
 }
 
-    //  public static function emailExists($email)
-    // {
-    //     $sql = 'SELECT email FROM users WHERE email = :email';
-
-    //     $db = static::getDB();
-    //     $stmt = $db->prepare($sql);
-    //     $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-
-    //     $stmt->execute();
-    //     return $stmt->fetch() ? true : false; 
-    // }
-  
