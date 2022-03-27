@@ -11,8 +11,7 @@ use \App\Models\User;
  *
  * PHP version 7.0
  */
-class Income extends \Core\Controller
-{
+class Income extends Authenticated {
 
     /**
      * Show the addIncome page

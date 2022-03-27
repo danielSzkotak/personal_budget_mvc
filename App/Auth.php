@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Models\User;
+
 /**
  * Authentication
  *
@@ -50,15 +52,23 @@ class Auth
 
       // Finally destroy the session
       session_destroy();
-    }
+    }  
 
-    /**
-     * Return indicator of whether a user is logged in or not
-     *
-     * @return boolean
-     */
-    public static function isLoggedIn()
+    public static function rememberRequestedPage()
     {
-        return isset($_SESSION['user_id']);
+        $_SESSION['return_to'] = $_SERVER['REQUEST_URI'];
     }    
+
+    public static function getReturnToPage()
+    {
+        return $_SESSION['return_to'] ?? '/addIncome';
+    }  
+
+    public static function getUser(){
+
+        if (isset($_SESSION['user_id'])){
+
+            return User::findByID($_SESSION['user_id']);
+        }
+    }
 }

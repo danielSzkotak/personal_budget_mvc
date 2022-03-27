@@ -25,6 +25,13 @@
             </div>
             <!-- fomrm & inputs -->
             <div class="col-md-6 col-lg pe-3">
+
+                {% for message in flashMessages %}
+
+                <h1 class="text-md-start text-center alert-{{ message.type }}">{{ message.body }}</h1>
+
+                {% endfor %}
+
                 <form method="POST" action="/login/create" class="needs-validation" id="formSignup" novalidate>
                     {% if session.username %}
                         <h1 class="text-md-start text-center text-success">Udana rejestracja, możesz się zalogować</h1>

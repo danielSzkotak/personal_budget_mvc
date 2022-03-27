@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Models\User;
+use \App\Flash;
 
 /**
  * Signup controller
@@ -50,7 +51,8 @@ class Signup extends \Core\Controller
         if($user->save()){
 
             $user->copyCategories();  
-            $_SESSION['username'] = $user->username;        
+            $_SESSION['username'] = $user->username; 
+            Flash::addMessage('Brawo, teraz możesz się zalogować');       
             $this->redirect('/login/new');
             //exit;
             

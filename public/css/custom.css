@@ -157,3 +157,17 @@ table th{
    display: none;
 }
 
+.alert-info{
+   color: #ebbb3a;
+   background-color: #ffffff;
+}
+
+.alert-success{
+   color: #87BB48;
+   background-color: #ffffff;
+}
+
+.alert-warning{
+   color:rgb(216, 83, 66);
+   background-color: #ffffff;
+}

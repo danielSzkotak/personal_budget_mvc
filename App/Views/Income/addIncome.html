@@ -2,8 +2,6 @@
 
 {% block title %}Dodaj przychód{% endblock %}
 
-
-
 {% block body %}
 
 {% block footer %}
@@ -17,9 +15,9 @@
           <div class="col-lg-6 align-self-start dupa">
              <header>
 
-                <!-- <?php
-                echo "<span><h1 class='text-start'>Witaj <span class='text-success'>" . $_SESSION['useruid'] . "</span></h1></span>";
-                ?> -->
+               {% if currentUser %}
+                  <span><h1 class='text-start'>Witaj <span class='text-success'>{{currentUser.username}}</h1></span>
+               {% endif %} 
 
              </header>
              <div class="row">
