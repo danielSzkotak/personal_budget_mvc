@@ -91,6 +91,10 @@ li span{
 i{
    font-style: normal;
 }
+
+.icon-cog {
+   position: relative;
+}
  
 label{
    color: rgb(128, 128, 128);
@@ -106,11 +110,11 @@ label{
   -o-transition: 0.70s;
   display: block;
   margin-right: 0;
-  margin-left: 0;
+  margin-left: 0; 
 }
 
 .rotate:hover{
-   transition: 0.70s;
+   transition: 0.7s;
   -webkit-transition: 0.70s;
   -moz-transition: 0.70s;
   -ms-transition: 0.70s;
@@ -153,3 +157,17 @@ table th{
    display: none;
 }
 
+.alert-info{
+   color: #ebbb3a;
+   background-color: #ffffff;
+}
+
+.alert-success{
+   color: #87BB48;
+   background-color: #ffffff;
+}
+
+.alert-warning{
+   color:rgb(216, 83, 66);
+   background-color: #ffffff;
+}

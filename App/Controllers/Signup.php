@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Models\User;
+use \App\Flash;
 
 /**
  * Signup controller
@@ -49,9 +50,11 @@ class Signup extends \Core\Controller
 
         if($user->save()){
 
-            $user->copyCategories();
-            header('Location: http://' . $_SERVER['HTTP_HOST'] . '/signup/success', true, 303);
-            exit;
+            $user->copyCategories();  
+            $_SESSION['username'] = $user->username; 
+            Flash::addMessage('Brawo, teraz możesz się zalogować');       
+            $this->redirect('/login/new');
+            //exit;
             
         } else {
             View::renderTemplate('Home/index.html',[
@@ -60,7 +63,5 @@ class Signup extends \Core\Controller
         }
     }
 
-    public function successAction(){
-        View::renderTemplate('Signup/success.html');
-    }
+   
 }
