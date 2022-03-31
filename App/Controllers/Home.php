@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Auth;
 use \Core\View;
 
 /**
@@ -19,8 +20,7 @@ class Home extends \Core\Controller
      */
     protected function before()
     {
-        //echo "(before) ";
-        //return false;
+       
     }
 
     /**
@@ -40,7 +40,15 @@ class Home extends \Core\Controller
      */
     public function indexAction()
     {
+        if (Auth::getUser()){
+
+            View::renderTemplate('/Income/addIncome.html');
+
+        } else {
+
+            View::renderTemplate('Home/index.html');
+            
+        }
         
-        View::renderTemplate('Home/index.html');
     }
 }
