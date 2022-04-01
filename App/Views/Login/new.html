@@ -31,7 +31,7 @@
                 <h1 class="text-md-start text-center alert-{{ message.type }}">{{ message.body }}</h1>
 
                 {% endfor %}
-
+             
                 <form method="POST" action="/login/create" class="needs-validation" id="formSignup" novalidate>
                     {% if session.username %}
                         <h1 class="text-md-start text-center text-success">Udana rejestracja, możesz się zalogować</h1>
@@ -41,16 +41,14 @@
                         <label for="inputEmail1" class="form-label fs-5">Podaj swój adres email</label>
                         <input type="email" name="email" value="{{ email }}" class="form-control fs-5 pt-3 pb-3 shadow-none"
                             id="inputEmail" aria-describedby="emailHelp" required>
-                        <div class="invalid-feedback">
-                        </div>
-                       
+                        <div class="invalid-feedback"></di>          
                     </div>
+
                     <div class="mb-3">
                         <label for="inputPassword1" class="form-label fs-5">Podaj swoje hasło</label>
                         <input type="password" name="password" class="form-control fs-5 pt-3 pb-3 shadow-none"
                             id="inputPassword" required>
-                        <div class="invalid-feedback">                                             
-                        </div>
+                        <div class="invalid-feedback"></div>
                     </div>
                   
                     <label class="container">Zapamiętaj mnie
@@ -58,10 +56,12 @@
                         <span class="checkmark"></span>
                     </label>
                      
-                      
-                    <button type="submit" name="submit" class="btn btn-light p-3">Zaloguj się
-                    </button>
+                    
+                        <button type="submit" name="submit" class="btn btn-light p-3">Zaloguj się
+                        </button>
+                 
                 </form>
+                
                 <script src="js/script.js"></script>
             </div>
         </div>

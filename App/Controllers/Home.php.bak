@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Controllers;
 
@@ -41,7 +41,7 @@ class Home extends \Core\Controller
     public function indexAction()
     {
 
-        //\App\Mail::send('daniel.szkotak@gmail.com','Kółko','W książce jest miłość');
+        \App\Mail::send('daniel.szkotak@gmail.com','Królezwięki2','W książce jest miłość');
 
         if (Auth::getUser()){
 
