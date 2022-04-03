@@ -12,7 +12,7 @@ require '../vendor/autoload.php';
 
 class Mail{
 
-   public static function send($to, $subject, $text){
+   public static function send($to, $subject, $text, $html){
 
       //Create a new PHPMailer instance
       $mail = new PHPMailer();
@@ -79,7 +79,7 @@ class Mail{
       //Enable HTML message
       $mail->isHTML(true);
 
-      $mail->Body = "<h1> $text </h1>";
+      $mail->Body = $html;
 
       //Replace the plain text body with one created manually
       $mail->AltBody = $text;
@@ -91,7 +91,7 @@ class Mail{
       if (!$mail->Send()) {
          echo 'Mailer Error: ' . $mail->ErrorInfo;
       } else {
-         echo 'Message sent!';
+         //echo 'Message sent!';
          //Section 2: IMAP
          //Uncomment these to save your message in the 'Sent Mail' folder.
          #if (save_mail($mail)) {

@@ -41,7 +41,6 @@ class Home extends \Core\Controller
     public function indexAction()
     {
 
-        //\App\Mail::send('daniel.szkotak@gmail.com','Kółko','W książce jest miłość');
 
         if (Auth::getUser()){
 

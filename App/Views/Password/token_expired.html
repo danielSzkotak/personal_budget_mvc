@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Resetowanie hasła{% endblock %}
+
+{% block footer %}
+
+{% endblock %}
+
+{% block body %}
+
+<!-- main secion -->
+<section id="main">
+    <div class="container-xxl mt-5">
+        <div class="row justify-content-center">
+            <!-- fomrm & inputs -->
+            <h1 class="text-center">Resetowanie hasła</h1>
+            <div class="col-md-6 col-5 text-center pe-3">
+                
+                <h3 class="text-danger">Link resetujący hasło wygasł lub jest nieważny.</h3>
+                    <a href="/password/forgot" class="fs-2" style="text-decoration: none; color: darkgreen;"> Kliknij tutaj aby wysłać kolejny link</a>
+            </div>           
+        </div>
+    </div>
+</section>
+
+{% endblock %}

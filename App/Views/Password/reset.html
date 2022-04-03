@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}Resetowanie hasła{% endblock %}
+
+{% block footer %}
+
+{% endblock %}
+
+{% block body %}
+
+<!-- main secion -->
+<section id="main">
+    <div class="container-xxl mt-5">
+        <div class="row justify-content-center">
+            <!-- fomrm & inputs -->
+            <div class="col-md-6 col-5 text-center pe-3">
+                
+                <form method="POST" action="/password/reset-password"  id="formPassword">
+                    
+                    <h1 class="text-center">Resetowanie hasła</h1>
+
+                    <input type="hidden" name="token" value="{{ token }}" />
+
+                    <div class="mb-3">
+                        <label for="inputPassword1" class="form-label fs-5">Wprowadź nowe hasło</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="far fa-eye" id="togglePassword" style="cursor: pointer;"></i>
+                            </span>
+                        <input type="password" name="password" class="form-control fs-5 pt-3 pb-3 shadow-none"
+                            id="inputPassword" minlength="6" autocomplete="current-password" spellcheck="false" autocorrect="off" autocapitalize="off" required>      
+                        </div>
+                     
+                        {% if user.errors is not empty %}
+                            {% for error in user.errors %}
+                                <p class="fs-5 text-danger">{{ error }}</p>
+                            {% endfor %}
+                       
+                        {% endif %}
+
+                    </div>
+                    <button type="submit" name="submit" class="btn btn-light p-3">Zresetuj hasło</button>
+                        
+                </form>
+            </div>           
+        </div>
+    </div>
+</section>
+
+<script>
+    
+    //Jquery Validation
+
+$.validator.setDefaults({
+  errorClass: 'invalid-feedback',
+  highlight: function(element){
+      $(element)
+          .addClass('is-invalid');
+  },
+  unhighlight: function(element){
+      $(element)
+          .removeClass('is-invalid')
+          .addClass('is-valid')
+  },
+});
+
+$.validator.addMethod('validPassword',
+  function(value, element, param){
+      if (value != '') {
+          if (value.match(/.*[a-z]+.*/i) == null) {
+              return false;
+          }
+          if (value.match(/.*\d+.*/) == null) {
+              return false;
+          }
+      }
+      return true;
+  },
+  'Hasło musi zawierać conajmniej jedną literę i cyfrę'
+
+);
+
+$(document).ready(function(){
+  $('#formPassword').validate({
+      rules: {
+          
+          password: {
+              required: true,
+              minlength: 6, 
+              validPassword: true
+          }
+      },
+      messages: {
+          email: {
+              required: 'To pole jest wymagane',
+              remote: 'Ten adres email jest już zajęty',
+              email: 'Wprowadź prawidłowy adres email'
+          },
+          username: {
+              required: 'To pole jest wymagane',
+              minlength: 'Wprowadź minimum 4 znaki'
+          },
+          password: {
+              required: 'To pole jest wymagane',
+              minlength: 'Wprowadź minimum 6 znaków'
+          }
+          
+      }
+  });           
+});
+//---end---
+</script>
+
+{% endblock %}
