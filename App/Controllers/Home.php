@@ -40,6 +40,8 @@ class Home extends \Core\Controller
      */
     public function indexAction()
     {
+
+
         if (Auth::getUser()){
 
             View::renderTemplate('/Income/addIncome.html');

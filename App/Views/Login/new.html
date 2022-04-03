@@ -4,7 +4,11 @@
 
 {% block body %}
 
-    <!-- main secion -->
+{% block footer %}
+
+{% endblock %}
+
+<!-- main secion -->
 <section id="main">
     <div class="container-xxl mt-5">
         <div class="row justify-content-between">
@@ -32,40 +36,102 @@
 
                 {% endfor %}
 
-                <form method="POST" action="/login/create" class="needs-validation" id="formSignup" novalidate>
+                <form method="POST" action="/login/create" id="formSignup">
                     {% if session.username %}
-                        <h1 class="text-md-start text-center text-success">Udana rejestracja, możesz się zalogować</h1>
+                    <h1 class="text-md-start text-center text-success">Udana rejestracja, możesz się zalogować</h1>
                     {% endif %}
-                    
+
                     <div class="mb-3">
                         <label for="inputEmail1" class="form-label fs-5">Podaj swój adres email</label>
-                        <input type="email" name="email" value="{{ email }}" class="form-control fs-5 pt-3 pb-3 shadow-none"
-                            id="inputEmail" aria-describedby="emailHelp" required>
-                        <div class="invalid-feedback">
-                        </div>
-                       
+                        <input type="email" name="email" value="{{ email }}"
+                            class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputEmail" aria-describedby="emailHelp"
+                            required>
+                        <!-- <div class="invalid-feedback"></div> -->
                     </div>
+
                     <div class="mb-3">
                         <label for="inputPassword1" class="form-label fs-5">Podaj swoje hasło</label>
                         <input type="password" name="password" class="form-control fs-5 pt-3 pb-3 shadow-none"
                             id="inputPassword" required>
-                        <div class="invalid-feedback">                                             
-                        </div>
+                        <!-- <div class="invalid-feedback"></div> -->
                     </div>
-                  
+
                     <label class="container">Zapamiętaj mnie
-                        <input type="checkbox" name="remember_me" {% if remember_me %} checked="checked"{% endif %}>
+                        <input type="checkbox" name="remember_me" {% if remember_me %} checked="checked" {% endif %}>
                         <span class="checkmark"></span>
                     </label>
-                     
-                      
+
+
                     <button type="submit" name="submit" class="btn btn-light p-3">Zaloguj się
                     </button>
+                    <a href="Password/forgot" class="link-danger fs-6 ps-3">Nie pamiętasz hasła?</a>
+
                 </form>
+
                 <script src="js/script.js"></script>
             </div>
         </div>
     </div>
 </section>
+
+<script>
+    //Jquery Validation
+$.validator.setDefaults({
+  errorClass: 'invalid-feedback',
+  highlight: function(element){
+      $(element)
+          .addClass('is-invalid');
+  },
+  unhighlight: function(element){
+      $(element)
+          .removeClass('is-invalid')
+          .addClass('is-valid')
+  },
+});
+
+$.validator.addMethod('validPassword',
+  function(value, element, param){
+      if (value != '') {
+          if (value.match(/.*[a-z]+.*/i) == null) {
+              return false;
+          }
+          if (value.match(/.*\d+.*/) == null) {
+              return false;
+          }
+      }
+      return true;
+  },
+  'Hasło musi zawierać conajmniej jedną literę i cyfrę'
+
+);
+
+$(document).ready(function(){
+  $('#formSignup').validate({
+      rules: {
+
+          email: {
+              required: true,
+              email: true,
+          },
+          password: {
+              required: true,
+              minlength: 6, 
+              validPassword: true
+          }
+      },
+      messages: {
+          email: {
+              required: 'To pole jest wymagane',
+              email: 'Wprowadź prawidłowy adres email'
+          },
+          password: {
+              required: 'To pole jest wymagane',
+              minlength: 'Wprowadź minimum 6 znaków'
+          }
+      }
+  });           
+});
+//---end---
+</script>
 
 {% endblock %}
