@@ -38,7 +38,11 @@ class User extends \Core\Model
 
                 $password = password_hash($this->password, PASSWORD_DEFAULT);
 
-                $sql = "INSERT INTO users (username, password, email) VALUES (:username, :password, :email)";
+                $token = new Token();
+                $hashed_token = $token->getHash();
+                $this->activation_token = $token->getValue();
+
+                $sql = "INSERT INTO users (username, password, email, activation_hash) VALUES (:username, :password, :email, :activation_hash)";
 
                 $db = static::getDB();
                 $stmt = $db->prepare($sql);
@@ -46,6 +50,7 @@ class User extends \Core\Model
                 $stmt->bindValue(':username', $this->username, PDO::PARAM_STR);
                 $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
                 $stmt->bindValue(':password', $password, PDO::PARAM_STR);
+                $stmt->bindValue(':activation_hash', $hashed_token, PDO::PARAM_STR);
 
                 return $stmt->execute();
             }
@@ -53,22 +58,23 @@ class User extends \Core\Model
             return false;
     }
 
-    public function copyCategories()
+    public static function copyCategories($id)
     {         
                 $sql = "
                 
-                INSERT INTO expenses_category_assigned_to_users (user_id, name) SELECT users.id, expenses_category_default.name FROM expenses_category_default, users WHERE users.username=:username;
+                INSERT INTO expenses_category_assigned_to_users (user_id, name) SELECT users.id, expenses_category_default.name FROM expenses_category_default, users WHERE users.id = :id;
 
-                INSERT INTO incomes_category_assigned_to_users (user_id, name) SELECT users.id, incomes_category_default.name FROM incomes_category_default, users WHERE users.username=:username;
+                INSERT INTO incomes_category_assigned_to_users (user_id, name) SELECT users.id, incomes_category_default.name FROM incomes_category_default, users WHERE users.id = :id;
 
-                INSERT INTO payment_methods_assigned_to_users (user_id, name) SELECT users.id, payment_methods_default.name FROM payment_methods_default, users WHERE users.username=:username;
+                INSERT INTO payment_methods_assigned_to_users (user_id, name) SELECT users.id, payment_methods_default.name FROM payment_methods_default, users WHERE users.id = :id;"
                 
-                ";
+                ;
 
                 $db = static::getDB();
 
                 $stmt = $db->prepare($sql);
-                $stmt->bindValue(':username', $this->username, PDO::PARAM_STR);
+                $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+
                 $stmt->execute();                        
     }
 
@@ -150,6 +156,24 @@ class User extends \Core\Model
         return $stmt->fetch();
     }
 
+    public static function getIdByEmail($email)
+    {
+        $sql = 'SELECT id FROM users WHERE email = :email';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+
+        //
+        //$stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+        $stmt->execute();
+
+        return $stmt->fetch();
+    }
+
+
     /**
      * Authenticate a user by email and password.
      *
@@ -162,7 +186,7 @@ class User extends \Core\Model
     {
         $user = static::findByEmail($email);
 
-        if ($user) {
+        if ($user && $user->is_active) {
             if (password_verify($password, $user->password)) {
                 return $user;
             }      
@@ -247,9 +271,6 @@ class User extends \Core\Model
 
         $url = 'http://' . $_SERVER['HTTP_HOST'] . '/password/reset/' . $this->password_reset_token;
 
-        // $text = "Kliknij na poniższy link aby zresetować hasło: $url";
-        // $html = "Kliknij <a href=\"$url\">tutaj</a> aby zresetować swoje hasło.";
-
         $text = View::getTemplate('Password/reset_email.txt', ['url' => $url]);
         $html = View::getTemplate('Password/reset_email.html', ['url' => $url]);
 
@@ -314,5 +335,34 @@ class User extends \Core\Model
 
         return false;
     }
+
+    public function sendActivationEmail(){
+
+        $url = 'http://' . $_SERVER['HTTP_HOST'] . '/signup/activate/' . $this->activation_token;
+
+        $text = View::getTemplate('Signup/activation_email.txt', ['url' => $url]);
+        $html = View::getTemplate('Signup/activation_email.html', ['url' => $url]);
+
+        Mail::send($this->email, 'Aktywacja konta', $text, $html);
+    }
+
+    public static function activate($value){
+
+        $token = new Token($value);
+        $hashed_token = $token->getHash();
+
+        $sql = 'UPDATE users SET is_active = 1,
+            activation_hash = NULL
+            WHERE activation_hash = :hashed_token';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':hashed_token', $hashed_token, PDO::PARAM_STR);
+
+            $stmt->execute();
+    }
+
+
 }
 
