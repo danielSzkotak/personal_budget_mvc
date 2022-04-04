@@ -51,10 +51,7 @@ class Signup extends \Core\Controller
         if($user->save()){
 
             $user->sendActivationEmail();
-
-            //$this->idx = $user->getIdByEmail($user->email);
-           // $this->idx = reset($this->idx);
-
+            $user->copyCategories($user->getIdByEmail($user->email));
             $this->redirect('/signup/success');
             
         } else {
@@ -72,8 +69,6 @@ class Signup extends \Core\Controller
     public function activateAction(){
 
         User::activate($this->route_params['token']);
-        //User::copyCategories($this->idx);
-        //var_dump($this->idx);
         $this->redirect('/signup/activated');
     }
 

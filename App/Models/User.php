@@ -58,15 +58,15 @@ class User extends \Core\Model
             return false;
     }
 
-    public static function copyCategories($id)
+    public function copyCategories($id)
     {         
                 $sql = "
                 
-                INSERT INTO expenses_category_assigned_to_users (user_id, name) SELECT users.id, expenses_category_default.name FROM expenses_category_default, users WHERE users.id = :id;
+                INSERT INTO expenses_category_assigned_to_users (user_id, name) SELECT users.id, expenses_category_default.name FROM users, expenses_category_default WHERE users.id = :id;
 
-                INSERT INTO incomes_category_assigned_to_users (user_id, name) SELECT users.id, incomes_category_default.name FROM incomes_category_default, users WHERE users.id = :id;
+                INSERT INTO incomes_category_assigned_to_users (user_id, name) SELECT users.id, incomes_category_default.name FROM users, incomes_category_default WHERE users.id = :id;
 
-                INSERT INTO payment_methods_assigned_to_users (user_id, name) SELECT users.id, payment_methods_default.name FROM payment_methods_default, users WHERE users.id = :id;"
+                INSERT INTO payment_methods_assigned_to_users (user_id, name) SELECT users.id, payment_methods_default.name FROM users, payment_methods_default WHERE users.id = :id;"
                 
                 ;
 
@@ -164,13 +164,13 @@ class User extends \Core\Model
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':email', $email, PDO::PARAM_STR);
 
-        //
-        //$stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
         $stmt->execute();
 
-        return $stmt->fetch();
+        $fetched_id = $stmt->fetch();
+
+        return reset($fetched_id); //get the first element of array (id)
     }
 
 
