@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Auth;
 use \Core\View;
-use \App\Models\User;
+use \App\Models\Categories;
 
 /**
  * Login controller
@@ -20,7 +20,12 @@ class Income extends Authenticated {
      */
     public function addIncomeAction()
     {
-        View::renderTemplate('Income/addIncome.html');
+        
+        $incomeCat = Categories::getIncomeCategories(Auth::getUser()->id);
+
+        View::renderTemplate('Income/addIncome.html', [
+            'income_categories' => $incomeCat
+        ]); 
     }
 
     /**

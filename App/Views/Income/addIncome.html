@@ -48,8 +48,6 @@
                 </div>
                 <div class="mb-3">
                    <label for="inputDate1" class="form-label">Wprowadź datę przychodu</label>
-
-
                    <input type="date" name="incomeDate" value="" class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputDateIncome" aria-describedby="emailHelp" required>
                   
                 </div>
@@ -64,6 +62,11 @@
                       <?php
                       }
                       ?> -->
+                      {% if income_categories %} 
+                        {% for key, value in income_categories %}
+                           <option value="{{ key }}">{{ value.name|e }}</option>
+                        {% endfor %}
+                      {% endif %}                      
 
                    </select>
                 </div>
