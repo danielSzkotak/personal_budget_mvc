@@ -8,6 +8,8 @@
 
 {% endblock %}
 
+
+
 <!-- main secion -->
 <section id="main">
     <div class="container-xxl mt-5">
@@ -47,10 +49,9 @@
                 <div class="mb-3">
                    <label for="inputDate1" class="form-label">Wprowadź datę przychodu</label>
 
-                   <!-- <input type="date" name="incomeDate" value="<?php echo date('Y-m-d'); ?>" class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputDateIncome" aria-describedby="emailHelp" required> -->
 
                    <input type="date" name="incomeDate" value="" class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputDateIncome" aria-describedby="emailHelp" required>
-
+                  
                 </div>
                 <div class="mb-3">
                    <label for="selectIncomeCategory" class="form-label">Wybierz kategorię</label>
@@ -97,6 +98,12 @@
                 <button type="button" class="btn btn-danger p-3" onclick="clearInputs()">Wyczyść pola</button>
 
              </form>
+
+             <script>
+               document.addEventListener("DOMContentLoaded", function(event) { 
+                  document.getElementById('inputDateIncome').valueAsDate = new Date();
+               });
+             </script>
 
              <!-- <script src="js/script.js"></script> -->
           </div>
