@@ -48,6 +48,8 @@ class View
         if ($twig === null) {
             $loader = new \Twig\Loader\FilesystemLoader('../App/Views');
             $twig = new \Twig\Environment($loader);
+            $twig->addExtension(new \Twig\Extension\DebugExtension());
+            $twig->addGlobal('session', $_SESSION);
             $twig->addGlobal("currentUrl", $_SERVER["REQUEST_URI"]); 
             $twig->addGlobal('currentUser', \App\Auth::getUser()); 
             $twig->addGlobal('flashMessages', \App\Flash::getMessages()); 

@@ -129,8 +129,6 @@ class User extends \Core\Model
         }
 
         return false;
-
-        //return static::findByEmail($email) !== false;
     }
 
     /**
