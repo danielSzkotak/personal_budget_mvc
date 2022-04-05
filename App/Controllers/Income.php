@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Auth;
 use \Core\View;
-use \App\Models\User;
+use \App\Models\Categories;
 
 /**
  * Login controller
@@ -20,6 +20,14 @@ class Income extends Authenticated {
      */
     public function addIncomeAction()
     {
+        
+        $incomeCat = Categories::getIncomeCategories(Auth::getUser()->id);
+        $_SESSION['income_cat'] = $incomeCat;
+
+        // View::renderTemplate('Income/addIncome.html', [
+        //     'income_categories' => $incomeCat
+        // ]); 
+
         View::renderTemplate('Income/addIncome.html');
     }
 
@@ -28,24 +36,29 @@ class Income extends Authenticated {
      *
      * @return void
      */
-    public function createAction()
+    public function addAction()
     {
    
-        // $user = User::authenticate($_POST['email'], $_POST['password']);
+        if(isset($_POST["submitIncome"])){
 
-        // if ($user) {
+            $_SESSION['income_submitted'] = true;
 
-        //     Auth::login($user);
+            //Format incoem Data
+            $amount = number_format($_POST["incomeAmount"], 2, '.', ',');
+            $amount = $amount . ' zł';
+            $date = date("d-m-Y", strtotime($_POST["incomeDate"]));
+            $categoryFetch = explode('|', $_POST["incomeCategory"]);
+            //$categoryID = $categoryFetch[0];
+            $categoryName = $categoryFetch[1];
+            
+            View::renderTemplate('Income/addIncome.html', [
+                'income_amount' => $amount,
+                'income_date' => $date,
+                'income_cat' => $categoryName
+            ]);
 
-        //     View::renderTemplate('AddIncome/addIncome.html');
-        //     // $this->redirect('/');
-
-        // } else {
-
-        //     View::renderTemplate('Login/new.html', [
-        //         'email' => $_POST['email'],
-        //     ]);
-        // }
+            unset( $_SESSION['income_submitted']);
+        }
     }
 
     /**
@@ -59,4 +72,5 @@ class Income extends Authenticated {
         Auth::logout();
         $this->redirect('/');
     }
+
 }
