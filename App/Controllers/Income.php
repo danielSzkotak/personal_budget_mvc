@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Auth;
 use \Core\View;
 use \App\Models\Categories;
+use App\Models\Income_model;
+
 
 /**
  * Login controller
@@ -24,10 +26,6 @@ class Income extends Authenticated {
         $incomeCat = Categories::getIncomeCategories(Auth::getUser()->id);
         $_SESSION['income_cat'] = $incomeCat;
 
-        // View::renderTemplate('Income/addIncome.html', [
-        //     'income_categories' => $incomeCat
-        // ]); 
-
         View::renderTemplate('Income/addIncome.html');
     }
 
@@ -43,34 +41,24 @@ class Income extends Authenticated {
 
             $_SESSION['income_submitted'] = true;
 
-            //Format incoem Data
+            //Format incom Data
             $amount = number_format($_POST["incomeAmount"], 2, '.', ',');
-            $amount = $amount . ' zł';
             $date = date("d-m-Y", strtotime($_POST["incomeDate"]));
             $categoryFetch = explode('|', $_POST["incomeCategory"]);
-            //$categoryID = $categoryFetch[0];
+            $categoryID = $categoryFetch[0];
             $categoryName = $categoryFetch[1];
+
+            $income = new Income_model($amount, $_POST["incomeDate"], $categoryID, $_SESSION['user_id']);
+            $income->addIncome();
             
             View::renderTemplate('Income/addIncome.html', [
-                'income_amount' => $amount,
+                'income_amount' => $amount.' zł',
                 'income_date' => $date,
                 'income_cat' => $categoryName
             ]);
 
             unset( $_SESSION['income_submitted']);
         }
-    }
-
-    /**
-     * Log out a user
-     *
-     * @return void
-     */
-    public function destroyAction()
-    {
-
-        Auth::logout();
-        $this->redirect('/');
     }
 
 }

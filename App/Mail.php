@@ -2,7 +2,6 @@
 
 namespace App;
 
-//header('Content-type: text/html; charset=utf-8');
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
