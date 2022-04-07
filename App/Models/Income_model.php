@@ -5,7 +5,6 @@ namespace App\Models;
 use PDO;
 
 
-
  class Income_model extends \Core\Model{
 
     private $uID;
