@@ -1,6 +1,6 @@
 {% extends "baseAfterLogin.html" %}
 
-{% block title %}Dodaj przychód{% endblock %}
+{% block title %}Dodaj rozchód{% endblock %}
 
 {% block body %}
 
@@ -21,7 +21,7 @@
                   <span><h1 class='text-start'>Witaj <span class='text-success'>{{currentUser.username}}</h1></span>
                {% endif %} 
 
-               {% if session.income_submitted %}
+               {% if session.expense_submitted %}
                  <script>
                   $(document).ready(function(){
                      $('#exampleModal').modal('show');
@@ -39,38 +39,51 @@
                 </a>
              </div>
              <div class="row">
-                <a href="balancePeriod.php" class="col bg-info me-2 p-5 rounded-3 text-center text-nowrap text-white fs-2">
+                <a href="#" class="col bg-info me-2 p-5 rounded-3 text-center text-nowrap text-white fs-2">
                    Przeglądaj bilans
                 </a>
              </div>
           </div>
           <div class="col ms-lg-5 mt-5 mt-lg-0">
              <header>
-                <h1 class="text-start">Dodaj przychód</h1>
+                <h1 class="text-start">Dodaj rozchód</h1>
              </header>
 
-             <form action="/income/add" method="POST" class="needs-validation" id="addIncomeForm" novalidate>
+             <form action="/expense/add" method="POST" class="needs-validation" id="addExpenseForm" novalidate>
                 <div class="mb-3 mt-5">
-                   <label for="inputIncome1" class="form-label">Podaj kwotę przychodu</label>
-                   <input type="number" name="incomeAmount" class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputExpense1" step="any" min="0.01">
+                   <label for="inputExpenseAmount" class="form-label">Podaj kwotę rozchodu</label>
+                   <input type="number" name="expenseAmount" class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputExpenseAmount" step="any" min="0.01">
                 </div>
                 <div class="mb-3">
-                   <label for="inputDate1" class="form-label">Wprowadź datę przychodu</label>
-                   <input type="date" name="incomeDate" value="" class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputDateIncome" aria-describedby="emailHelp">
+                   <label for="inputExpenseDate" class="form-label">Wprowadź datę rozchodu</label>
+                   <input type="date" name="expenseDate" value="" class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputExpenseDate" aria-describedby="emailHelp">
                   
                 </div>
                 <div class="mb-3">
-                   <label for="selectIncomeCategory" class="form-label">Wybierz kategorię</label>
-                   <select name="incomeCategory"  class="form-select fs-5 pt-3 pb-3" id="selectedIncomeCategory" aria-label="Default select example">
+                   <label for="selectExpenseCategory" class="form-label">Wybierz typ rozchodu</label>
+                   <select name="expenseCategory"  class="form-select fs-5 pt-3 pb-3" id="selectExpenseCategory" aria-label="Default select example">
 
-                      {% if session.income_cat %} 
-                        {% for key, value in session.income_cat %}
+                      {% if session.expense_cat %} 
+                        {% for key, value in session.expense_cat %}
                            <option value="{{ value.id|e }}|{{ value.name|e }}">{{ value.name|e }}</option>
                         {% endfor %}
                       {% endif %}                      
 
                    </select>
                 </div>
+
+                <div class="mb-3">
+                  <label for="selectExpensePayment" class="form-label">Wybierz metodę płatności</label>
+                  <select name="expensePayment"  class="form-select fs-5 pt-3 pb-3" id="selectExpensePayment" aria-label="Default select example">
+
+                     {% if session.expense_cat %} 
+                       {% for key, value in session.expense_payment %}
+                          <option value="{{ value.id|e }}|{{ value.name|e }}">{{ value.name|e }}</option>
+                       {% endfor %}
+                     {% endif %}                      
+
+                  </select>
+               </div>
 
                 
                <!-- Modal -->
@@ -82,9 +95,10 @@
                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                           <h5 class="text-start">Data: {{income_date}}</h5>
-                           <h5 class="text-start">Kategoria: {{income_cat}}</h5>
-                           <h5 class="text-start">Kwota: {{income_amount}}<h5>                          
+                           <h5 class="text-start">Data: {{expense_date}}</h5>
+                           <h5 class="text-start">Kategoria: {{expense_cat}}</h5>
+                           <h5 class="text-start">Sposób płatności: {{expense_payment}}</h5>
+                           <h5 class="text-start">Kwota: {{expense_amount}}<h5>                          
                         </div>
                         <div class="modal-footer">
                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Zamknij</button>                
@@ -94,13 +108,13 @@
                </div>              
                 <!-- End of Modal -->
                 
-                <button type="submit" name="submitIncome" id="myButton" class="btn btn-light p-3" data-bs-toggle="modal">Dodaj przychód</button>
+                <button type="submit" name="submitExpense" id="myButton" class="btn btn-light p-3" data-bs-toggle="modal">Dodaj rozchód</button>
                 
              </form>
 
              <script>
                document.addEventListener("DOMContentLoaded", function(event) { 
-                  document.getElementById('inputDateIncome').valueAsDate = new Date();
+                  document.getElementById('inputExpenseDate').valueAsDate = new Date();
                });
              </script>
 
@@ -127,14 +141,14 @@ $.validator.setDefaults({
 
 
 $(document).ready(function(){
-  $('#addIncomeForm').validate({
+  $('#addexpenseForm').validate({
       rules: {
-         incomeAmount: { 
+         expenseAmount: { 
           required: true 
           }                    
       },
       messages: {
-         incomeAmount: {
+         expenseAmount: {
               required: '<span class="text-danger">To pole jest wymagane</span>'
           }   
       }
