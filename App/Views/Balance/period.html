@@ -9,7 +9,6 @@
 {% endblock %}
 
 
-
 <!-- main secion -->
 <section id="main">
     <div class="container-xxl mt-5">
@@ -39,7 +38,7 @@
           </div>
           <div class="col ms-lg-5 mt-5 mt-lg-0">
              <header>
-                <h1 class="text-start">Przeglądaj bilans - balance</h1>
+                <h1 class="text-start">Przeglądaj bilans</h1>
              </header>
 
              <form action="/balance/balance" method="POST" class="needs-validation" id="addIncomeForm" novalidate>
@@ -129,40 +128,52 @@
    <!-- Creating balance table -->
    <div class="container-xxl mt-5" id="balanceContainer"> 
 
-      {% if session.incomes %}
+      
+      {% if incomes is defined %}
 
-      <h1>Wwyniki dla wybranego okresu</h1>
+         {% if incomes is not empty %}
 
-      <table class="table table-striped mb-5">
-         <thead class="fs-4">
-            <tr>
-               <th scope="col">Przychody</th>
-               <th scope="col">Suma [zł]</th>
-            </tr>
-         </thead>
-         <tbody class="fs-5">
-            <tr>
+            <h1>Wyniki dla wybranego okresu</h1>
 
-            {% if session.incomes %} 
-               {% for key, value in session.incomes %}
+            <table class="table table-striped mb-5">
+               <thead class="fs-4">
+                  <tr>
+                     <th scope="col">Przychody</th>
+                     <th scope="col">Suma [zł]</th>
+                  </tr>
+               </thead>
+               <tbody class="fs-5">
+                  <tr>
 
-                     <td>{{ value.name|e }}</td>
-                     <td>{{ category_sum|e }}</td>
-                  </tr> 
+                  {% if incomes %} 
+                     {% for key, value in incomes %}
 
-               {% endfor %}
-            {% endif %} 
+                           <td>{{ value.name|e }}</td>
+                           <td>{{ value.category_sum|e }}</td>
+                        </tr> 
 
-         </tbody>
-            <tr class='bg-light fs-4'>
-               <th>Suma przychodów</th>
-               <!-- <th>".$_SESSION['totalIncomes'][0]."</th> -->
-               <th>333</th>
-            </tr>
-      </table>
+                     {% endfor %}
+                  {% endif %} 
 
-      {% endif %} 
+               </tbody>
+                  <tr class='bg-light fs-4'>
+                     <th>Suma przychodów</th>
+                     <th> 
+                        {% for key in incomesSum %}
+                            {{ key.total|e }}
+                        {% endfor %}
+                     </th>
+                  </tr>
+            </table>
 
+          {% else %}
+
+               <h1>Brak wyników dla wybranego okresu</h1>
+
+         {% endif %}
+
+      {% endif %}
+      
    </div>
  </section>
 
