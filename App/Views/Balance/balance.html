@@ -1,0 +1,149 @@
+{% extends "baseAfterLogin.html" %}
+
+{% block title %}Przeglądaj bilans{% endblock %}
+
+{% block body %}
+
+{% block footer %}
+
+{% endblock %}
+
+
+
+<!-- main secion -->
+<section id="main">
+    <div class="container-xxl mt-5">
+       <div class="row align-items-start">
+          <div class="col-lg-6 align-self-start dupa">
+             <header>
+
+               {% if currentUser %}
+                  <span><h1 class='text-start'>Witaj <span class='text-success'>{{currentUser.username}}</h1></span>
+               {% endif %} 
+
+
+             </header>
+             <div class="row">
+                <a href="Income/addIncome" class="col bg-light mb-2 me-2 p-5 rounded-3 text-center text-white text-nowrap fs-2">
+                   Dodaj przychód
+                </a>
+                <a href="Expense/addExpense" class="col bg-secondary mb-2 me-2 p-5 rounded-3 text-center text-white text-nowrap fs-2">
+                   Dodaj rozchód
+                </a>
+             </div>
+             <div class="row">
+                <a href="Balance/period" class="col bg-info me-2 p-5 rounded-3 text-center text-nowrap text-white fs-2">
+                   Przeglądaj bilans
+                </a>
+             </div>
+          </div>
+          <div class="col ms-lg-5 mt-5 mt-lg-0">
+             <header>
+                <h1 class="text-start">Przeglądaj bilans</h1>
+             </header>
+
+             <form action="#" method="POST" class="needs-validation" id="addIncomeForm" novalidate>
+               
+               <div class="mb-3 mb-4">
+                  <label for="selectBalancePeriod" class="form-label">Wybierz okres</label>
+                  <select name="balancePeriod" class="form-select fs-5 pt-3 pb-3" id="selectedBalancePeriod"
+                     onchange="showDateInputs()" aria-label="Default select example" required>
+                     <option value="bieżący miesiąc" <?php if(isset($_SESSION['selectedValue'])){
+                        if($_SESSION['selectedValue'] == 'poprzedni miesiąc'){
+                       echo 'selected';     
+                     }                      
+               } ?>>Bieżący miesiąc</option>
+                     <option value="poprzedni miesiąc" <?php if(isset($_SESSION['selectedValue'])){
+                        if($_SESSION['selectedValue'] == 'poprzedni miesiąc'){
+                          echo 'selected';                           
+                        }
+               } ?>>Poprzedni miesiąc</option>
+                     <option value="bieżący rok" <?php if(isset($_SESSION['selectedValue'])){
+                        if($_SESSION['selectedValue'] == 'bieżący rok'){
+                          echo 'selected';                           
+                        }
+               } ?>>Bieżacy rok</option>
+                     <option value="non-standardPeriod" <?php if(isset($_SESSION['selectedValue'])){
+                        if($_SESSION['selectedValue'] == 'non-standardPeriod'){
+                          echo 'selected';                                                
+                        }
+               } ?>>Niestandardowy</option>
+                  </select>
+               </div>
+
+               <div class="mb-3">
+                  <div class="selectPeriod" id="selectPeriodId" style="<?php 
+                    
+                    if($_SESSION['selectedValue'] == 'non-standardPeriod'){
+                     echo 'display: grid;';
+                    }
+                     if(isset($_SESSION['dates_error'])) {
+                        echo 'display: grid;';
+                     } 
+                  
+                     if((isset($_SESSION['dates_ok']))){
+                        echo 'display: grid;'; 
+                        unset($_SESSION['dates_ok']); 
+                     } 
+                     if(isset($_SESSION['startDate'])) {
+                        echo 'display: grid;'; 
+                        unset($_SESSION['startDate']); 
+                        unset($_SESSION['endDate']); 
+                        unset($_SESSION['dates_ok']);
+                     }  
+                  ?>">
+                     <label for="startDate1" class="form-label mt-3">Wybierz datę początkową</label>
+                     <input class="form-control fs-5 pt-3 pb-3 shadow-none mb-3 <?php
+                        if(isset($_SESSION['dates_error'])) {
+                           echo 'is-invalid';
+                        }
+                     ?>" type="date" name="startDate"
+                        id="startDate1" value="<?php if(isset($_SESSION['startDateSelected'])){
+                  echo $_SESSION['startDateSelected'];
+                  unset($_SESSION['startDateSelected']);
+               }  else {echo date('Y-m-d');}?>">
+                     <label for="endDate1" class="form-label">Wybierz datę końcową</label>
+                     <input class="form-control fs-5 pt-3 pb-3 shadow-none <?php
+                        if(isset($_SESSION['dates_error'])) {
+                           echo 'is-invalid';
+                        }
+                     ?>" type="date" name="endDate" id="endDate1" value="<?php if(isset($_SESSION['endDateSelected'])){
+                        echo $_SESSION['endDateSelected'];
+                        unset($_SESSION['endDateSelected']);
+                     } else {echo date('Y-m-d');} ?>">
+
+                        <div class="invalid-feedback">
+                        <?php
+                           if(isset($_SESSION['dates_error'])) {
+                                                                                    
+                              echo 'Wprowadź poprawne daty';
+                              unset($_SESSION['dates_error']);
+                           }
+                        ?>
+                        </div> 
+
+                     <p class="mt-3 text-danger" id="wrongDates"></p>
+                  </div>
+               </div>
+               <button type="submit" name="submitBalance" value="submitBalance" class="btn btn-light p-4">Pokaż bilans</button>
+               <a href="#" id="cos" name="settings" class="btn btn-warning py-4 px-2">Ustawienia</a> 
+
+             </form>
+
+             <script>
+               document.addEventListener("DOMContentLoaded", function(event) { 
+                  document.getElementById('inputDateIncome').valueAsDate = new Date();
+               });
+             </script>
+
+          </div>
+       </div>
+    </div>
+ </section>
+<!-- end of main section -->
+
+<script>
+
+</script>
+
+{% endblock %}
