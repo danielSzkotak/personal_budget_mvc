@@ -47,10 +47,10 @@
                   <label for="selectBalancePeriod" class="form-label">Wybierz okres</label>
                   <select name="balancePeriod" class="form-select fs-5 pt-3 pb-3" id="selectedBalancePeriod"
                      onchange="showDateInputs()" aria-label="Default select example" required>
-                     <option value="bieżący miesiąc">Bieżący miesiąc</option>
-                     <option value="poprzedni miesiąc">Poprzedni miesiąc</option>
-                     <option value="bieżący rok">Bieżacy rok</option>
-                     <option value="non-standardPeriod">Wybrany okres</option>
+                     <option value="currentMonth">Bieżący miesiąc</option>
+                     <option value="previousMonth">Poprzedni miesiąc</option>
+                     <option value="currentYear">Bieżacy rok</option>
+                     <option value="non_standard_period">Wybrany okres</option>
                   </select>
                </div>
 
@@ -196,7 +196,7 @@
                   {% endif %} 
 
                </tbody>
-                  <tr class='bg-light fs-4'>
+                  <tr class='bg-secondary fs-4'>
                      <th>Suma wydatków</th>
                      <th> 
                         {% for key in expensesSum %}

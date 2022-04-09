@@ -29,11 +29,42 @@ class Balance extends Authenticated {
     public function balanceAction()
     {
 
+        if(isset($_POST['submitBalance'])){
+
         $balance = new Balance_model($_POST);
-        $incomes = $balance->getCurrentMonthIncomesBalance($_SESSION['user_id']);
-        $incomesSum = $balance->getCurrentMonthIncomesSum($_SESSION['user_id']);
-        $expenses = $balance->getCurrentMonthExpensesBalance($_SESSION['user_id']);
-        $expensesSum = $balance->getCurrentMonthExpensesSum($_SESSION['user_id']);
+        $balancePeriod = $balance->getBalancePeriod();
+
+        switch ($balancePeriod) {
+            case "currentMonth":
+
+                $incomes = $balance->getCurrentMonthIncomesBalance($_SESSION['user_id']);
+                $incomesSum = $balance->getCurrentMonthIncomesSum($_SESSION['user_id']);
+                $expenses = $balance->getCurrentMonthExpensesBalance($_SESSION['user_id']);
+                $expensesSum = $balance->getCurrentMonthExpensesSum($_SESSION['user_id']);
+              
+              break;
+            case "previousMonth":
+
+                $incomes = $balance->getPreviousMonthIncomesBalance($_SESSION['user_id']);
+                $incomesSum = $balance->getPreviousMonthIncomesSum($_SESSION['user_id']);
+                $expenses = $balance->getPreviousMonthExpensesBalance($_SESSION['user_id']);
+                $expensesSum = $balance->getPreviousMonthExpensesSum($_SESSION['user_id']);
+
+              break;
+            case "currentYear":
+             
+
+              break;
+            case "non_standard_period":
+              
+
+                break;
+            default:
+             
+          }
+
+
+        
 
         View::renderTemplate('Balance/period.html',[
             'incomes' => $incomes,
@@ -41,12 +72,17 @@ class Balance extends Authenticated {
             'expenses' => $expenses,
             'expensesSum' => $expensesSum
         ]);
+        
+    } else {
+
+        $this->redirect('/balance/period');
+    }
       
             // $this->redirect('/balance/period',[
             //     'incomes' => $incomes
             // ]);
         
-    }
+    } 
 
     
 
