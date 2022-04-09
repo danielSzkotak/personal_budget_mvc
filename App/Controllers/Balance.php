@@ -32,12 +32,14 @@ class Balance extends Authenticated {
         $balance = new Balance_model($_POST);
         $incomes = $balance->getCurrentMonthIncomesBalance($_SESSION['user_id']);
         $incomesSum = $balance->getCurrentMonthIncomesSum($_SESSION['user_id']);
-
-        //var_dump($incomesSum);
+        $expenses = $balance->getCurrentMonthExpensesBalance($_SESSION['user_id']);
+        $expensesSum = $balance->getCurrentMonthExpensesSum($_SESSION['user_id']);
 
         View::renderTemplate('Balance/period.html',[
             'incomes' => $incomes,
-            'incomesSum' => $incomesSum
+            'incomesSum' => $incomesSum,
+            'expenses' => $expenses,
+            'expensesSum' => $expensesSum
         ]);
       
             // $this->redirect('/balance/period',[

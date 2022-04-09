@@ -125,15 +125,20 @@
  </section>
 
  <section>
+
    <!-- Creating balance table -->
    <div class="container-xxl mt-5" id="balanceContainer"> 
 
+      {% if (incomes is defined) and (expenses is defined) %}
+         {% if (incomes is empty) and (expenses is empty) %}
+            <h1>Brak wyników dla wybranego okresu</h1>
+         {% else %}
+            <h1>Wyniki dla wybranego okresu</h1>
+         {% endif %}
+      {% endif %}
       
       {% if incomes is defined %}
-
          {% if incomes is not empty %}
-
-            <h1>Wyniki dla wybranego okresu</h1>
 
             <table class="table table-striped mb-5">
                <thead class="fs-4">
@@ -166,12 +171,41 @@
                   </tr>
             </table>
 
-          {% else %}
-
-               <h1>Brak wyników dla wybranego okresu</h1>
-
          {% endif %}
+      {% endif %}
 
+      {% if expenses is defined %}
+         {% if expenses is not empty %}
+
+            <table class="table table-striped mb-5">
+               <thead class="fs-4">
+                  <tr>
+                     <th scope="col">Wydatki</th>
+                     <th scope="col">Suma [zł]</th>
+                  </tr>
+               </thead>
+               <tbody class="fs-5">
+                  <tr>
+
+                  {% if expenses %} 
+                     {% for key, value in expenses %}
+                           <td>{{ value.name|e }}</td>
+                           <td>{{ value.category_sum|e }}</td>
+                        </tr> 
+                     {% endfor %}
+                  {% endif %} 
+
+               </tbody>
+                  <tr class='bg-light fs-4'>
+                     <th>Suma wydatków</th>
+                     <th> 
+                        {% for key in expensesSum %}
+                            {{ key.total|e }}
+                        {% endfor %}
+                     </th>
+                  </tr>
+            </table>
+         {% endif %}
       {% endif %}
       
    </div>

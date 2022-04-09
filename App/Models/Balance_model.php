@@ -60,7 +60,46 @@ use PDO;
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
         $stmt->execute();
+
+        return $stmt->fetchAll();
         
+     }
+
+     public function getCurrentMonthExpensesBalance($userID){
+
+        $firstDayOfTheMonth = date('Y-m-01');
+        $lastDayOfTheMonth = date('Y-m-t');
+
+        $sql = "SELECT expenses_category_assigned_to_users.name, ROUND(SUM(expenses.amount),2) AS category_sum FROM expenses_category_assigned_to_users, expenses WHERE (expenses.date_of_expense BETWEEN '$firstDayOfTheMonth' AND '$lastDayOfTheMonth') AND (expenses_category_assigned_to_users.user_id=:userID) AND (expenses_category_assigned_to_users.user_id = expenses.user_id) AND (expenses.expense_category_assigned_to_user_id=expenses_category_assigned_to_users.id) GROUP BY expenses_category_assigned_to_users.name ORDER BY category_sum DESC;";
+  
+  
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':userID', $userID, PDO::PARAM_INT);
+    
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+
+     }
+
+     public function getCurrentMonthExpensesSum($userID){
+
+        $firstDayOfTheMonth = date('Y-m-01');
+        $lastDayOfTheMonth = date('Y-m-t');
+
+        $sql = "SELECT ROUND(SUM(expenses.amount),2) AS total FROM expenses_category_assigned_to_users, expenses WHERE (expenses.date_of_expense BETWEEN '$firstDayOfTheMonth' AND '$lastDayOfTheMonth') AND (expenses_category_assigned_to_users.user_id=:userID) AND (expenses_category_assigned_to_users.user_id = expenses.user_id) AND (expenses.expense_category_assigned_to_user_id=expenses_category_assigned_to_users.id);";
+  
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':userID', $userID, PDO::PARAM_INT);
+    
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+        $stmt->execute();
+
         return $stmt->fetchAll();
         
      }
