@@ -6,7 +6,7 @@ use App\Auth;
 use \Core\View;
 use \App\Models\Categories;
 use App\Models\Expense_model;
-
+use App\Serviceable;
 
 /**
  * Login controller
@@ -42,21 +42,16 @@ class Expense extends Authenticated {
         if(isset($_POST["submitExpense"])){
 
             $_SESSION['expense_submitted'] = true;
+          
+            $amount = Serviceable::formatAmountToModal($_POST["expenseAmount"]);
+            $date = Serviceable::formatDateToModal($_POST["expenseDate"]);
+            $categoryID = Serviceable::fetchIDFromOptionValue($_POST["expenseCategory"]);
+            $categoryName = Serviceable::fetchNameFromOptionValue($_POST["expenseCategory"]);
 
-            //Format incom Data
-            $amount = number_format($_POST["expenseAmount"], 2, '.', ',');
-            $date = date("d-m-Y", strtotime($_POST["expenseDate"]));
-
-            $categoryFetch = explode('|', $_POST["expenseCategory"]);
-            $categoryID = $categoryFetch[0];
-            $categoryName = $categoryFetch[1];
-
-            $paymentFetch = explode('|', $_POST["expensePayment"]);
-            $paymentID = $paymentFetch[0];
-            $paymentName = $paymentFetch[1];
+            $paymentID = Serviceable::fetchIDFromOptionValue($_POST["expensePayment"]);
+            $paymentName = Serviceable::fetchNameFromOptionValue($_POST["expensePayment"]);
 
             $expense = new Expense_model($_SESSION['user_id'], $categoryID, $paymentID, $amount, $_POST["expenseDate"]);
-
             $expense->addExpense();
             
             View::renderTemplate('Expense/addExpense.html', [

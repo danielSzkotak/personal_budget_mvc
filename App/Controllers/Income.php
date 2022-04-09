@@ -6,6 +6,7 @@ use App\Auth;
 use \Core\View;
 use \App\Models\Categories;
 use App\Models\Income_model;
+use App\Serviceable;
 
 
 /**
@@ -41,12 +42,10 @@ class Income extends Authenticated {
 
             $_SESSION['income_submitted'] = true;
 
-            //Format incom Data
-            $amount = number_format($_POST["incomeAmount"], 2, '.', ',');
-            $date = date("d-m-Y", strtotime($_POST["incomeDate"]));
-            $categoryFetch = explode('|', $_POST["incomeCategory"]);
-            $categoryID = $categoryFetch[0];
-            $categoryName = $categoryFetch[1];
+            $amount = Serviceable::formatAmountToModal($_POST["incomeAmount"]);
+            $date = Serviceable::formatDateToModal($_POST["incomeDate"]);
+            $categoryID = Serviceable::fetchIDFromOptionValue($_POST["incomeCategory"]);
+            $categoryName = Serviceable::fetchNameFromOptionValue($_POST["incomeCategory"]);
 
             $income = new Income_model($amount, $_POST["incomeDate"], $categoryID, $_SESSION['user_id']);
             $income->addIncome();
