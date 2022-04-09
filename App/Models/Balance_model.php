@@ -7,16 +7,6 @@ use PDO;
 
  class Balance_model extends \Core\Model{
 
-    // private $uID; 
-    // private $startDate;
-    // private $endDate;
-
-    // public function __construct($uID, $startDate=null, $endDate=null){
-   
-    //     $this->uID = $uID;
-    //     $this->startDate = $startDate;
-    //     $this->endDate = $endDate;
-    // }
 
     public function __construct($data = [])
     {
