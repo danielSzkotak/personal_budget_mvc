@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Auth;
 use App\Models\Balance_model;
+use App\Models\Categories;
 use \Core\View;
 
 
@@ -33,6 +34,12 @@ class Balance extends Authenticated {
 
         $balance = new Balance_model($_POST);
         $balancePeriod = $balance->getBalancePeriod();
+        $periods = array (
+          "currentMonth" => "Bieżący miesiąc",
+          "previousMonth" => "Poprzedni miesiąc",
+          "currentYear" => "Bieżący rok",
+          "non_standard_period" => "Wybrany okres"
+        );
 
         switch ($balancePeriod) {
             case "currentMonth":
@@ -63,14 +70,13 @@ class Balance extends Authenticated {
              
           }
 
-
-        
-
         View::renderTemplate('Balance/period.html',[
             'incomes' => $incomes,
             'incomesSum' => $incomesSum,
             'expenses' => $expenses,
-            'expensesSum' => $expensesSum
+            'expensesSum' => $expensesSum,
+            'periods' => $periods,
+            'balancePeriod' => $balancePeriod
         ]);
         
     } else {
@@ -78,10 +84,6 @@ class Balance extends Authenticated {
         $this->redirect('/balance/period');
     }
       
-            // $this->redirect('/balance/period',[
-            //     'incomes' => $incomes
-            // ]);
-        
     } 
 
     

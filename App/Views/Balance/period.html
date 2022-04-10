@@ -47,10 +47,20 @@
                   <label for="selectBalancePeriod" class="form-label">Wybierz okres</label>
                   <select name="balancePeriod" class="form-select fs-5 pt-3 pb-3" id="selectedBalancePeriod"
                      onchange="showDateInputs()" aria-label="Default select example" required>
+
+                     {% if balancePeriod is defined %}
+                        {% for key, value in periods %}
+                          <option value="{{ key }}" {% if key == balancePeriod %} selected
+                           {% endif %}> {{ value }} </option>
+                        {% endfor %}
+                     {% else %}
+
                      <option value="currentMonth">Bieżący miesiąc</option>
                      <option value="previousMonth">Poprzedni miesiąc</option>
                      <option value="currentYear">Bieżacy rok</option>
                      <option value="non_standard_period">Wybrany okres</option>
+                     
+                     {% endif %}
                   </select>
                </div>
 
