@@ -252,6 +252,77 @@ use PDO;
       
    }
 
+   public function getCustomDatesIncomesBalance($userID, $startDate, $endDate){
+
+
+      $sql = "SELECT incomes_category_assigned_to_users.name, ROUND(SUM(incomes.amount),2) AS category_sum FROM incomes_category_assigned_to_users, incomes WHERE (incomes.date_of_income BETWEEN '$startDate' AND '$endDate') AND (incomes_category_assigned_to_users.user_id=:userID) AND (incomes_category_assigned_to_users.user_id = incomes.user_id) AND (incomes.income_category_assigned_to_user_id=incomes_category_assigned_to_users.id) GROUP BY incomes_category_assigned_to_users.name ORDER BY category_sum DESC;";
+
+
+      $db = static::getDB();
+      $stmt = $db->prepare($sql);
+      $stmt->bindValue(':userID', $userID, PDO::PARAM_INT);
+  
+      $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+      $stmt->execute();
+
+      return $stmt->fetchAll();
+
+   }
+
+   public function getCustomDatesExpensesBalance($userID, $startDate, $endDate){
+
+
+      $sql = "SELECT expenses_category_assigned_to_users.name, ROUND(SUM(expenses.amount),2) AS category_sum FROM expenses_category_assigned_to_users, expenses WHERE (expenses.date_of_expense BETWEEN '$startDate' AND '$endDate') AND (expenses_category_assigned_to_users.user_id=:userID) AND (expenses_category_assigned_to_users.user_id = expenses.user_id) AND (expenses.expense_category_assigned_to_user_id=expenses_category_assigned_to_users.id) GROUP BY expenses_category_assigned_to_users.name ORDER BY category_sum DESC;";
+
+
+      $db = static::getDB();
+      $stmt = $db->prepare($sql);
+      $stmt->bindValue(':userID', $userID, PDO::PARAM_INT);
+  
+      $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+      $stmt->execute();
+
+      return $stmt->fetchAll();
+
+   }
+
+   public function getCustomDatesIncomesSum($userID, $startDate, $endDate){
+
+
+      $sql = "SELECT ROUND(SUM(incomes.amount),2) AS total FROM incomes_category_assigned_to_users, incomes WHERE (incomes.date_of_income BETWEEN '$startDate' AND '$endDate') AND (incomes_category_assigned_to_users.user_id=:userID) AND (incomes_category_assigned_to_users.user_id = incomes.user_id) AND (incomes.income_category_assigned_to_user_id=incomes_category_assigned_to_users.id);";
+
+
+      $db = static::getDB();
+      $stmt = $db->prepare($sql);
+      $stmt->bindValue(':userID', $userID, PDO::PARAM_INT);
+  
+      $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+      $stmt->execute();
+
+      return $stmt->fetchAll();
+
+   }
+
+   public function getCustomDatesExpensesSum($userID, $startDate, $endDate){
+
+
+      $sql = "SELECT ROUND(SUM(expenses.amount),2) AS total FROM expenses_category_assigned_to_users, expenses WHERE (expenses.date_of_expense BETWEEN '$startDate' AND '$endDate') AND (expenses_category_assigned_to_users.user_id=:userID) AND (expenses_category_assigned_to_users.user_id = expenses.user_id) AND (expenses.expense_category_assigned_to_user_id=expenses_category_assigned_to_users.id);";
+
+      $db = static::getDB();
+      $stmt = $db->prepare($sql);
+      $stmt->bindValue(':userID', $userID, PDO::PARAM_INT);
+  
+      $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+      $stmt->execute();
+
+      return $stmt->fetchAll();
+
+   }
+
      public function getBalancePeriod(){
 
         return $this->balancePeriod;

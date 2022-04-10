@@ -71,8 +71,10 @@ function clearInputs(){
 function showDateInputs(){
   const myValue = document.getElementById("selectedBalancePeriod").value;
  
-  
-  if(myValue == "non-standardPeriod"){
+  document.getElementById('startDate1').valueAsDate = new Date();
+  document.getElementById('endDate1').valueAsDate = new Date();
+
+  if(myValue == "non_standard_period"){
       document.getElementById("selectPeriodId").style.display = "grid";
       document.getElementById("startDate1").style.border = "1px solid #b3b3b3";
       document.getElementById("endDate1").style.border = "1px solid #b3b3b3";

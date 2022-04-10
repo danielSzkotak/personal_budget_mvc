@@ -34,7 +34,8 @@ class Balance extends Authenticated {
 
         $balance = new Balance_model($_POST);
         $balancePeriod = $balance->getBalancePeriod();
-        
+
+
         switch ($balancePeriod) {
             case "currentMonth":
 
@@ -63,6 +64,10 @@ class Balance extends Authenticated {
               break;
             case "non_standard_period":
               
+                $incomes = $balance->getCustomDatesIncomesBalance($_SESSION['user_id'], $_POST['startDate'], $_POST['endDate']);
+                $incomesSum = $balance->getCustomDatesIncomesSum($_SESSION['user_id'], $_POST['startDate'], $_POST['endDate']);
+                $expenses = $balance->getCustomDatesExpensesBalance($_SESSION['user_id'], $_POST['startDate'], $_POST['endDate']);
+                $expensesSum = $balance->getCustomDatesExpensesSum($_SESSION['user_id'], $_POST['startDate'], $_POST['endDate']);
 
                 break;
             default:
@@ -91,7 +96,9 @@ class Balance extends Authenticated {
             'expensesSum' => $expensesSum,
             'periods' => $periods,
             'balancePeriod' => $balancePeriod,
-            'balanceSum' => $balanceSum
+            'balanceSum' => $balanceSum,
+            'startDate' => $_POST['startDate'],
+            'endDate' => $_POST['endDate']
         ]);
         
     } else {

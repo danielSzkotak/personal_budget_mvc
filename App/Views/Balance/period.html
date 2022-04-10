@@ -68,69 +68,36 @@
                </div>
 
                <div class="mb-3">
-                  <div class="selectPeriod" id="selectPeriodId" style="<?php 
-                    
-                    if($_SESSION['selectedValue'] == 'non-standardPeriod'){
-                     echo 'display: grid;';
-                    }
-                     if(isset($_SESSION['dates_error'])) {
-                        echo 'display: grid;';
-                     } 
-                  
-                     if((isset($_SESSION['dates_ok']))){
-                        echo 'display: grid;'; 
-                        unset($_SESSION['dates_ok']); 
-                     } 
-                     if(isset($_SESSION['startDate'])) {
-                        echo 'display: grid;'; 
-                        unset($_SESSION['startDate']); 
-                        unset($_SESSION['endDate']); 
-                        unset($_SESSION['dates_ok']);
-                     }  
-                  ?>">
+                  <div class="selectPeriod" id="selectPeriodId" 
+                  {% if balancePeriod is defined %}
+                  {% if balancePeriod == 'non_standard_period' %}
+                  style="display: grid;"
+                  {% endif %}
+                  {% endif %}
+                  >
                      <label for="startDate1" class="form-label mt-3">Wybierz datę początkową</label>
-                     <input class="form-control fs-5 pt-3 pb-3 shadow-none mb-3 <?php
-                        if(isset($_SESSION['dates_error'])) {
-                           echo 'is-invalid';
-                        }
-                     ?>" type="date" name="startDate" id="startDate1" value="<?php if(isset($_SESSION['startDateSelected'])){
-                  echo $_SESSION['startDateSelected'];
-                  unset($_SESSION['startDateSelected']);
-               }  else {echo date('Y-m-d');}?>">
+                     <input class="form-control fs-5 pt-3 pb-3 shadow-none mb-3" type="date" name="startDate" id="startDate1"
+                     {% if startDate is defined %}
+                     value = "{{ startDate }}"
+                     {% endif %}
+                     >
                      <label for="endDate1" class="form-label">Wybierz datę końcową</label>
-                     <input class="form-control fs-5 pt-3 pb-3 shadow-none <?php
-                        if(isset($_SESSION['dates_error'])) {
-                           echo 'is-invalid';
-                        }
-                     ?>" type="date" name="endDate" id="endDate1" value="<?php if(isset($_SESSION['endDateSelected'])){
-                        echo $_SESSION['endDateSelected'];
-                        unset($_SESSION['endDateSelected']);
-                     } else {echo date('Y-m-d');} ?>">
-
+                     <input class="form-control fs-5 pt-3 pb-3 shadow-none" type="date" name="endDate" id="endDate1" 
+                     {% if endDate is defined %}
+                     value = "{{ endDate }}"
+                     {% endif %}
+                     >
                      <div class="invalid-feedback">
-                        <?php
-                           if(isset($_SESSION['dates_error'])) {
-                                                                                    
-                              echo 'Wprowadź poprawne daty';
-                              unset($_SESSION['dates_error']);
-                           }
-                        ?>
                      </div>
 
                      <p class="mt-3 text-danger" id="wrongDates"></p>
                   </div>
                </div>
-               <button type="submit" name="submitBalance" value="submitBalance" class="btn btn-light p-4">Pokaż
+               <button type="submit" name="submitBalance" value="submitBalance" class="btn btn-light p-4" onclick="showBalance()">Pokaż
                   bilans</button>
                <a href="#" id="cos" name="settings" class="btn btn-warning py-4 px-2">Ustawienia</a>
 
             </form>
-
-            <script>
-               document.addEventListener("DOMContentLoaded", function (event) {
-                  document.getElementById('inputDateIncome').valueAsDate = new Date();
-               });
-            </script>
 
          </div>
       </div>
@@ -210,6 +177,8 @@
          </tr>
       </table>
       {% endif %}
+      {% if balanceSum is defined %}
+      {% if balanceSum != '0.00' %}
       <header>
          <h1 class="text-start">Bilans podsumowanie</h1>
       </header>
@@ -227,6 +196,8 @@
             </tr>
          </tbody>
       </table>
+      {% endif %}
+      {% endif %}
       {% endif %}
    </div>
 </section>
