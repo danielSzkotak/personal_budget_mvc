@@ -11,55 +11,58 @@
 
 <!-- main secion -->
 <section id="main">
-    <div class="container-xxl mt-5">
-       <div class="row align-items-start">
-          <div class="col-lg-6 align-self-start dupa">
-             <header>
+   <div class="container-xxl mt-5">
+      <div class="row align-items-start">
+         <div class="col-lg-6 align-self-start dupa">
+            <header>
 
                {% if currentUser %}
-                  <span><h1 class='text-start'>Witaj <span class='text-success'>{{currentUser.username}}</h1></span>
-               {% endif %} 
+               <span>
+                  <h1 class='text-start'>Witaj <span class='text-success'>{{currentUser.username}}</h1>
+               </span>
+               {% endif %}
 
 
-             </header>
-             <div class="row">
-                <a href="Income/addIncome" class="col bg-light mb-2 me-2 p-5 rounded-3 text-center text-white text-nowrap fs-2">
-                   Dodaj przychód
-                </a>
-                <a href="Expense/addExpense" class="col bg-secondary mb-2 me-2 p-5 rounded-3 text-center text-white text-nowrap fs-2">
-                   Dodaj rozchód
-                </a>
-             </div>
-             <div class="row">
-                <a href="Balance/period" class="col bg-info me-2 p-5 rounded-3 text-center text-nowrap text-white fs-2">
-                   Przeglądaj bilans
-                </a>
-             </div>
-          </div>
-          <div class="col ms-lg-5 mt-5 mt-lg-0">
-             <header>
-                <h1 class="text-start">Przeglądaj bilans</h1>
-             </header>
+            </header>
+            <div class="row">
+               <a href="Income/addIncome"
+                  class="col bg-light mb-2 me-2 p-5 rounded-3 text-center text-white text-nowrap fs-2">
+                  Dodaj przychód
+               </a>
+               <a href="Expense/addExpense"
+                  class="col bg-secondary mb-2 me-2 p-5 rounded-3 text-center text-white text-nowrap fs-2">
+                  Dodaj rozchód
+               </a>
+            </div>
+            <div class="row">
+               <a href="Balance/period" class="col bg-info me-2 p-5 rounded-3 text-center text-nowrap text-white fs-2">
+                  Przeglądaj bilans
+               </a>
+            </div>
+         </div>
+         <div class="col ms-lg-5 mt-5 mt-lg-0">
+            <header>
+               <h1 class="text-start">Przeglądaj bilans</h1>
+            </header>
 
-             <form action="/balance/balance" method="POST" class="needs-validation" id="addIncomeForm" novalidate>
-               
+            <form action="/balance/balance" method="POST" class="needs-validation" id="addIncomeForm" novalidate>
+
                <div class="mb-3 mb-4">
                   <label for="selectBalancePeriod" class="form-label">Wybierz okres</label>
                   <select name="balancePeriod" class="form-select fs-5 pt-3 pb-3" id="selectedBalancePeriod"
                      onchange="showDateInputs()" aria-label="Default select example" required>
 
                      {% if balancePeriod is defined %}
-                        {% for key, value in periods %}
-                          <option value="{{ key }}" {% if key == balancePeriod %} selected
-                           {% endif %}> {{ value }} </option>
-                        {% endfor %}
+                     {% for key, value in periods %}
+                     <option value="{{ key }}" {% if key==balancePeriod %} selected {% endif %}> {{ value }} </option>
+                     {% endfor %}
                      {% else %}
 
                      <option value="currentMonth">Bieżący miesiąc</option>
                      <option value="previousMonth">Poprzedni miesiąc</option>
                      <option value="currentYear">Bieżacy rok</option>
                      <option value="non_standard_period">Wybrany okres</option>
-                     
+
                      {% endif %}
                   </select>
                </div>
@@ -90,8 +93,7 @@
                         if(isset($_SESSION['dates_error'])) {
                            echo 'is-invalid';
                         }
-                     ?>" type="date" name="startDate"
-                        id="startDate1" value="<?php if(isset($_SESSION['startDateSelected'])){
+                     ?>" type="date" name="startDate" id="startDate1" value="<?php if(isset($_SESSION['startDateSelected'])){
                   echo $_SESSION['startDateSelected'];
                   unset($_SESSION['startDateSelected']);
                }  else {echo date('Y-m-d');}?>">
@@ -105,7 +107,7 @@
                         unset($_SESSION['endDateSelected']);
                      } else {echo date('Y-m-d');} ?>">
 
-                        <div class="invalid-feedback">
+                     <div class="invalid-feedback">
                         <?php
                            if(isset($_SESSION['dates_error'])) {
                                                                                     
@@ -113,112 +115,120 @@
                               unset($_SESSION['dates_error']);
                            }
                         ?>
-                        </div> 
+                     </div>
 
                      <p class="mt-3 text-danger" id="wrongDates"></p>
                   </div>
                </div>
-               <button type="submit" name="submitBalance" value="submitBalance" class="btn btn-light p-4">Pokaż bilans</button>
-               <a href="#" id="cos" name="settings" class="btn btn-warning py-4 px-2">Ustawienia</a> 
+               <button type="submit" name="submitBalance" value="submitBalance" class="btn btn-light p-4">Pokaż
+                  bilans</button>
+               <a href="#" id="cos" name="settings" class="btn btn-warning py-4 px-2">Ustawienia</a>
 
-             </form>
+            </form>
 
-             <script>
-               document.addEventListener("DOMContentLoaded", function(event) { 
+            <script>
+               document.addEventListener("DOMContentLoaded", function (event) {
                   document.getElementById('inputDateIncome').valueAsDate = new Date();
                });
-             </script>
+            </script>
 
-          </div>
-       </div>
-    </div>
- </section>
+         </div>
+      </div>
+   </div>
+</section>
 
- <section>
+<section>
 
    <!-- Creating balance table -->
-   <div class="container-xxl mt-5" id="balanceContainer"> 
+   <div class="container-xxl mt-5" id="balanceContainer">
 
       {% if (incomes is defined) and (expenses is defined) %}
-         {% if (incomes is empty) and (expenses is empty) %}
-            <h1>Brak wyników dla wybranego okresu</h1>
-         {% else %}
-            <h1>Wyniki dla wybranego okresu</h1>
-         {% endif %}
+      {% if (incomes is empty) and (expenses is empty) %}
+      <h1>Brak wyników dla wybranego okresu</h1>
+      {% else %}
+      <h1>Wyniki dla wybranego okresu</h1>
       {% endif %}
-      
+      {% endif %}
+
       {% if incomes is defined %}
-         {% if incomes is not empty %}
+      {% if incomes is not empty %}
 
-            <table class="table table-striped mb-5">
-               <thead class="fs-4">
-                  <tr>
-                     <th scope="col">Przychody</th>
-                     <th scope="col">Suma [zł]</th>
-                  </tr>
-               </thead>
-               <tbody class="fs-5">
-                  <tr>
-
-                  {% if incomes %} 
-                     {% for key, value in incomes %}
-
-                           <td>{{ value.name|e }}</td>
-                           <td>{{ value.category_sum|e }}</td>
-                        </tr> 
-
-                     {% endfor %}
-                  {% endif %} 
-
-               </tbody>
-                  <tr class='bg-light fs-4'>
-                     <th>Suma przychodów</th>
-                     <th> 
-                        {% for key in incomesSum %}
-                            {{ key.total|e }}
-                        {% endfor %}
-                     </th>
-                  </tr>
-            </table>
-
-         {% endif %}
+      <table class="table table-striped mb-5">
+         <thead class="fs-4">
+            <tr>
+               <th scope="col">Przychody</th>
+               <th scope="col">Suma [zł]</th>
+            </tr>
+         </thead>
+         <tbody class="fs-5">
+            <tr>
+               {% if incomes %}
+               {% for key, value in incomes %}
+               <td>{{ value.name|e }}</td>
+               <td>{{ value.category_sum|e }}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+         </tbody>
+         <tr class='bg-light fs-4'>
+            <th>Suma przychodów</th>
+            <th>
+               {% for key in incomesSum %}
+               {{ key.total|e }}
+               {% endfor %}
+            </th>
+         </tr>
+      </table>
       {% endif %}
-
+      {% endif %}
       {% if expenses is defined %}
-         {% if expenses is not empty %}
-
-            <table class="table table-striped mb-5">
-               <thead class="fs-4">
-                  <tr>
-                     <th scope="col">Wydatki</th>
-                     <th scope="col">Suma [zł]</th>
-                  </tr>
-               </thead>
-               <tbody class="fs-5">
-                  <tr>
-
-                  {% if expenses %} 
-                     {% for key, value in expenses %}
-                           <td>{{ value.name|e }}</td>
-                           <td>{{ value.category_sum|e }}</td>
-                        </tr> 
-                     {% endfor %}
-                  {% endif %} 
-
-               </tbody>
-                  <tr class='bg-secondary fs-4'>
-                     <th>Suma wydatków</th>
-                     <th> 
-                        {% for key in expensesSum %}
-                            {{ key.total|e }}
-                        {% endfor %}
-                     </th>
-                  </tr>
-            </table>
-         {% endif %}
+      {% if expenses is not empty %}
+      <table class="table table-striped mb-5">
+         <thead class="fs-4">
+            <tr>
+               <th scope="col">Wydatki</th>
+               <th scope="col">Suma [zł]</th>
+            </tr>
+         </thead>
+         <tbody class="fs-5">
+            <tr>
+               {% if expenses %}
+               {% for key, value in expenses %}
+               <td>{{ value.name|e }}</td>
+               <td>{{ value.category_sum|e }}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+         </tbody>
+         <tr class='bg-secondary fs-4'>
+            <th>Suma wydatków</th>
+            <th>
+               {% for key in expensesSum %}
+               {{ key.total|e }}
+               {% endfor %}
+            </th>
+         </tr>
+      </table>
       {% endif %}
-      
+      <header>
+         <h1 class="text-start">Bilans podsumowanie</h1>
+      </header>
+      <table class="table mb-5">
+         <thead>
+            <tr>
+               <th></th>
+               <th></th>
+            </tr>
+         </thead>
+         <tbody class="fs-4">
+            <tr class="bg-info">
+               <th>Twój bilans</th>
+               <th>{{ balanceSum }} zł</th>
+            </tr>
+         </tbody>
+      </table>
+      {% endif %}
    </div>
- </section>
+</section>
 
 {% endblock %}

@@ -6,7 +6,7 @@ use PDO;
 
 
  class Balance_model extends \Core\Model{
-
+  
 
     public function __construct($data = [])
     {

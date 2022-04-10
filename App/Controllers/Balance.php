@@ -5,8 +5,8 @@ namespace App\Controllers;
 use App\Auth;
 use App\Models\Balance_model;
 use App\Models\Categories;
+use App\Serviceable;
 use \Core\View;
-
 
 
 /**
@@ -33,14 +33,12 @@ class Balance extends Authenticated {
         if(isset($_POST['submitBalance'])){
 
         $balance = new Balance_model($_POST);
-        $balancePeriod = $balance->getBalancePeriod();
-        $periods = array (
-          "currentMonth" => "Bieżący miesiąc",
-          "previousMonth" => "Poprzedni miesiąc",
-          "currentYear" => "Bieżący rok",
-          "non_standard_period" => "Wybrany okres"
-        );
+        
+        // $incomes[0] = Serviceable::formatAmountToView($incomes[0]);
 
+
+        $balancePeriod = $balance->getBalancePeriod();
+        
         switch ($balancePeriod) {
             case "currentMonth":
 
@@ -70,13 +68,29 @@ class Balance extends Authenticated {
              
           }
 
+          $periods = array (
+            "currentMonth" => "Bieżący miesiąc",
+            "previousMonth" => "Poprzedni miesiąc",
+            "currentYear" => "Bieżący rok",
+            "non_standard_period" => "Wybrany okres"
+          );
+
+          $balanceSum = $incomesSum[0]['total'] - $expensesSum[0]['total'];
+          $balanceSum = Serviceable::formatAmountToModal($balanceSum);
+
+          $incomes = Serviceable::formatAmountToView($incomes);
+          $incomesSum = Serviceable::formatAmountToView($incomesSum);
+          $expenses = Serviceable::formatAmountToView($expenses);
+          $expensesSum = Serviceable::formatAmountToView($expensesSum);
+          
         View::renderTemplate('Balance/period.html',[
             'incomes' => $incomes,
             'incomesSum' => $incomesSum,
             'expenses' => $expenses,
             'expensesSum' => $expensesSum,
             'periods' => $periods,
-            'balancePeriod' => $balancePeriod
+            'balancePeriod' => $balancePeriod,
+            'balanceSum' => $balanceSum
         ]);
         
     } else {
