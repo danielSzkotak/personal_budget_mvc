@@ -33,10 +33,6 @@ class Balance extends Authenticated {
         if(isset($_POST['submitBalance'])){
 
         $balance = new Balance_model($_POST);
-        
-        // $incomes[0] = Serviceable::formatAmountToView($incomes[0]);
-
-
         $balancePeriod = $balance->getBalancePeriod();
         
         switch ($balancePeriod) {
@@ -57,6 +53,11 @@ class Balance extends Authenticated {
 
               break;
             case "currentYear":
+
+                $incomes = $balance->getCurrentYearIncomesBalance($_SESSION['user_id']);
+                $incomesSum = $balance->getCurrentYearIncomesSum($_SESSION['user_id']);
+                $expenses = $balance->getCurrentYearExpensesBalance($_SESSION['user_id']);
+                $expensesSum = $balance->getCurrentYearExpensesSum($_SESSION['user_id']);
              
 
               break;
