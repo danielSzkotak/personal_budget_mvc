@@ -2,12 +2,58 @@
 
 {% block title %}Przeglądaj bilans{% endblock %}
 
+
 {% block body %}
 
-{% block footer %}
+<script>
+                
+   // Load google charts
+   google.charts.load('current', {'packages':['corechart']});
+   google.charts.setOnLoadCallback(drawIncomesChart);
+   google.charts.setOnLoadCallback(drawExpensesChart);
+   
+   function drawIncomesChart() {
 
-{% endblock %}
+      var data1 = google.visualization.arrayToDataTable([
+         ['Przychody', 'suma'],
 
+            {% for key, value in incomes %}
+               ['{{ value.name|e }}', {{ value.category_sum|e }}],
+            {% endfor %}
+        
+      ]);
+     
+         // Optional; add a title and set the width and height of the chart
+         var options1 = { width: '500', height: '500', backgroundColor: 'transparent',
+         title: 'Przychody' };
+
+         // Display the chart inside the <div> element with id="piechart"
+            
+            var chart1 = new google.visualization.PieChart(document.getElementById('piechart1'));
+            chart1.draw(data1, options1);
+            
+   };
+   
+
+   function drawExpensesChart() {
+      var data2 = google.visualization.arrayToDataTable([
+      ['Wydatki', 'suma'],
+
+            {% for k, val in expenses %}
+               ['{{ val.name|e }}', {{ val.category_sum|e }}],
+            {% endfor %}
+
+      ]);
+
+         // Optional; add a title and set the width and height of the chart
+         var options2 = { width: '500', height: '500', backgroundColor: 'transparent',
+         title: 'Wydatki' };
+         // Display the chart inside the <div> element with id="piechart"
+
+            var chart2 = new google.visualization.PieChart(document.getElementById('piechart2'));
+            chart2.draw(data2, options2); 
+   };
+ </script>
 
 <!-- main secion -->
 <section id="main">
@@ -148,6 +194,7 @@
       </table>
       {% endif %}
       {% endif %}
+
       {% if expenses is defined %}
       {% if expenses is not empty %}
       <table class="table table-striped mb-5">
@@ -177,10 +224,12 @@
          </tr>
       </table>
       {% endif %}
+      {% endif %}
+     
       {% if balanceSum is defined %}
-      {% if balanceSum != '0.00' %}
+      {% if balanceSum != null %}
       <header>
-         <h1 class="text-start">Bilans podsumowanie</h1>
+         <h1 class="text-start">Bilans</h1>
       </header>
       <table class="table mb-5">
          <thead>
@@ -196,10 +245,25 @@
             </tr>
          </tbody>
       </table>
-      {% endif %}
-      {% endif %}
-      {% endif %}
+
+      <div class="row">
+         <div class="col">
+            <div id="piechart1"></div>
+         </div>
+      
+         <div class="col">
+            <div id="piechart2"></div>
+         </div>
+      </div>
+
+   {% endif %}
+   {% endif %}
    </div>
 </section>
+
+
+{% endblock %}
+
+{% block footer %}
 
 {% endblock %}

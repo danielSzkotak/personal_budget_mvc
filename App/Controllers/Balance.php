@@ -81,14 +81,21 @@ class Balance extends Authenticated {
             "non_standard_period" => "Wybrany okres"
           );
 
-          $balanceSum = $incomesSum[0]['total'] - $expensesSum[0]['total'];
-          $balanceSum = Serviceable::formatAmountToModal($balanceSum);
+         
 
-          $incomes = Serviceable::formatAmountToView($incomes);
+          if($incomesSum[0]['total'] == NULL && $expensesSum[0]['total'] == NULL){
+            $balanceSum = NULL;
+          } else {
+            $balanceSum = $incomesSum[0]['total'] - $expensesSum[0]['total'];
+            $balanceSum = Serviceable::formatAmountToModal($balanceSum);
+          }
+
+          //$incomes = Serviceable::formatAmountToView($incomes);
           $incomesSum = Serviceable::formatAmountToView($incomesSum);
-          $expenses = Serviceable::formatAmountToView($expenses);
+          //$expenses = Serviceable::formatAmountToView($expenses);
           $expensesSum = Serviceable::formatAmountToView($expensesSum);
-          
+
+
         View::renderTemplate('Balance/period.html',[
             'incomes' => $incomes,
             'incomesSum' => $incomesSum,
