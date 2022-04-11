@@ -56,7 +56,7 @@
                 </div>
                 <div class="mb-3">
                    <label for="inputExpenseDate" class="form-label">Wprowadź datę rozchodu</label>
-                   <input type="date" name="expenseDate" value="" class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputExpenseDate" aria-describedby="emailHelp">
+                   <input type="date" required name="expenseDate" value="" class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputExpenseDate" aria-describedby="emailHelp">
                   
                 </div>
                 <div class="mb-3">
@@ -169,7 +169,10 @@ $(document).ready(function(){
       messages: {
          expenseAmount: {
               required: '<span class="text-danger">To pole jest wymagane</span>'
-          }   
+          },
+         expenseDate: {
+         required: '<span class="text-danger">To pole jest wymagane</span>' 
+         }
       }
   });           
 });
