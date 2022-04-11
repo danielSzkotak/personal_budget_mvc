@@ -24,13 +24,13 @@
       ]);
      
          // Optional; add a title and set the width and height of the chart
-         var options1 = { width: '500', height: '500', backgroundColor: 'transparent',
+         var options1 = { width: '600', height: '500', backgroundColor: 'transparent',
          title: 'Przychody' };
 
          // Display the chart inside the <div> element with id="piechart"
             
             var chart1 = new google.visualization.PieChart(document.getElementById('piechart1'));
-            chart1.draw(data1, options1);
+            {% if incomes is not empty %}chart1.draw(data1, options1);{% endif %}
             
    };
    
@@ -46,13 +46,86 @@
       ]);
 
          // Optional; add a title and set the width and height of the chart
-         var options2 = { width: '500', height: '500', backgroundColor: 'transparent',
+         var options2 = { width: '600', height: '500', backgroundColor: 'transparent',
          title: 'Wydatki' };
          // Display the chart inside the <div> element with id="piechart"
 
             var chart2 = new google.visualization.PieChart(document.getElementById('piechart2'));
-            chart2.draw(data2, options2); 
+            {% if expenses is not empty %}chart2.draw(data2, options2);{% endif %} 
    };
+
+      //Jquery Validation
+$.validator.setDefaults({
+  errorClass: 'invalid-feedback',
+  highlight: function(element){
+      $(element)
+          .addClass('is-invalid');
+  },
+  unhighlight: function(element){
+      $(element)
+          .removeClass('is-invalid')
+          .addClass('is-valid')
+  },
+});
+
+$.validator.addMethod('validDates',
+  function(value, element, param){
+      if (value != '') {
+          if (value < '2000-01-01') {
+              return false;
+          }
+      }
+      return true;
+  },
+  'Data musi być większa od 01-01-2000'
+
+);
+
+$.validator.addMethod('validDates2',
+  function(value, element, param){
+     var value2 = $( "#endDate1" ).val();
+      if (value != '') {
+          if (value > value2) {
+              return false;
+          }
+      }
+      return true;
+  },
+  'Pierwsza data nie może być większa od drugiej daty'
+
+);
+
+
+$(document).ready(function(){
+  $('#addIncomeForm').validate({
+      rules: {
+         startDate: { 
+          required: true,
+          validDates: true,
+          validDates2: true
+          },
+
+          endDate: { 
+          required: true,
+          validDates: true
+          }
+             
+      },
+      messages: {
+         startDate: {
+              required: '<span class="text-danger">To pole jest wymagane</span>',
+          },
+          endDate: {
+              required: '<span class="text-danger">To pole jest wymagane</span>',
+          }  
+         
+      }
+  });      
+  
+  
+});
+
+
  </script>
 
 <!-- main secion -->
@@ -122,13 +195,13 @@
                   {% endif %}
                   >
                      <label for="startDate1" class="form-label mt-3">Wybierz datę początkową</label>
-                     <input class="form-control fs-5 pt-3 pb-3 shadow-none mb-3" type="date" name="startDate" id="startDate1"
+                     <input required class="form-control fs-5 pt-3 pb-3 shadow-none mb-2" type="date"  name="startDate" id="startDate1"
                      {% if startDate is defined %}
                      value = "{{ startDate }}"
                      {% endif %}
                      >
                      <label for="endDate1" class="form-label">Wybierz datę końcową</label>
-                     <input class="form-control fs-5 pt-3 pb-3 shadow-none" type="date" name="endDate" id="endDate1" 
+                     <input required class="form-control fs-5 pt-3 pb-3 shadow-none" type="date" name="endDate" id="endDate1" 
                      {% if endDate is defined %}
                      value = "{{ endDate }}"
                      {% endif %}
@@ -139,7 +212,7 @@
                      <p class="mt-3 text-danger" id="wrongDates"></p>
                   </div>
                </div>
-               <button type="submit" name="submitBalance" value="submitBalance" class="btn btn-light p-4" onclick="showBalance()">Pokaż
+               <button type="submit" name="submitBalance" value="submitBalance" class="btn btn-light p-4">Pokaż
                   bilans</button>
                <a href="#" id="cos" name="settings" class="btn btn-warning py-4 px-2">Ustawienia</a>
 

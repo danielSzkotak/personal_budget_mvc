@@ -107,6 +107,8 @@ class Balance extends Authenticated {
             'startDate' => $_POST['startDate'],
             'endDate' => $_POST['endDate']
         ]);
+
+        
         
     } else {
 
