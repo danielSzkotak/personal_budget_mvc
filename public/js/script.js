@@ -51,15 +51,6 @@ function clearInputs(){
   })
 }
 
-//  function loadCurrentDate(){
-//   var today = new Date();
-//   var dd = ("0" + (today.getDate())).slice(-2);
-//   var mm = ("0" + (today.getMonth()+1)).slice(-2);
-//   var yyyy = today.getFullYear();
-//    today = yyyy + '-' + mm + '-' + dd ;
-//    return today;
-// }
-
 
 function clearInputs(){
   let listOfInputs = document.querySelectorAll('input[type="number"], input[type="date"], .select select');
@@ -71,8 +62,10 @@ function clearInputs(){
 function showDateInputs(){
   const myValue = document.getElementById("selectedBalancePeriod").value;
  
-  
-  if(myValue == "non-standardPeriod"){
+  document.getElementById('startDate1').valueAsDate = new Date();
+  document.getElementById('endDate1').valueAsDate = new Date();
+
+  if(myValue == "non_standard_period"){
       document.getElementById("selectPeriodId").style.display = "grid";
       document.getElementById("startDate1").style.border = "1px solid #b3b3b3";
       document.getElementById("endDate1").style.border = "1px solid #b3b3b3";
@@ -109,27 +102,6 @@ function showBalance(){
        document.getElementById("selectedPeriodParagraph").innerHTML = "Bilans od " + reversedStartDate + " do " + reversedEndDate;
   
 }
-
-
-
-// function limitDateInput(){
-//   var today = new Date();
-//   var dd = today.getDate();
-//   var mm = today.getMonth() + 1; //January is 0!
-//   var yyyy = today.getFullYear();
-
-//   if (dd < 10) {
-//      dd = '0' + dd;
-//   } if (mm < 10) {
-//      mm = '0' + mm;
-//   } 
-     
-//   today = yyyy + '-' + mm + '-' + dd;
-//   var dateFields = document.querySelectorAll('input[type="date"]');
-//   for(var i=0; i < dateFields.length; i++){
-//      dateFields[i].setAttribute("max", today);
-//   }
-// }
 
 
 

@@ -1,0 +1,342 @@
+{% extends "baseAfterLogin.html" %}
+
+{% block title %}Przeglądaj bilans{% endblock %}
+
+
+{% block body %}
+
+<script>
+                
+   // Load google charts
+   google.charts.load('current', {'packages':['corechart']});
+   google.charts.setOnLoadCallback(drawIncomesChart);
+   google.charts.setOnLoadCallback(drawExpensesChart);
+   
+   function drawIncomesChart() {
+
+      var data1 = google.visualization.arrayToDataTable([
+         ['Przychody', 'suma'],
+
+            {% for key, value in incomes %}
+               ['{{ value.name|e }}', {{ value.category_sum|e }}],
+            {% endfor %}
+        
+      ]);
+     
+         // Optional; add a title and set the width and height of the chart
+         var options1 = { width: '600', height: '500', backgroundColor: 'transparent',
+         title: 'Przychody' };
+
+         // Display the chart inside the <div> element with id="piechart"
+            
+            var chart1 = new google.visualization.PieChart(document.getElementById('piechart1'));
+            {% if incomes is not empty %}chart1.draw(data1, options1);{% endif %}
+            
+   };
+   
+
+   function drawExpensesChart() {
+      var data2 = google.visualization.arrayToDataTable([
+      ['Wydatki', 'suma'],
+
+            {% for k, val in expenses %}
+               ['{{ val.name|e }}', {{ val.category_sum|e }}],
+            {% endfor %}
+
+      ]);
+
+         // Optional; add a title and set the width and height of the chart
+         var options2 = { width: '600', height: '500', backgroundColor: 'transparent',
+         title: 'Wydatki' };
+         // Display the chart inside the <div> element with id="piechart"
+
+            var chart2 = new google.visualization.PieChart(document.getElementById('piechart2'));
+            {% if expenses is not empty %}chart2.draw(data2, options2);{% endif %} 
+   };
+
+      //Jquery Validation
+$.validator.setDefaults({
+  errorClass: 'invalid-feedback',
+  highlight: function(element){
+      $(element)
+          .addClass('is-invalid');
+  },
+  unhighlight: function(element){
+      $(element)
+          .removeClass('is-invalid')
+          .addClass('is-valid')
+  },
+});
+
+$.validator.addMethod('validDates',
+  function(value, element, param){
+      if (value != '') {
+          if (value < '2000-01-01') {
+              return false;
+          }
+      }
+      return true;
+  },
+  'Data musi być większa od 01-01-2000'
+
+);
+
+$.validator.addMethod('validDates2',
+  function(value, element, param){
+     var value2 = $( "#endDate1" ).val();
+      if (value != '') {
+          if (value > value2) {
+              return false;
+          }
+      }
+      return true;
+  },
+  'Pierwsza data nie może być większa od drugiej daty'
+
+);
+
+
+$(document).ready(function(){
+  $('#addIncomeForm').validate({
+      rules: {
+         startDate: { 
+          required: true,
+          validDates: true,
+          validDates2: true
+          },
+
+          endDate: { 
+          required: true,
+          validDates: true
+          }
+             
+      },
+      messages: {
+         startDate: {
+              required: '<span class="text-danger">To pole jest wymagane</span>',
+          },
+          endDate: {
+              required: '<span class="text-danger">To pole jest wymagane</span>',
+          }  
+         
+      }
+  });      
+  
+  
+});
+
+
+ </script>
+
+<!-- main secion -->
+<section id="main">
+   <div class="container-xxl mt-5">
+      <div class="row align-items-start">
+         <div class="col-lg-6 align-self-start dupa">
+            <header>
+
+               {% if currentUser %}
+               <span>
+                  <h1 class='text-start'>Witaj <span class='text-success'>{{currentUser.username}}</h1>
+               </span>
+               {% endif %}
+
+
+            </header>
+            <div class="row">
+               <a href="Income/addIncome"
+                  class="col bg-light mb-2 me-2 p-5 rounded-3 text-center text-white text-nowrap fs-2">
+                  Dodaj przychód
+               </a>
+               <a href="Expense/addExpense"
+                  class="col bg-secondary mb-2 me-2 p-5 rounded-3 text-center text-white text-nowrap fs-2">
+                  Dodaj rozchód
+               </a>
+            </div>
+            <div class="row">
+               <a href="Balance/period" class="col bg-info me-2 p-5 rounded-3 text-center text-nowrap text-white fs-2">
+                  Przeglądaj bilans
+               </a>
+            </div>
+         </div>
+         <div class="col ms-lg-5 mt-5 mt-lg-0">
+            <header>
+               <h1 class="text-start">Przeglądaj bilans</h1>
+            </header>
+
+            <form action="/balance/balance" method="POST" class="needs-validation" id="addIncomeForm" novalidate>
+
+               <div class="mb-3 mb-4">
+                  <label for="selectBalancePeriod" class="form-label">Wybierz okres</label>
+                  <select name="balancePeriod" class="form-select fs-5 pt-3 pb-3" id="selectedBalancePeriod"
+                     onchange="showDateInputs()" aria-label="Default select example" required>
+
+                     {% if balancePeriod is defined %}
+                     {% for key, value in periods %}
+                     <option value="{{ key }}" {% if key==balancePeriod %} selected {% endif %}> {{ value }} </option>
+                     {% endfor %}
+                     {% else %}
+
+                     <option value="currentMonth">Bieżący miesiąc</option>
+                     <option value="previousMonth">Poprzedni miesiąc</option>
+                     <option value="currentYear">Bieżacy rok</option>
+                     <option value="non_standard_period">Wybrany okres</option>
+
+                     {% endif %}
+                  </select>
+               </div>
+
+               <div class="mb-3">
+                  <div class="selectPeriod" id="selectPeriodId" 
+                  {% if balancePeriod is defined %}
+                  {% if balancePeriod == 'non_standard_period' %}
+                  style="display: grid;"
+                  {% endif %}
+                  {% endif %}
+                  >
+                     <label for="startDate1" class="form-label mt-3">Wybierz datę początkową</label>
+                     <input required class="form-control fs-5 pt-3 pb-3 shadow-none mb-2" type="date"  name="startDate" id="startDate1"
+                     {% if startDate is defined %}
+                     value = "{{ startDate }}"
+                     {% endif %}
+                     >
+                     <label for="endDate1" class="form-label">Wybierz datę końcową</label>
+                     <input required class="form-control fs-5 pt-3 pb-3 shadow-none" type="date" name="endDate" id="endDate1" 
+                     {% if endDate is defined %}
+                     value = "{{ endDate }}"
+                     {% endif %}
+                     >
+                     <div class="invalid-feedback">
+                     </div>
+
+                     <p class="mt-3 text-danger" id="wrongDates"></p>
+                  </div>
+               </div>
+               <button type="submit" name="submitBalance" value="submitBalance" class="btn btn-light p-4">Pokaż
+                  bilans</button>
+               <a href="#" id="cos" name="settings" class="btn btn-warning py-4 px-2">Ustawienia</a>
+
+            </form>
+
+         </div>
+      </div>
+   </div>
+</section>
+
+<section>
+
+   <!-- Creating balance table -->
+   <div class="container-xxl mt-5" id="balanceContainer">
+
+      {% if (incomes is defined) and (expenses is defined) %}
+      {% if (incomes is empty) and (expenses is empty) %}
+      <h1>Brak wyników dla wybranego okresu</h1>
+      {% else %}
+      <h1>Wyniki dla wybranego okresu</h1>
+      {% endif %}
+      {% endif %}
+
+      {% if incomes is defined %}
+      {% if incomes is not empty %}
+
+      <table class="table table-striped mb-5">
+         <thead class="fs-4">
+            <tr>
+               <th scope="col">Przychody</th>
+               <th scope="col">Suma [zł]</th>
+            </tr>
+         </thead>
+         <tbody class="fs-5">
+            <tr>
+               {% if incomes %}
+               {% for key, value in incomes %}
+               <td>{{ value.name|e }}</td>
+               <td>{{ value.category_sum|e }}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+         </tbody>
+         <tr class='bg-light fs-4'>
+            <th>Suma przychodów</th>
+            <th>
+               {% for key in incomesSum %}
+               {{ key.total|e }}
+               {% endfor %}
+            </th>
+         </tr>
+      </table>
+      {% endif %}
+      {% endif %}
+
+      {% if expenses is defined %}
+      {% if expenses is not empty %}
+      <table class="table table-striped mb-5">
+         <thead class="fs-4">
+            <tr>
+               <th scope="col">Wydatki</th>
+               <th scope="col">Suma [zł]</th>
+            </tr>
+         </thead>
+         <tbody class="fs-5">
+            <tr>
+               {% if expenses %}
+               {% for key, value in expenses %}
+               <td>{{ value.name|e }}</td>
+               <td>{{ value.category_sum|e }}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+         </tbody>
+         <tr class='bg-secondary fs-4'>
+            <th>Suma wydatków</th>
+            <th>
+               {% for key in expensesSum %}
+               {{ key.total|e }}
+               {% endfor %}
+            </th>
+         </tr>
+      </table>
+      {% endif %}
+      {% endif %}
+     
+      {% if balanceSum is defined %}
+      {% if balanceSum != null %}
+      <header>
+         <h1 class="text-start">Bilans</h1>
+      </header>
+      <table class="table mb-5">
+         <thead>
+            <tr>
+               <th></th>
+               <th></th>
+            </tr>
+         </thead>
+         <tbody class="fs-4">
+            <tr class="bg-info">
+               <th>Twój bilans</th>
+               <th>{{ balanceSum }} zł</th>
+            </tr>
+         </tbody>
+      </table>
+
+      <div class="row">
+         <div class="col">
+            <div id="piechart1"></div>
+         </div>
+      
+         <div class="col">
+            <div id="piechart2"></div>
+         </div>
+      </div>
+
+   {% endif %}
+   {% endif %}
+   </div>
+</section>
+
+
+{% endblock %}
+
+{% block footer %}
+
+{% endblock %}

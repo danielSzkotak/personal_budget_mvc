@@ -39,7 +39,7 @@
                 </a>
              </div>
              <div class="row">
-                <a href="#" class="col bg-info me-2 p-5 rounded-3 text-center text-nowrap text-white fs-2">
+                <a href="/period" class="col bg-info me-2 p-5 rounded-3 text-center text-nowrap text-white fs-2">
                    Przeglądaj bilans
                 </a>
              </div>
@@ -56,7 +56,7 @@
                 </div>
                 <div class="mb-3">
                    <label for="inputExpenseDate" class="form-label">Wprowadź datę rozchodu</label>
-                   <input type="date" name="expenseDate" value="" class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputExpenseDate" aria-describedby="emailHelp">
+                   <input type="date" required name="expenseDate" value="" class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputExpenseDate" aria-describedby="emailHelp">
                   
                 </div>
                 <div class="mb-3">
@@ -140,17 +140,39 @@ $.validator.setDefaults({
 });
 
 
+$.validator.addMethod('validDates',
+  function(value, element, param){
+      if (value != '') {
+          if (value < '2000-01-01') {
+              return false;
+          }
+      }
+      return true;
+  },
+  'Data musi być większa od 01-01-2000'
+
+);
+
+
+
 $(document).ready(function(){
-  $('#addexpenseForm').validate({
+  $('#addExpenseForm').validate({
       rules: {
          expenseAmount: { 
           required: true 
-          }                    
+          },
+         expenseDate: {
+            required: true,
+            validDates: true
+         }                    
       },
       messages: {
          expenseAmount: {
               required: '<span class="text-danger">To pole jest wymagane</span>'
-          }   
+          },
+         expenseDate: {
+         required: '<span class="text-danger">To pole jest wymagane</span>' 
+         }
       }
   });           
 });

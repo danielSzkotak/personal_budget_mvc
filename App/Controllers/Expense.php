@@ -51,7 +51,7 @@ class Expense extends Authenticated {
             $paymentID = Serviceable::fetchIDFromOptionValue($_POST["expensePayment"]);
             $paymentName = Serviceable::fetchNameFromOptionValue($_POST["expensePayment"]);
 
-            $expense = new Expense_model($_SESSION['user_id'], $categoryID, $paymentID, $amount, $_POST["expenseDate"]);
+            $expense = new Expense_model($_SESSION['user_id'], $categoryID, $paymentID, $_POST["expenseAmount"], $_POST["expenseDate"]);
             $expense->addExpense();
             
             View::renderTemplate('Expense/addExpense.html', [

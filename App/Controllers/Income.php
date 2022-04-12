@@ -47,7 +47,7 @@ class Income extends Authenticated {
             $categoryID = Serviceable::fetchIDFromOptionValue($_POST["incomeCategory"]);
             $categoryName = Serviceable::fetchNameFromOptionValue($_POST["incomeCategory"]);
 
-            $income = new Income_model($amount, $_POST["incomeDate"], $categoryID, $_SESSION['user_id']);
+            $income = new Income_model($_POST["incomeAmount"], $_POST["incomeDate"], $categoryID, $_SESSION['user_id']);
             $income->addIncome();
             
             View::renderTemplate('Income/addIncome.html', [
