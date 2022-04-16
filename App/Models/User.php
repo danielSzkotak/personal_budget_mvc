@@ -169,6 +169,7 @@ class User extends \Core\Model
         $fetched_id = $stmt->fetch();
 
         return reset($fetched_id); //get the first element of array (id)
+        
     }
 
 

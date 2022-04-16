@@ -24,7 +24,7 @@ use PDO;
 
     public function addExpense(){
   
-        $sql = "INSERT INTO expenses (user_id, expense_category_assigned_to_user_id, payment_method_assigned_to_user_id, amount, date_of_expense) VALUES (:uID, :expense_categoryID, :payment_methodID, :amount, :date)";
+        $sql = "INSERT INTO expenses (user_id, expense_category_assigned_to_user_id, payment_method_assigned_to_user_id, amount, date_of_expense, expense_comment) VALUES (:uID, :expense_categoryID, :payment_methodID, :amount, :date, '')";
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);

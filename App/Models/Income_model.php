@@ -22,7 +22,7 @@ use PDO;
 
     public function addIncome(){
   
-        $sql = "INSERT INTO incomes (user_id, income_category_assigned_to_user_id, amount, date_of_income) VALUES (:uID, :categoryID, :amount, :date)";
+        $sql = "INSERT INTO incomes (user_id, income_category_assigned_to_user_id, amount, date_of_income, income_comment) VALUES (:uID, :categoryID, :amount, :date, '')";
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);

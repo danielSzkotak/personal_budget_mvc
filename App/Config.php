@@ -26,19 +26,19 @@ class Config
      * Database user
      * @var string
      */
-    const DB_USER = 'user';
+    const DB_USER = 'root';
 
     /**
      * Database password
      * @var string
      */
-    const DB_PASSWORD = 'secret';
+    const DB_PASSWORD = '';
 
     /**
      * Show or hide error messages on screen
      * @var boolean
      */
-    const SHOW_ERRORS = false;
+    const SHOW_ERRORS = true;
 
      /**
      * Secret key for hashing

@@ -49,7 +49,7 @@ class Signup extends \Core\Controller
         $user = new User($_POST);
            
         if($user->save()){
-
+       
             $user->sendActivationEmail();
             $user->copyCategories($user->getIdByEmail($user->email));
             $this->redirect('/signup/success');
