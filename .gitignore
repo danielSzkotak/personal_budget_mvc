@@ -1,5 +1,6 @@
 .vs/
 cgi-bin/
 vendor/
+logs/
 App/Config.php
 personalbudget.sql
