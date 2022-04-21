@@ -4,3 +4,4 @@ vendor/
 logs/
 App/Config.php
 personalbudget.sql
+.htaccess
