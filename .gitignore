@@ -1,0 +1,5 @@
+.vs/
+cgi-bin/
+vendor/
+App/Config.php
+personalbudget.sql
