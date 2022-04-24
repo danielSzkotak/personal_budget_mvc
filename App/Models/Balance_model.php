@@ -36,6 +36,26 @@ use PDO;
 
      }
 
+     public function getCurrentMonthDetailedIncomes($userID){
+
+      $firstDayOfTheMonth = date('Y-m-01');
+      $lastDayOfTheMonth = date('Y-m-t');
+
+      $sql = "SELECT incomes_category_assigned_to_users.name, incomes.amount FROM incomes_category_assigned_to_users, incomes WHERE (incomes.date_of_income BETWEEN '$firstDayOfTheMonth' AND '$lastDayOfTheMonth') AND (incomes_category_assigned_to_users.user_id=:userID) AND (incomes_category_assigned_to_users.user_id = incomes.user_id) AND (incomes.income_category_assigned_to_user_id=incomes_category_assigned_to_users.id) ORDER BY incomes.amount DESC;";
+
+
+      $db = static::getDB();
+      $stmt = $db->prepare($sql);
+      $stmt->bindValue(':userID', $userID, PDO::PARAM_INT);
+  
+      $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+      $stmt->execute();
+
+      return $stmt->fetchAll();
+
+   }
+
      public function getCurrentMonthIncomesSum($userID){
 
         $firstDayOfTheMonth = date('Y-m-01');

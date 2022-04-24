@@ -35,10 +35,11 @@ class Balance extends Authenticated {
         $balance = new Balance_model($_POST);
         $balancePeriod = $balance->getBalancePeriod();
 
-
         switch ($balancePeriod) {
             case "currentMonth":
 
+                $detailedIncomes = $balance->getCurrentMonthDetailedIncomes($_SESSION['user_id']);
+                var_dump($detailedIncomes);
                 $incomes = $balance->getCurrentMonthIncomesBalance($_SESSION['user_id']);
                 $incomesSum = $balance->getCurrentMonthIncomesSum($_SESSION['user_id']);
                 $expenses = $balance->getCurrentMonthExpensesBalance($_SESSION['user_id']);
