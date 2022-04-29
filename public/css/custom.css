@@ -140,13 +140,10 @@ label{
    opacity: 1;
 }
 
-table th{
-   width: 60%;
-}
+/* table th{
+   width: 10%;
+} */
 
-#showBalanceContainer{
-   /* display: none; */
-}
 
 .selectPeriod {
    display: none;

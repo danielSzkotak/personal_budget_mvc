@@ -226,56 +226,45 @@ $(document).ready(function(){
 <section>
 
    <!-- Creating balance table -->
-   <div class="container mt-5 ps-1" id="balanceContainer">
+   <div class="container-xxl mt-5" id="balanceContainer">
 
       {% if (incomes is defined) and (expenses is defined) %}
       {% if (incomes is empty) and (expenses is empty) %}
       <h1>Brak wyników dla wybranego okresu</h1>
       {% else %}
-      <h2 class="mb-4">Przychody</h2>
+      <h1>Wyniki dla wybranego okresu</h1>
       {% endif %}
       {% endif %}
 
       {% if incomes is defined %}
       {% if incomes is not empty %}
-    
-      <table class="table table-striped mb-0">
-         <thead>
+
+      <table class="table table-striped mb-5">
+         <thead class="fs-4">
             <tr>
-               <th scope="col">Id</th>
-               <th scope="col">Kategoria</th>
-               <th scope="col">Kwota</th>
-               <th scope="col">Data</th>
-            </tr>  
+               <th scope="col">Przychody</th>
+               <th scope="col">Suma [zł]</th>
+            </tr>
          </thead>
-         <tbody>
-            {% if detailedIncomes %}
-            {% for key, value in detailedIncomes %}
-            <tr> 
-               <td>{{ value.id|e }}</td> 
+         <tbody class="fs-5">
+            <tr>
+               {% if incomes %}
+               {% for key, value in incomes %}
                <td>{{ value.name|e }}</td>
-               <td>{{ value.amount|e }}</td>
-               <td>{{ value.date_of_income|e }}</td>
+               <td>{{ value.category_sum|e }}</td>
             </tr>
             {% endfor %}
             {% endif %}
-                             
          </tbody>
-      </table>
-      
-      <table class="table mb-5 mt-0 pt-0">
-         <thead> 
-         </thead>
-         <tbody class="fs-4">
-            <tr class="bg-info">
-               <th style="width: 49.2%;">Suma przychodów</th>
+         <tr class='bg-light fs-4'>
+            <th>Suma przychodów</th>
+            <th>
                {% for key in incomesSum %}
-               <th>{{ key.total|e }} zł</th>
+               {{ key.total|e }}
                {% endfor %}
-            </tr>
-         </tbody>
+            </th>
+         </tr>
       </table>
-      
       {% endif %}
       {% endif %}
 

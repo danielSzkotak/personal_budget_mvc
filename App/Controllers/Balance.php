@@ -39,7 +39,6 @@ class Balance extends Authenticated {
             case "currentMonth":
 
                 $detailedIncomes = $balance->getCurrentMonthDetailedIncomes($_SESSION['user_id']);
-                var_dump($detailedIncomes);
                 $incomes = $balance->getCurrentMonthIncomesBalance($_SESSION['user_id']);
                 $incomesSum = $balance->getCurrentMonthIncomesSum($_SESSION['user_id']);
                 $expenses = $balance->getCurrentMonthExpensesBalance($_SESSION['user_id']);
@@ -99,6 +98,7 @@ class Balance extends Authenticated {
 
         View::renderTemplate('Balance/period.html',[
             'incomes' => $incomes,
+            'detailedIncomes' => $detailedIncomes,
             'incomesSum' => $incomesSum,
             'expenses' => $expenses,
             'expensesSum' => $expensesSum,
