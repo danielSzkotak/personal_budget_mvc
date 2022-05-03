@@ -212,7 +212,7 @@ $(document).ready(function(){
                      <p class="mt-3 text-danger" id="wrongDates"></p>
                   </div>
                </div>
-               <button type="submit" name="submitBalance" value="submitBalance" class="btn btn-light p-4">Pokaż
+               <button type="submit" name="submitBalance" value="submitBalance" id="submit-form" class="btn btn-light p-4">Pokaż
                   bilans</button>
                <a href="#" id="cos" name="settings" class="btn btn-warning py-4 px-2">Ustawienia</a>
 
@@ -237,7 +237,7 @@ $(document).ready(function(){
             <h1>Wyniki dla wybranego okresu</h1>
          </div>
          <div class="col text-end">
-            <a href="#"><i class="icon-th-list"></i></a>
+            <label for="submit-form" tabindex="0" id="detailedBalanceIcon"><i class="icon-th-list"></i></label>
          </div>
       </div>
       {% endif %}
