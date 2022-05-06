@@ -97,6 +97,7 @@ $.validator.addMethod('validDates2',
 
 
 $(document).ready(function(){
+
   $('#addIncomeForm').validate({
       rules: {
          startDate: { 
@@ -120,11 +121,9 @@ $(document).ready(function(){
           }  
          
       }
-  });      
+  });  
   
-
 });
-
 
  </script>
 
@@ -164,7 +163,7 @@ $(document).ready(function(){
                <h1 class="text-start">Przeglądaj bilans</h1>
             </header>
 
-            <form method="POST" class="needs-validation" id="addIncomeForm" novalidate>
+            <form action="/balance/balance" method="POST" class="needs-validation" id="addIncomeForm" novalidate>
 
                <div class="mb-3 mb-4">
                   <label for="selectBalancePeriod" class="form-label">Wybierz okres</label>
@@ -212,12 +211,13 @@ $(document).ready(function(){
                      <p class="mt-3 text-danger" id="wrongDates"></p>
                   </div>
                </div>
-               <button formaction="/balance/balance" type="submit" name="submitBalance" value="submitBalance"  class="btn btn-light p-4">Pokaż
+               <button type="submit" name="submitBalance" value="submitBalance" class="btn btn-light p-4">Pokaż
                   bilans</button>
-                  <button formaction="/balance/detailedBalance" type="submit" name="submitBalance" value="submitBalance" id="submit-form" style="visibility: hidden; display: none;"></button>
+                  
                <a href="#" id="cos" name="settings" class="btn btn-warning py-4 px-2">Ustawienia</a>
 
-            </form>
+            <!-- </form> -->
+
          </div>
       </div>
    </div>
@@ -226,108 +226,58 @@ $(document).ready(function(){
 <section>
 
    <!-- Creating balance table -->
-   <div class="container-xxl mt-5" id="balanceContainer">
+   <div class="container mt-5 ps-1" id="balanceContainer">
 
-      {% if (incomes is defined) and (expenses is defined) %}
-      {% if (incomes is empty) and (expenses is empty) %}
-      <h1 id="box">Brak wyników dla wybranego okresu</h1>
-      {% else %}
-    
-      <div class="row align-items-center">
-         <div class="container-fluid">
-            <h1>Wyniki dla wybranego okresu</h1>
-         </div>
-         <div class="col text-end">
-            <label for="submit-form" tabindex="0" id="detailedBalanceIcon"><i class="icon-th-list"></i></label>
-            <!-- <a href="/balance/detailed"><i class="icon-th-list"></i></a> -->
-            
-         </div>
-      </div>
-      {% endif %}
-      {% endif %}
-
-      {% if incomes is defined %}
-      {% if incomes is not empty %}
-
-      <table class="table table-striped mb-5">
-         <thead class="fs-4">
-            <tr>
-               <th scope="col">Przychody</th>
-               <th scope="col">Suma [zł]</th>
-            </tr>
-         </thead>
-         <tbody class="fs-5">
-            <tr>
-               {% if incomes %}
-               {% for key, value in incomes %}
-               <td>{{ value.name|e }}</td>
-               <td>{{ value.category_sum|e }}</td>
-            </tr>
-            {% endfor %}
-            {% endif %}
-         </tbody>
-         <tr class='bg-light fs-4'>
-            <th>Suma przychodów</th>
-            <th>
-               {% for key in incomesSum %}
-               {{ key.total|e }}
-               {% endfor %}
-            </th>
-         </tr>
-      </table>
-      {% endif %}
-      {% endif %}
-
-      {% if expenses is defined %}
-      {% if expenses is not empty %}
-      <table class="table table-striped mb-5">
-         <thead class="fs-4">
-            <tr>
-               <th scope="col">Wydatki</th>
-               <th scope="col">Suma [zł]</th>
-            </tr>
-         </thead>
-         <tbody class="fs-5">
-            <tr>
-               {% if expenses %}
-               {% for key, value in expenses %}
-               <td>{{ value.name|e }}</td>
-               <td>{{ value.category_sum|e }}</td>
-            </tr>
-            {% endfor %}
-            {% endif %}
-         </tbody>
-         <tr class='bg-secondary fs-4'>
-            <th>Suma wydatków</th>
-            <th>
-               {% for key in expensesSum %}
-               {{ key.total|e }}
-               {% endfor %}
-            </th>
-         </tr>
-      </table>
-      {% endif %}
-      {% endif %}
+      {% if detailedIncomes is defined %}
      
-      {% if balanceSum is defined %}
-      {% if balanceSum != null %}
-      <header>
-         <h1 class="text-start">Bilans</h1>
-      </header>
-      <table class="table mb-5">
+      <h2 class="mb-4">Przychody</h2>
+    
+      <table class="table table-striped mb-0">
          <thead>
             <tr>
-               <th></th>
-               <th></th>
+               <th scope="col">Id</th>
+               <th scope="col">Kategoria</th>
+               <th scope="col">Kwota</th>
+               <th scope="col">Data</th>
+               <th scope="col"></th>
+            </tr>  
+         </thead>
+         <tbody>
+           
+            {% for key, value in detailedIncomes %}
+            <tr> 
+               <!-- <form action="/balance/delete" method="POST"> -->
+               <td>{{ value.id|e }} </td> 
+               <td>{{ value.name|e }}</td>
+               <td>{{ value.amount|e }}</td>
+               <td>{{ value.date_of_income|e }}</td>
+               <input type="hidden" value="{{ value.id|e }}" name="incomeToDeleteID">
+               <input type="hidden" value="{{ value.id|e }}" name="scrollPos">
+               <!-- <td><button type="submit" name="submitDelete" value="{{ value.id|e }}">X</button></td> -->
+               <td> <button formaction="/balance/delete" type="submit" name="submitDelete" value="submitDelete">x</button> </td>
+               <!-- </form> -->
             </tr>
+            {% endfor %}
+         </form>
+                             
+         </tbody>
+      </table>
+      
+      <table class="table mb-5 mt-0 pt-0">
+         <thead> 
          </thead>
          <tbody class="fs-4">
             <tr class="bg-info">
-               <th>Twój bilans</th>
-               <th>{{ balanceSum }} zł</th>
+               <th style="width: 42.2%;">Suma przychodów</th>
+               <!-- {% for key in incomesSum %}
+               <th>{{ key.total|e }} zł</th>
+               {% endfor %} -->
             </tr>
          </tbody>
       </table>
+      
+      {% endif %}
+
 
       <div class="row">
          <div class="col">
@@ -339,14 +289,12 @@ $(document).ready(function(){
          </div>
       </div>
 
-   {% endif %}
-   {% endif %}
    </div>
 </section>
 
 <script>
    $(document).ready(function(){
-
+     
       document.documentElement.scrollTop = document.body.scrollTop = 330;
    });
 </script>
