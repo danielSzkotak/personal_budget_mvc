@@ -236,4 +236,13 @@ label{
 
  #detailedBalanceIcon{
     cursor: pointer;
+   
+ }
+
+ .showDetailedBalance{
+    border: none;
+ }
+
+ .icon-th-list{
+    color:#ebbb3a;
  }

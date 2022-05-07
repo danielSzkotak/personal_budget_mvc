@@ -38,11 +38,7 @@ use PDO;
 
      public function deleteIncome($incomeID){
 
-      //$firstDayOfTheMonth = date('Y-m-01');
-      //$lastDayOfTheMonth = date('Y-m-t');
-
       $sql = "DELETE FROM incomes WHERE incomes.id=:incomeID";
-
 
       $db = static::getDB();
       $stmt = $db->prepare($sql);

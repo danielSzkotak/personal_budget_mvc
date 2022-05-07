@@ -128,40 +128,35 @@ class Balance extends Authenticated {
         $balance = new Balance_model($_POST);
         $balancePeriod = $balance->getBalancePeriod();
 
-  
+
+        if (isset($_POST['incomeToDeleteID'])){
+
+            $deleteIncome = $detailedBalance->deleteIncome($_POST['incomeToDeleteID']);
+        }  
 
         switch ($balancePeriod) {
             case "currentMonth":
 
                 $detailedIncomes = $detailedBalance->getCurrentMonthDetailedIncomes($_SESSION['user_id']);
-                $incomes = $balance->getCurrentMonthIncomesBalance($_SESSION['user_id']);
-                $incomesSum = $balance->getCurrentMonthIncomesSum($_SESSION['user_id']);
-                $expenses = $balance->getCurrentMonthExpensesBalance($_SESSION['user_id']);
+                $incomesSum = $balance->getCurrentMonthIncomesSum($_SESSION['user_id']);          
                 $expensesSum = $balance->getCurrentMonthExpensesSum($_SESSION['user_id']);
-              
               break;
             case "previousMonth":
 
-                $incomes = $balance->getPreviousMonthIncomesBalance($_SESSION['user_id']);
+                
                 $incomesSum = $balance->getPreviousMonthIncomesSum($_SESSION['user_id']);
-                $expenses = $balance->getPreviousMonthExpensesBalance($_SESSION['user_id']);
                 $expensesSum = $balance->getPreviousMonthExpensesSum($_SESSION['user_id']);
 
               break;
             case "currentYear":
 
-                $incomes = $balance->getCurrentYearIncomesBalance($_SESSION['user_id']);
                 $incomesSum = $balance->getCurrentYearIncomesSum($_SESSION['user_id']);
-                $expenses = $balance->getCurrentYearExpensesBalance($_SESSION['user_id']);
                 $expensesSum = $balance->getCurrentYearExpensesSum($_SESSION['user_id']);
              
-
               break;
             case "non_standard_period":
               
-                $incomes = $balance->getCustomDatesIncomesBalance($_SESSION['user_id'], $_POST['startDate'], $_POST['endDate']);
                 $incomesSum = $balance->getCustomDatesIncomesSum($_SESSION['user_id'], $_POST['startDate'], $_POST['endDate']);
-                $expenses = $balance->getCustomDatesExpensesBalance($_SESSION['user_id'], $_POST['startDate'], $_POST['endDate']);
                 $expensesSum = $balance->getCustomDatesExpensesSum($_SESSION['user_id'], $_POST['startDate'], $_POST['endDate']);
 
                 break;
@@ -177,12 +172,11 @@ class Balance extends Authenticated {
           );
 
          
-
           if($incomesSum[0]['total'] == NULL && $expensesSum[0]['total'] == NULL){
             $balanceSum = NULL;
           } else {
-            $balanceSum = $incomesSum[0]['total'] - $expensesSum[0]['total'];
-            $balanceSum = Serviceable::formatAmountToModal($balanceSum);
+            //$balanceSum = $incomesSum[0]['total'] - $expensesSum[0]['total'];
+            //$balanceSum = Serviceable::formatAmountToModal($balanceSum);
           }
 
           //$incomes = Serviceable::formatAmountToView($incomes);
@@ -192,56 +186,23 @@ class Balance extends Authenticated {
 
 
         View::renderTemplate('Balance/detailedPeriod.html',[
-            'incomes' => $incomes,
+           
             'detailedIncomes' => $detailedIncomes,
             'incomesSum' => $incomesSum,
-            'expenses' => $expenses,
             'expensesSum' => $expensesSum,
             'periods' => $periods,
-            'balancePeriod' => $balancePeriod,
-            'balanceSum' => $balanceSum,
-            'startDate' => $_POST['startDate'],
-            'endDate' => $_POST['endDate']
+            //'balancePeriod' => $balancePeriod,
+            //'balanceSum' => $balanceSum,
+            //'startDate' => $_POST['startDate'],
+            //'endDate' => $_POST['endDate']
         ]);
 
         
     } else {
 
-        //$this->redirect('/balance/period');
-        var_dump('nie udane');
+        $this->redirect('/balance/period');     
     }
       
-    } 
-
-    public function deleteAction(){
-
-      if(isset($_POST['submitDelete'])){
-
-        $detailedBalance = new Detailed_balance_model($_POST);
-        $balance = new Balance_model($_POST);
-        $idToDelete = $_POST['incomeToDeleteID'];
-
+    }   
     
-        $deleteIncome = $detailedBalance->deleteIncome($idToDelete);
-        
-        $detailedIncomes = $detailedBalance->getCurrentMonthDetailedIncomes($_SESSION['user_id']);
-        
-        View::renderTemplate('Balance/detailedPeriod.html',[
-          //'incomes' => $incomes,
-          'detailedIncomes' => $detailedIncomes,
-          //'incomesSum' => $incomesSum,
-          //'expenses' => $expenses,
-          //'expensesSum' => $expensesSum,
-          //'periods' => $periods,
-          //'balancePeriod' => $balancePeriod,
-          //'balanceSum' => $balanceSum,
-          //'startDate' => $_POST['startDate'],
-          //'endDate' => $_POST['endDate']
-      ]);
-
-      } else {
-         var_dump('dupa');
-      }
-
-  }
 }

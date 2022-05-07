@@ -153,7 +153,7 @@ $(document).ready(function(){
                </a>
             </div>
             <div class="row">
-               <a href="Balance/period" class="col bg-info me-2 p-5 rounded-3 text-center text-nowrap text-white fs-2">
+               <a href="Balance/period" class="col bg-info me-2 p-5 rounded-3 text-center text-nowrap text-white fs-2" id="start">
                   Przeglądaj bilans
                </a>
             </div>
@@ -212,12 +212,7 @@ $(document).ready(function(){
                   </div>
                </div>
                <button type="submit" name="submitBalance" value="submitBalance" class="btn btn-light p-4">Pokaż
-                  bilans</button>
-                  
-               <a href="#" id="cos" name="settings" class="btn btn-warning py-4 px-2">Ustawienia</a>
-
-            <!-- </form> -->
-
+                  bilans</button>                    
          </div>
       </div>
    </div>
@@ -229,6 +224,9 @@ $(document).ready(function(){
    <div class="container mt-5 ps-1" id="balanceContainer">
 
       {% if detailedIncomes is defined %}
+      {% if detailedIncomes is empty %}
+      <h2 class="mb-4">Brak przychodów do edycji</h2>
+      {% else %}
      
       <h2 class="mb-4">Przychody</h2>
     
@@ -239,27 +237,23 @@ $(document).ready(function(){
                <th scope="col">Kategoria</th>
                <th scope="col">Kwota</th>
                <th scope="col">Data</th>
-               <th scope="col"></th>
+               <th scope="col">Usuń</th>
             </tr>  
          </thead>
          <tbody>
            
             {% for key, value in detailedIncomes %}
             <tr> 
-               <!-- <form action="/balance/delete" method="POST"> -->
                <td>{{ value.id|e }} </td> 
                <td>{{ value.name|e }}</td>
                <td>{{ value.amount|e }}</td>
                <td>{{ value.date_of_income|e }}</td>
                <input type="hidden" value="{{ value.id|e }}" name="incomeToDeleteID">
-               <input type="hidden" value="{{ value.id|e }}" name="scrollPos">
-               <!-- <td><button type="submit" name="submitDelete" value="{{ value.id|e }}">X</button></td> -->
-               <td> <button formaction="/balance/delete" type="submit" name="submitDelete" value="submitDelete">x</button> </td>
+               <td> <button formaction="/balance/detailedBalance" type="submit" name="submitBalance" value="submitBalance" class="showDetailedBalance"><i class="icon-trash-empty"></i></button> </td>
                <!-- </form> -->
             </tr>
             {% endfor %}
-         </form>
-                             
+                    
          </tbody>
       </table>
       
@@ -268,16 +262,17 @@ $(document).ready(function(){
          </thead>
          <tbody class="fs-4">
             <tr class="bg-info">
-               <th style="width: 42.2%;">Suma przychodów</th>
-               <!-- {% for key in incomesSum %}
+               <th style="width: 33.5%;">Suma przychodów</th>
+               {% for key in incomesSum %}
                <th>{{ key.total|e }} zł</th>
-               {% endfor %} -->
+               {% endfor %}
             </tr>
          </tbody>
       </table>
-      
-      {% endif %}
-
+   </form> 
+ 
+   {% endif %}
+   {% endif %}
 
       <div class="row">
          <div class="col">
@@ -293,10 +288,15 @@ $(document).ready(function(){
 </section>
 
 <script>
-   $(document).ready(function(){
-     
-      document.documentElement.scrollTop = document.body.scrollTop = 330;
-   });
+   // self executing function here
+   (function() {
+      // your page initialization code here
+      // the DOM will be available here
+      var element = document.querySelector("#start");
+      element.scrollIntoView();
+      //document.documentElement.scrollTop = document.body.scrollTop = 330;
+   
+   })();
 </script>
 
 {% endblock %}
