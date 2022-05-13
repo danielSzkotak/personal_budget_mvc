@@ -242,7 +242,7 @@ $(document).ready(function(){
                <th scope="col">Kategoria</th>
                <th scope="col">Kwota</th>
                <th scope="col">Data</th>
-               <th scope="col">Usuń</th>
+             
             </tr>  
          </thead>
          <tbody>          
@@ -252,14 +252,7 @@ $(document).ready(function(){
                <td>{{ value.name|e }}</td>
                <td>{{ value.amount|e }}</td>
                <td>{{ value.date_of_income|e }}</td>
-               <td>
-                  <input type="hidden" value="{{ value.id|e }}" name="incomeToDeleteID">
-                  <button type="button" name="submitBalance" value="{{ value.id|e }}" class="showDetailedBalance" data-toggle="modal" data-target="#myModal"><i class="icon-trash-empty"></i>
-                  </button>
-                  
-               </td>
-            
-            
+               <td><button type="button" class="btn btn-danger showDetailedBalance" data-id="{{ value.id|e }}">Usuń</button></td>
             </tr>
             {% endfor %}
             
@@ -275,8 +268,8 @@ $(document).ready(function(){
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                </div>
                <div class="modal-body">
-                  <h4>Czy na pewno chcesz usunąć wpis? {{ id }}</h4>
-                  
+                  <h4>Czy na pewno chcesz usunąć wpis?</h4>
+                  <input type="text" name="dataid" id="dataid" value="">
                </div>
                <div class="modal-footer">
                   <button formaction="/balance/detailedBalance" name="submitBalance" value="submitBalance" type="submit"
@@ -336,7 +329,11 @@ $(document).ready(function(){
    
       $(document).ready(function(){
          $(".showDetailedBalance").click(function(){
-          $('.modal').modal('show');
+            
+            var ids = $(this).attr('data-id');
+            $('#dataid').val( ids );
+            $('#myModal').modal('show');
+
          });
       });
 

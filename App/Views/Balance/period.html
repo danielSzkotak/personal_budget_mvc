@@ -218,10 +218,7 @@ $(document).ready(function(){
                   </div>
                </div>
                <button formaction="/balance/balance" type="submit" name="submitBalance" value="submitBalance" class="btn btn-light p-4" id="displayBalance">Pokaż
-                  bilans</button>
-               <button formaction="/balance/detailedBalance" type="submit" name="submitBalance" value="submitBalance" class="btn btn-warning p-4" id="submit-form">Edytuj wpisy</button>
-
-            </form>
+                  bilans</button>      
          </div>
       </div>
    </div>
@@ -242,8 +239,10 @@ $(document).ready(function(){
             <h1 id="start">Wyniki dla wybranego okresu</h1>
          </div>
          <div class="col text-end" id="xxx">
-            <label  for="submit-form" tabindex="0" id="detailedBalanceIcon"><span class="detailedIconLabel"></span><i class="icon-th-list"></i></label>
-                
+            <!-- <label  for="submit-form" tabindex="0" id="detailedBalanceIcon"><span class="detailedIconLabel"></span><i class="icon-th-list"></i></label> -->
+            <button formaction="/balance/detailedBalance" type="submit" name="submitBalance" value="submitBalance" class="btn btn-danger" id="submit-form">Edytuj wpisy</button>
+
+         </form>
          </div>
       </div>
       {% endif %}

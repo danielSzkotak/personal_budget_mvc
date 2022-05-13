@@ -128,13 +128,12 @@ class Balance extends Authenticated {
         $balance = new Balance_model($_POST);
         $balancePeriod = $balance->getBalancePeriod();
 
-        var_dump($detailedBalance);
 
-        if (isset($_POST['incomeToDeleteID'])){
-
-            var_dump($_POST['incomeToDeleteID']);
-            $deleteIncome = $detailedBalance->deleteIncome($_POST['incomeToDeleteID']);
-            unset($_POST['incomeToDeleteID']);
+        if (isset($_POST['dataid'])){
+          
+           var_dump($_POST['dataid']);
+            $deleteIncome = $detailedBalance->deleteIncome($_POST['dataid']);
+            unset($_POST['dataid']);
         }  
 
         switch ($balancePeriod) {
