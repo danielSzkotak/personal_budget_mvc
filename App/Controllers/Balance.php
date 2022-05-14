@@ -128,19 +128,15 @@ class Balance extends Authenticated {
 
         if (isset($_POST['dataid'])){
 
-             
             $typeOfEntry = Serviceable::fetchNameFromOptionValue($_POST['dataid']);
             $idToDelete = Serviceable::fetchIDFromOptionValue($_POST['dataid']);
-         
-
+        
             if ($typeOfEntry == 'income'){
               $delete = $detailedBalance->deleteIncome($idToDelete);
             } 
             if ($typeOfEntry == 'expense') {
               $delete = $detailedBalance->deleteExpense($idToDelete);
             }
-
-           // unset($_POST['dataid']);
         }  
 
         switch ($balancePeriod) {
@@ -153,10 +149,10 @@ class Balance extends Authenticated {
               break;
             case "previousMonth":
 
-                
+                $detailedIncomes = $detailedBalance->getPreviousMonthDetailedIncomes($_SESSION['user_id']);
                 $incomesSum = $balance->getPreviousMonthIncomesSum($_SESSION['user_id']);
                 $expensesSum = $balance->getPreviousMonthExpensesSum($_SESSION['user_id']);
-
+                $detailedExpenses = $detailedBalance->getPreviousMonthDetailedExpenses($_SESSION['user_id']);   
               break;
             case "currentYear":
 
@@ -202,7 +198,7 @@ class Balance extends Authenticated {
             'detailedExpenses' => $detailedExpenses,
             'expensesSum' => $expensesSum,
             'periods' => $periods,
-            //'balancePeriod' => $balancePeriod,
+            'balancePeriod' => $balancePeriod
             //'balanceSum' => $balanceSum,
             //'startDate' => $_POST['startDate'],
             //'endDate' => $_POST['endDate']
