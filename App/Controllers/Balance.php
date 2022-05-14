@@ -162,8 +162,9 @@ class Balance extends Authenticated {
              
               break;
             case "non_standard_period":
-              
+                $detailedIncomes = $detailedBalance->getCustomDatesDetailedIncomes($_SESSION  ['user_id'], $_POST['startDate'], $_POST['endDate']);
                 $incomesSum = $balance->getCustomDatesIncomesSum($_SESSION['user_id'], $_POST['startDate'], $_POST['endDate']);
+                $detailedExpenses = $detailedBalance->getCustomDatesDetailedExpenses($_SESSION['user_id'], $_POST['startDate'], $_POST['endDate']); 
                 $expensesSum = $balance->getCustomDatesExpensesSum($_SESSION['user_id'], $_POST['startDate'], $_POST['endDate']);
 
                 break;
@@ -199,10 +200,10 @@ class Balance extends Authenticated {
             'detailedExpenses' => $detailedExpenses,
             'expensesSum' => $expensesSum,
             'periods' => $periods,
-            'balancePeriod' => $balancePeriod
+            'balancePeriod' => $balancePeriod,
             //'balanceSum' => $balanceSum,
-            //'startDate' => $_POST['startDate'],
-            //'endDate' => $_POST['endDate']
+            'startDate' => $_POST['startDate'],
+            'endDate' => $_POST['endDate']
         ]);
 
         

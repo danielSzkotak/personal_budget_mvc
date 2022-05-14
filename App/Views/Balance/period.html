@@ -267,7 +267,7 @@ $(document).ready(function(){
                {% endif %}
          </tbody>
          <tr class='bg-light fs-4'>
-            <th>Suma przychodów</th>
+            <th style="width: 21rem;">Suma przychodów</th>
             <th>
                {% for key in incomesSum %}
                {{ key.total|e }}
@@ -298,7 +298,7 @@ $(document).ready(function(){
             {% endif %}
          </tbody>
          <tr class='bg-secondary fs-4'>
-            <th>Suma wydatków&nbsp;&nbsp;&nbsp;</th>
+            <th style="width: 21rem;">Suma wydatków</th>
             <th>
                {% for key in expensesSum %}
                {{ key.total|e }}
@@ -323,7 +323,7 @@ $(document).ready(function(){
          </thead>
          <tbody class="fs-4">
             <tr class="bg-info">
-               <th>Twój bilans&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+               <th style="width: 21rem;">Twój bilans</th>
                <th>{{ balanceSum }} zł</th>
             </tr>
          </tbody>
