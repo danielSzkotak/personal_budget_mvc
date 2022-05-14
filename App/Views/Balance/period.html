@@ -239,9 +239,7 @@ $(document).ready(function(){
             <h1 id="start">Wyniki dla wybranego okresu</h1>
          </div>
          <div class="col text-end" id="xxx">
-            <!-- <label  for="submit-form" tabindex="0" id="detailedBalanceIcon"><span class="detailedIconLabel"></span><i class="icon-th-list"></i></label> -->
             <button formaction="/balance/detailedBalance" type="submit" name="submitBalance" value="submitBalance" class="btn btn-danger" id="submit-form">Edytuj wpisy</button>
-
          </form>
          </div>
       </div>
@@ -259,14 +257,14 @@ $(document).ready(function(){
             </tr>
          </thead>
          <tbody class="fs-5">
-            <tr>
-               {% if incomes %}
+            {% if incomes %}
                {% for key, value in incomes %}
+            <tr>
                <td>{{ value.name|e }}</td>
                <td>{{ value.category_sum|e }}</td>
             </tr>
-            {% endfor %}
-            {% endif %}
+               {% endfor %}
+               {% endif %}
          </tbody>
          <tr class='bg-light fs-4'>
             <th>Suma przychodów</th>
@@ -300,7 +298,7 @@ $(document).ready(function(){
             {% endif %}
          </tbody>
          <tr class='bg-secondary fs-4'>
-            <th>Suma wydatków</th>
+            <th>Suma wydatków&nbsp;&nbsp;&nbsp;</th>
             <th>
                {% for key in expensesSum %}
                {{ key.total|e }}
@@ -325,7 +323,7 @@ $(document).ready(function(){
          </thead>
          <tbody class="fs-4">
             <tr class="bg-info">
-               <th>Twój bilans</th>
+               <th>Twój bilans&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                <th>{{ balanceSum }} zł</th>
             </tr>
          </tbody>
@@ -341,8 +339,8 @@ $(document).ready(function(){
          </div>
       </div>
 
-   {% endif %}
-   {% endif %}
+     {% endif %}
+     {% endif %}
    </div>
 </section>
 

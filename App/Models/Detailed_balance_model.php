@@ -52,7 +52,41 @@ use PDO;
 
    }
 
-     
+   public function getCurrentMonthDetailedExpenses($userID){
+
+    $firstDayOfTheMonth = date('Y-m-01');
+    $lastDayOfTheMonth = date('Y-m-t');
+
+    $sql = "SELECT expenses.id, expenses_category_assigned_to_users.name, expenses.amount, expenses.date_of_expense FROM expenses_category_assigned_to_users, expenses WHERE (expenses.date_of_expense BETWEEN '$firstDayOfTheMonth' AND '$lastDayOfTheMonth') AND (expenses_category_assigned_to_users.user_id=:userID) AND (expenses_category_assigned_to_users.user_id = expenses.user_id) AND (expenses.expense_category_assigned_to_user_id=expenses_category_assigned_to_users.id) ORDER BY expenses.amount DESC;";
+
+
+    $db = static::getDB();
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':userID', $userID, PDO::PARAM_INT);
+
+    $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+    $stmt->execute();
+
+    return $stmt->fetchAll();
+
+ }
+
+ public function deleteExpense($expenseID){
+
+    $sql = "DELETE FROM expenses WHERE expenses.id=:expenseID";
+
+    $db = static::getDB();
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':expenseID', $expenseID, PDO::PARAM_INT);
+
+    $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+    $stmt->execute();
+
+    return $stmt->fetchAll();
+
+ } 
 }
 
   

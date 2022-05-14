@@ -33,13 +33,11 @@ class Balance extends Authenticated {
         if(isset($_POST['submitBalance'])){
 
         $balance = new Balance_model($_POST);
-
         $balancePeriod = $balance->getBalancePeriod();
 
         switch ($balancePeriod) {
             case "currentMonth":
 
-                //$detailedIncomes = $balance->getCurrentMonthDetailedIncomes($_SESSION['user_id']);
                 $incomes = $balance->getCurrentMonthIncomesBalance($_SESSION['user_id']);
                 $incomesSum = $balance->getCurrentMonthIncomesSum($_SESSION['user_id']);
                 $expenses = $balance->getCurrentMonthExpensesBalance($_SESSION['user_id']);
@@ -99,7 +97,6 @@ class Balance extends Authenticated {
 
         View::renderTemplate('Balance/period.html',[
             'incomes' => $incomes,
-            //'detailedIncomes' => $detailedIncomes,
             'incomesSum' => $incomesSum,
             'expenses' => $expenses,
             'expensesSum' => $expensesSum,
@@ -130,17 +127,28 @@ class Balance extends Authenticated {
 
 
         if (isset($_POST['dataid'])){
-          
-           var_dump($_POST['dataid']);
-            $deleteIncome = $detailedBalance->deleteIncome($_POST['dataid']);
-            unset($_POST['dataid']);
+
+             
+            $typeOfEntry = Serviceable::fetchNameFromOptionValue($_POST['dataid']);
+            $idToDelete = Serviceable::fetchIDFromOptionValue($_POST['dataid']);
+         
+
+            if ($typeOfEntry == 'income'){
+              $delete = $detailedBalance->deleteIncome($idToDelete);
+            } 
+            if ($typeOfEntry == 'expense') {
+              $delete = $detailedBalance->deleteExpense($idToDelete);
+            }
+
+           // unset($_POST['dataid']);
         }  
 
         switch ($balancePeriod) {
             case "currentMonth":
 
                 $detailedIncomes = $detailedBalance->getCurrentMonthDetailedIncomes($_SESSION['user_id']);
-                $incomesSum = $balance->getCurrentMonthIncomesSum($_SESSION['user_id']);          
+                $incomesSum = $balance->getCurrentMonthIncomesSum($_SESSION['user_id']);
+                $detailedExpenses = $detailedBalance->getCurrentMonthDetailedExpenses($_SESSION['user_id']);          
                 $expensesSum = $balance->getCurrentMonthExpensesSum($_SESSION['user_id']);
               break;
             case "previousMonth":
@@ -191,6 +199,7 @@ class Balance extends Authenticated {
            
             'detailedIncomes' => $detailedIncomes,
             'incomesSum' => $incomesSum,
+            'detailedExpenses' => $detailedExpenses,
             'expensesSum' => $expensesSum,
             'periods' => $periods,
             //'balancePeriod' => $balancePeriod,
