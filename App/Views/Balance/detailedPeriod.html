@@ -97,6 +97,7 @@ $.validator.addMethod('validDates2',
 
 
 $(document).ready(function(){
+
   $('#addIncomeForm').validate({
       rules: {
          startDate: { 
@@ -120,16 +121,9 @@ $(document).ready(function(){
           }  
          
       }
-  });      
+  });  
   
 });
-
-
-
-   
-
-  
-
 
  </script>
 
@@ -166,10 +160,10 @@ $(document).ready(function(){
          </div>
          <div class="col ms-lg-5 mt-5 mt-lg-0">
             <header>
-               <h1>Przeglądaj bilans</h1>
+               <h1 class="text-start">Przeglądaj bilans</h1>
             </header>
 
-            <form method="POST" class="needs-validation" id="addIncomeForm" novalidate>
+            <form action="/balance/balance" method="POST" class="needs-validation" id="addIncomeForm" novalidate>
 
                <div class="mb-3 mb-4">
                   <label for="selectBalancePeriod" class="form-label">Wybierz okres</label>
@@ -217,8 +211,8 @@ $(document).ready(function(){
                      <p class="mt-3 text-danger" id="wrongDates"></p>
                   </div>
                </div>
-               <button formaction="/balance/balance" type="submit" name="submitBalance" value="submitBalance" class="btn btn-light p-4" id="displayBalance">Pokaż
-                  bilans</button>      
+               <button type="submit" name="submitBalance" value="submitBalance" class="btn btn-light p-4">Pokaż bilans</button>   
+                             
          </div>
       </div>
    </div>
@@ -227,120 +221,126 @@ $(document).ready(function(){
 <section>
 
    <!-- Creating balance table -->
-   <div class="container-xxl mt-5" id="balanceContainer">
+   <div class="container mt-5 ps-1" id="balanceContainer">
 
-      {% if (incomes is defined) and (expenses is defined) %}
-      {% if (incomes is empty) and (expenses is empty) %}
-      <h1 id="box">Brak wyników dla wybranego okresu</h1>
+      {% if detailedIncomes is defined %}
+      {% if detailedIncomes is empty %}
+      <h2 class="mb-4">Brak przychodów do edycji</h2>
       {% else %}
+       
+      <h2 class="mb-4">Przychody</h2>
     
-      <div class="row align-items-center">
-         <div class="container-fluid">
-            <h1 id="start">Wyniki dla wybranego okresu</h1>
-         </div>
-         <div class="col text-end" id="xxx">
-            <button formaction="/balance/detailedBalance" type="submit" name="submitBalance" value="submitBalance" class="btn btn-danger" id="submit-form">Edytuj wpisy</button>
-         </form>
-         </div>
-      </div>
-      {% endif %}
-      {% endif %}
-
-      {% if incomes is defined %}
-      {% if incomes is not empty %}
-
-      <table class="table table-striped mb-5">
-         <thead class="fs-4">
-            <tr>
-               <th scope="col">Przychody</th>
-               <th scope="col">Suma [zł]</th>
-            </tr>
-         </thead>
-         <tbody class="fs-5">
-            {% if incomes %}
-               {% for key, value in incomes %}
-            <tr>
-               <td>{{ value.name|e }}</td>
-               <td>{{ value.category_sum|e }}</td>
-            </tr>
-               {% endfor %}
-               {% endif %}
-         </tbody>
-         <tr class='bg-light fs-4'>
-            <th style="width: 21rem;">Suma przychodów</th>
-            <th>
-               {% for key in incomesSum %}
-               {{ key.total|e }}
-               {% endfor %}
-            </th>
-         </tr>
-      </table>
-      {% endif %}
-      {% endif %}
-
-      {% if expenses is defined %}
-      {% if expenses is not empty %}
-      <table class="table table-striped mb-5">
-         <thead class="fs-4">
-            <tr>
-               <th scope="col">Wydatki</th>
-               <th scope="col">Suma [zł]</th>
-            </tr>
-         </thead>
-         <tbody class="fs-5">
-            <tr>
-               {% if expenses %}
-               {% for key, value in expenses %}
-               <td>{{ value.name|e }}</td>
-               <td>{{ value.category_sum|e }}</td>
-            </tr>
-            {% endfor %}
-            {% endif %}
-         </tbody>
-         <tr class='bg-secondary fs-4'>
-            <th style="width: 21rem;">Suma wydatków</th>
-            <th>
-               {% for key in expensesSum %}
-               {{ key.total|e }}
-               {% endfor %}
-            </th>
-         </tr>
-      </table>
-      {% endif %}
-      {% endif %}
-     
-      {% if balanceSum is defined %}
-      {% if balanceSum != null %}
-      <header>
-         <h1 class="text-start">Bilans</h1>
-      </header>
-      <table class="table mb-5">
+      <table class="table table-striped mb-0">
          <thead>
             <tr>
-               <th></th>
-               <th></th>
+               <th scope="col">Id</th>
+               <th scope="col">Kategoria</th>
+               <th scope="col">Kwota</th>
+               <th scope="col">Data</th>
+             
+            </tr>  
+         </thead>
+         <tbody>          
+            {% for key, value in detailedIncomes %}
+            <tr> 
+               <td style="width: 4rem;">{{ value.id|e }} </td> 
+               <td style="width: 17rem;">{{ value.name|e }}</td>
+               <td style="width: 20rem;">{{ value.amount|e }}</td>
+               <td>{{ value.date_of_income|e }}</td>
+               <td><button type="button" class="btn btn-danger showDetailedBalance" data-id="{{ value.id|e }}|income">Usuń</button></td>
             </tr>
+            {% endfor %}
+              
+         </tbody>
+      </table>
+      
+      <table class="table mb-5 mt-0 pt-0">
+         <thead> 
          </thead>
          <tbody class="fs-4">
-            <tr class="bg-info">
-               <th style="width: 21rem;">Twój bilans</th>
-               <th>{{ balanceSum }} zł</th>
+            <tr class="bg-light">
+               <th style="width: 21rem;">Suma przychodów</th>
+               {% for key in incomesSum %}
+               <th>{{ key.total|e }} zł</th>
+               {% endfor %}
             </tr>
          </tbody>
       </table>
 
-      <div class="row">
-         <div class="col">
-            <div id="piechart1"></div>
+   {% endif %}
+   {% endif %}
+
+
+   {% if detailedExpenses is defined %}
+   {% if detailedExpenses is empty %}
+   <h2 class="mb-4">Brak wydatków do edycji</h2>
+   {% else %}
+    
+   <h2 class="mb-4">Wydatki</h2>
+ 
+   <table class="table table-striped mb-0">
+      <thead>
+         <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Kategoria</th>
+            <th scope="col">Kwota</th>
+            <th scope="col">Data</th>
+          
+         </tr>  
+      </thead>
+      <tbody>          
+         {% for key, value in detailedExpenses %}
+         <tr> 
+            <td style="width: 4rem;">{{ value.id|e }} </td> 
+            <td style="width: 17rem;">{{ value.name|e }}</td>
+            <td style="width: 20rem;">{{ value.amount|e }}</td>
+            <td>{{ value.date_of_expense|e }}</td>
+            <td><button type="button" class="btn btn-danger showDetailedBalance" data-id="{{ value.id|e }}|expense">Usuń</button></td>
+         </tr>
+         {% endfor %} 
+           
+      </tbody>
+   </table>
+   
+   <table class="table mb-5 mt-0 pt-0">
+      <thead> 
+      </thead>
+      <tbody class="fs-4">
+         <tr class="bg-secondary">
+            <th style="width: 21rem;">Suma wydatków</th>
+            {% for key in expensesSum %}
+            <th>{{ key.total|e }} zł</th>
+            {% endfor %}
+         </tr>
+      </tbody>
+   </table>
+
+{% endif %}
+{% endif %}
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Usuwanie wpisu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
          </div>
-      
-         <div class="col">
-            <div id="piechart2"></div>
+         <div class="modal-body">
+            <h4>Czy na pewno chcesz usunąć wpis?</h4>
+            <input type="text" name="dataid" id="dataid" value="">
+         </div>
+         <div class="modal-footer">
+            <button formaction="/balance/detailedBalance" name="submitBalance" value="submitBalance" type="submit"
+               class="btn btn-danger" data-bs-toggle="modal">Usuń</button>
          </div>
       </div>
+   </div>
+</div>
+<!-- end modal -->
 
-     {% endif %}
-     {% endif %}
+ </form> 
+
    </div>
 </section>
 
@@ -352,8 +352,21 @@ $(document).ready(function(){
       // var element = document.querySelector("#start");
       // element.scrollIntoView();
       document.documentElement.scrollTop = document.body.scrollTop = 220;
-   
+      
    })();
+
+   
+      $(document).ready(function(){
+         $(".showDetailedBalance").click(function(){
+            
+            var ids = $(this).attr('data-id');
+            $('#dataid').val( ids );
+            $('#myModal').modal('show');
+
+         });
+      });
+
+                 
 </script>
 
 {% endblock %}

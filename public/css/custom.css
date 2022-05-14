@@ -140,13 +140,6 @@ label{
    opacity: 1;
 }
 
-table th{
-   width: 60%;
-}
-
-#showBalanceContainer{
-   /* display: none; */
-}
 
 .selectPeriod {
    display: none;
@@ -239,4 +232,17 @@ table th{
    -webkit-transform: rotate(45deg);
    -ms-transform: rotate(45deg);
    transform: rotate(45deg);
+ }
+
+ #detailedBalanceIcon{
+    cursor: pointer;
+   
+ }
+
+ .showDetailedBalance{
+    border: none;
+ }
+
+ .icon-th-list{
+    color:#ebbb3a;
  }
