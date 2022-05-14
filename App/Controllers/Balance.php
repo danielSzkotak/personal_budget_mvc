@@ -155,8 +155,9 @@ class Balance extends Authenticated {
                 $detailedExpenses = $detailedBalance->getPreviousMonthDetailedExpenses($_SESSION['user_id']);   
               break;
             case "currentYear":
-
+                $detailedIncomes = $detailedBalance->getCurrentYearDetailedIncomes($_SESSION  ['user_id']);
                 $incomesSum = $balance->getCurrentYearIncomesSum($_SESSION['user_id']);
+                $detailedExpenses = $detailedBalance->getCurrentYearDetailedExpenses($_SESSION['user_id']);
                 $expensesSum = $balance->getCurrentYearExpensesSum($_SESSION['user_id']);
              
               break;
