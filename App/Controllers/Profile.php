@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Auth;
 use \Core\View;
 use \App\Models\Categories;
+use App\Models\Profile_model;
 use App\Serviceable;
 
 
@@ -23,10 +24,12 @@ class Profile extends Authenticated {
     public function showProfileAction()
     {
         
-        // $incomeCat = Categories::getIncomeCategories(Auth::getUser()->id);
-        // $_SESSION['income_cat'] = $incomeCat;
-
-        View::renderTemplate('Profile/profile.html');
+        $incomeCat = Categories::getIncomeCategories(Auth::getUser()->id);
+        $_SESSION['income_cat'] = $incomeCat;
+     
+        View::renderTemplate('Profile/profile.html',[
+            'income_cat' => $incomeCat
+        ]);
     }
 
     /**
@@ -34,28 +37,20 @@ class Profile extends Authenticated {
      *
      * @return void
      */
-    public function addCategoryAction()
+    public function editCategoryNameAction()
     {
    
-        if(isset($_POST["submitIncome"])){
+        if(isset($_POST["submitCategory"])){
 
-            $_SESSION['income_submitted'] = true;
 
-            $amount = Serviceable::formatAmountToModal($_POST["incomeAmount"]);
-            $date = Serviceable::formatDateToModal($_POST["incomeDate"]);
-            $categoryID = Serviceable::fetchIDFromOptionValue($_POST["incomeCategory"]);
-            $categoryName = Serviceable::fetchNameFromOptionValue($_POST["incomeCategory"]);
-
-            $income = new Income_model($_POST["incomeAmount"], $_POST["incomeDate"], $categoryID, $_SESSION['user_id']);
-            $income->addIncome();
-            
-            View::renderTemplate('Income/addIncome.html', [
-                'income_amount' => $amount.' zł',
-                'income_date' => $date,
-                'income_cat' => $categoryName
+            $category = new Profile_model($_POST);
+            $category->updateIncomeCategoryName();
+            $incomeCat = Categories::getIncomeCategories(Auth::getUser()->id);
+        
+            View::renderTemplate('Profile/profile.html', [
+                'income_cat' => $incomeCat
             ]);
 
-            unset( $_SESSION['income_submitted']);
         }
     }
 

@@ -6,7 +6,6 @@
 
 {% block footer %}
 
-{% endblock %}
 
 
 
@@ -20,14 +19,6 @@
                {% if currentUser %}
                   <span><h1 class='text-start'>Witaj <span class='text-success'>{{currentUser.username}}</h1></span>
                {% endif %} 
-
-               {% if session.income_submitted %}
-                 <script>
-                  $(document).ready(function(){
-                     $('#exampleModal').modal('show');
-                  });
-                  </script>
-               {% endif %}
 
              </header>
              <div class="row">
@@ -46,63 +37,55 @@
           </div>
           <div class="col ms-lg-5 mt-5 mt-lg-0">
              <header>
-                <h1 class="text-start">Edytuj kategorię</h1>
+                <h1 class="text-start">Edycja kategorii</h1>
              </header>
 
-             <form action="/income/add" method="POST" class="needs-validation" id="addIncomeForm" novalidate>
-                <div class="mb-3 mt-5">
-                   <label for="inputIncome1" class="form-label">Podaj kwotę przychodu</label>
-                   <input type="number" name="incomeAmount" class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputExpense1" step="any" min="0.01">
-                </div>
+             <!-- <form action="/income/add" method="POST" class="needs-validation" id="addIncomeForm" novalidate> -->
+                
                 <div class="mb-3">
-                   <label for="inputDate1" class="form-label">Wprowadź datę przychodu</label>
-                   <input type="date" required name="incomeDate" value="" class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputDateIncome" aria-describedby="emailHelp">
-                  
-                </div>
-                <div class="mb-3">
-                   <label for="selectIncomeCategory" class="form-label">Wybierz kategorię</label>
+                   <label for="selectIncomeCategory" class="form-label">Wybierz kategorię przychodu do edycji</label>
                    <select name="incomeCategory"  class="form-select fs-5 pt-3 pb-3" id="selectedIncomeCategory" aria-label="Default select example">
 
-                      {% if session.income_cat %} 
-                        {% for key, value in session.income_cat %}
+                      {% if income_cat %} 
+                        {% for key, value in income_cat %}
                            <option value="{{ value.id|e }}|{{ value.name|e }}">{{ value.name|e }}</option>
                         {% endfor %}
                       {% endif %}                      
 
                    </select>
                 </div>
-
                 
-               <!-- Modal -->
-               <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <td><button type="button" class="btn btn-light p-4 categoryEdit" data-id="dupencjka">Zmień nazwę</button></td>
+
+                <!-- Modal -->
+               <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
                      <div class="modal-content">
                         <div class="modal-header">
-                           <h4 class="modal-title text-success" id="exampleModalLabel">Dodano przychód</h5>
+                           <h5 class="modal-title" id="exampleModalLabel">Zmiana nazwy kategorii</h5>
                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                           <h5 class="text-start">Data: {{income_date}}</h5>
-                           <h5 class="text-start">Kategoria: {{income_cat}}</h5>
-                           <h5 class="text-start">Kwota: {{income_amount}}</h5>                          
+                           <h4></h4>
+
+                           <form action="/profile/editCategoryName" method="POST" class="needs-validation" id="editCategoryForm" novalidate>
+                           <input type="text" class="form-control fs-5 pt-3 pb-3 shadow-none mb-2" name="categoryName" id="categoryName" value="" autofocus>
+                           <input type="hidden" name="categoryID" id="categoryID">
+                           
                         </div>
                         <div class="modal-footer">
-                           <button type="button" class="btn btn-success" data-bs-dismiss="modal">Zamknij</button>                
+                           <button type="submit" name="submitCategory" value="submitCategory" 
+                              class="btn btn-success" data-bs-toggle="modal">Zapisz</button>
                         </div>
+                     </form>
+
                      </div>
                   </div>
-               </div>              
-                <!-- End of Modal -->
+               </div>
+               <!-- End of Modal -->
                 
-                <button type="submit" name="submitIncome" id="myButton" class="btn btn-light p-3" data-bs-toggle="modal">Dodaj przychód</button>
-                
-             </form>
+     
 
-             <script>
-               document.addEventListener("DOMContentLoaded", function(event) { 
-                  document.getElementById('inputDateIncome').valueAsDate = new Date();
-               });
-             </script>
 
           </div>
        </div>
@@ -111,6 +94,33 @@
 <!-- end of main section -->
 
 <script>
+
+$(document).ready(function(){
+
+         $(".categoryEdit").click(function(){
+
+            
+            var selectedIncomeCategory = $("#selectedIncomeCategory").val();
+            
+            $("select.form-select").change(function(){
+               selectedIncomeCategory = $(this).children("option:selected").val();
+            });
+
+            var categoryName = selectedIncomeCategory.split("|");
+            
+            $('#categoryName').val( categoryName[1] );
+            $('#categoryID').val( categoryName[0] );
+            
+            $('#myModal').modal('show');
+           
+            $('#myModal').on('shown.bs.modal', function() {
+               $('#categoryName').focus();
+            });
+
+         });
+});
+
+
     //Jquery Validation
 $.validator.setDefaults({
   errorClass: 'invalid-feedback',
@@ -165,3 +175,5 @@ $(document).ready(function(){
 </script>
 
 {% endblock %}
+{% endblock %}
+
