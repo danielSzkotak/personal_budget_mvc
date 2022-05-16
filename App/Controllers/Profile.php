@@ -58,10 +58,12 @@ class Profile extends Authenticated {
             
             $incomeCat = Categories::getIncomeCategories(Auth::getUser()->id);
             $expenseCat = Categories::getExpenseCategories(Auth::getUser()->id);
+
         
             View::renderTemplate('Profile/profile.html', [
                 'income_cat' => $incomeCat,
-                'expense_cat' => $expenseCat
+                'expense_cat' => $expenseCat,
+                'category_name' =>$category->categoryName
             ]);
 
         }

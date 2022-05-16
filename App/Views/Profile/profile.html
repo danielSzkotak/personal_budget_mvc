@@ -46,14 +46,22 @@
 
                       {% if income_cat %} 
                         {% for key, value in income_cat %}
-                           <option value="{{ value.id|e }}|{{ value.name|e }}">{{ value.name|e }}</option>
+                           <option value="{{ value.id|e }}|{{ value.name|e }}"
+                           
+                           {% if category_name is defined %}
+                           {% if category_name == value.name|e %}
+                                 selected
+                           {% endif %}
+                           {% endif %}
+                           
+                           >{{ value.name|e }}</option>
                         {% endfor %}
                       {% endif %}                      
 
                    </select>
                 </div>
                 
-                <td><button type="button" class="btn btn-light mb-4 p-2 incomeCategoryEdit" data-id="">Zmień nazwę</button></td>
+                <td><button type="button" id="incomeButton" class="btn btn-light mb-4 p-2 incomeCategoryEdit" data-id="">Zmień nazwę</button></td>
 
                 <div class="mb-3">
                   <label for="selectExpenseCategory" class="form-label">Wybierz kategorię rozchodu do edycji</label>
@@ -61,14 +69,23 @@
 
                      {% if expense_cat %} 
                        {% for key, value in expense_cat %}
-                          <option value="{{ value.id|e }}|{{ value.name|e }}">{{ value.name|e }}</option>
+                          <option value="{{ value.id|e }}|{{ value.name|e }}" 
+                          
+                           {% if category_name is defined %}
+                           {% if category_name == value.name|e %}
+                                 selected
+                           {% endif %}
+                           {% endif %}
+                          
+                          >{{ value.name|e }}</option>
                        {% endfor %}
-                     {% endif %}                      
-
+                     {% endif %}  
+                     
                   </select>
                </div>
+
                
-               <td><button type="button" class="btn btn-light p-2 expenseCategoryEdit" data-id="">Zmień nazwę</button></td>
+               <td><button type="button" id="expenseButton" class="btn btn-light p-2 expenseCategoryEdit" data-id="">Zmień nazwę</button></td>
 
                 <!-- Modal -->
                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -112,49 +129,35 @@
 
 $(document).ready(function(){
 
-         $(".incomeCategoryEdit").click(function(){
             
-            var selectedIncomeCategory = $("#selectedIncomeCategory").val();
-          
-            $("#selectedIncomeCategory").change(function(){
-               selectedIncomeCategory = $(this).children("option:selected").val();
-            });
+         $("button").click(function(e) {
 
-            var categoryName = selectedIncomeCategory.split("|");
-            
-            $('#categoryName').val( categoryName[1] );
-            $('#categoryID').val( categoryName[0] );
-            $('#categoryType').val('income');
-            
-            $('#myModal').modal('show');
-           
-            $('#myModal').on('shown.bs.modal', function() {
-               $('#categoryName').focus();
-            });
+            if(this.id == 'incomeButton'){
 
-         });
+               var selectedIncomeCategory = $("#selectedIncomeCategory").val();
+               var categoryName = selectedIncomeCategory.split("|");
+               $('#categoryType').val('income');
+               
 
-         $(".expenseCategoryEdit").click(function(){
-            
-            var selectedExpenseCategory = $("#selectedExpenseCategory").val();
-          
-            $("#selectedExpenseCategory").change(function(){
-               selectedExpenseCategory = $(this).children("option:selected").val();
-            });
+            } else if(this.id == 'expenseButton'){
+               var selectedExpenseCategory = $("#selectedExpenseCategory").val();
+               var categoryName = selectedExpenseCategory.split("|");
+               $('#categoryType').val('expense');
 
-            var categoryName = selectedExpenseCategory.split("|");
+            }
             
-            $('#categoryName').val( categoryName[1] );
-            $('#categoryID').val( categoryName[0] );
-            $('#categoryType').val('expense');
+               $('#categoryName').val( categoryName[1] );
+               $('#categoryID').val( categoryName[0] );
+               
+               
+               $('#myModal').modal('show');
             
-            $('#myModal').modal('show');
-           
-            $('#myModal').on('shown.bs.modal', function() {
-               $('#categoryName').focus();
-            });
-
-         });
+               $('#myModal').on('shown.bs.modal', function() {
+                  $('#categoryName').focus();
+               });
+              
+         })
+      
 });
 
 
