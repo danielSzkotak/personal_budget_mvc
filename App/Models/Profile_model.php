@@ -28,6 +28,20 @@ use PDO;
         $stmt->execute();
     }
 
+    public function updateExpenseCategoryName(){
+
+  
+        $sql = 'UPDATE expenses_category_assigned_to_users SET name = :name WHERE expenses_category_assigned_to_users.id = :categoryID';  
+
+       $db = static::getDB();
+       $stmt = $db->prepare($sql);
+
+       $stmt->bindValue(':name', $this->categoryName, PDO::PARAM_STR);
+       $stmt->bindValue(':categoryID', $this->categoryID, PDO::PARAM_INT);
+
+       $stmt->execute();
+   }
+
    
 }
 

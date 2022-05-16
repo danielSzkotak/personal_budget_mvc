@@ -25,15 +25,18 @@ class Profile extends Authenticated {
     {
         
         $incomeCat = Categories::getIncomeCategories(Auth::getUser()->id);
-        $_SESSION['income_cat'] = $incomeCat;
+        $expenseCat = Categories::getExpenseCategories(Auth::getUser()->id);
+        //$_SESSION['income_cat'] = $incomeCat;
+        //$_SESSION['expense_cat'] = $expenseCat;
      
         View::renderTemplate('Profile/profile.html',[
-            'income_cat' => $incomeCat
+            'income_cat' => $incomeCat,
+            'expense_cat' => $expenseCat
         ]);
     }
 
     /**
-     * Add income
+     * edit Category Name
      *
      * @return void
      */
@@ -44,11 +47,21 @@ class Profile extends Authenticated {
 
 
             $category = new Profile_model($_POST);
-            $category->updateIncomeCategoryName();
+
+            if($category->categoryType == 'income'){
+                $category->updateIncomeCategoryName();
+            } elseif ($category->categoryType == 'expense'){
+                $category->updateExpenseCategoryName();
+            } else {
+                exit;
+            }
+            
             $incomeCat = Categories::getIncomeCategories(Auth::getUser()->id);
+            $expenseCat = Categories::getExpenseCategories(Auth::getUser()->id);
         
             View::renderTemplate('Profile/profile.html', [
-                'income_cat' => $incomeCat
+                'income_cat' => $incomeCat,
+                'expense_cat' => $expenseCat
             ]);
 
         }
