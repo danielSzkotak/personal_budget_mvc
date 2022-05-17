@@ -61,7 +61,8 @@
                    </select>
                 </div>
                 
-                <td><button type="button" id="incomeButton" class="btn btn-light mb-4 p-2 incomeCategoryEdit" data-id="">Zmień nazwę</button></td>
+                <button type="button" id="incomeButton" class="btn btn-info mb-4 p-2 incomeCategoryEdit" data-id="">Zmień nazwę</button>
+                <button type="button" id="incomeDeleteButton" class="btn btn-danger mb-4 p-2 incomeCategoryEdit" data-id="">Usuń</button>
 
                 <div class="mb-3">
                   <label for="selectExpenseCategory" class="form-label">Wybierz kategorię rozchodu do edycji</label>
@@ -83,11 +84,12 @@
                      
                   </select>
                </div>
-
                
-               <td><button type="button" id="expenseButton" class="btn btn-light p-2 expenseCategoryEdit" data-id="">Zmień nazwę</button></td>
+               <button type="button" id="expenseButton" class="btn btn-info mb-4 p-2 expenseCategoryEdit" data-id="">Zmień nazwę</button>
+               <button type="button" id="expenseDeleteButton" class="btn btn-danger mb-4 p-2 expenseCategoryEdit" data-id="">Usuń</button>
+             
 
-                <!-- Modal -->
+                <!-- Edit Modal -->
                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
                      <div class="modal-content">
@@ -115,10 +117,37 @@
                   </div>
                </div>
                <!-- End of Modal -->
+
+               <!-- Delete Modal -->
+               <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <h5 class="modal-title" id="exampleModalLabel">Usuwanie kategorii</h5>
+                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                           <h5 class="mb-4">Czy na pewno chcesz usunąć kategorię?</h5>
+                           <p class="fs-2 text-danger" id="categoryToDeleteName"></p>
+
+                           <form action="/profile/deleteCategory" method="POST" class="needs-validation" id="editCategoryForm" novalidate>
+                           
+                           <input type="hidden" name="categoryID" id="categoryToDeleteID">
+                           <input type="hidden" name="categoryType" id="categoryToDeleteType">
+                    
+                        </div>
+                        <div class="modal-footer">
+                           <button type="submit" name="submitDeleteCategory" value="submitDeleteCategory" 
+                              class="btn btn-danger" data-bs-toggle="modal">Usuń</button>
+                        </div>
+                     </form>
+
+                     </div>
+                  </div>
+               </div>
+               <!-- End of Modal -->
                 
      
-
-
           </div>
        </div>
     </div>
@@ -127,37 +156,54 @@
 
 <script>
 
+
 $(document).ready(function(){
 
-            
-         $("button").click(function(e) {
+   $("button").click(function (e) {
 
-            if(this.id == 'incomeButton'){
+      if ((this.id == 'incomeButton') || ((this.id == 'expenseButton'))) {
 
-               var selectedIncomeCategory = $("#selectedIncomeCategory").val();
-               var categoryName = selectedIncomeCategory.split("|");
-               $('#categoryType').val('income');
-               
+         if (this.id == 'incomeButton') {
+            var selectedIncomeCategory = $("#selectedIncomeCategory").val();
+            var categoryName = selectedIncomeCategory.split("|");
+            $('#categoryType').val('income');
 
-            } else if(this.id == 'expenseButton'){
-               var selectedExpenseCategory = $("#selectedExpenseCategory").val();
-               var categoryName = selectedExpenseCategory.split("|");
-               $('#categoryType').val('expense');
+         } else if (this.id == 'expenseButton') {
+            var selectedExpenseCategory = $("#selectedExpenseCategory").val();
+            var categoryName = selectedExpenseCategory.split("|");
+            $('#categoryType').val('expense');
 
-            }
-            
-               $('#categoryName').val( categoryName[1] );
-               $('#categoryID').val( categoryName[0] );
-               
-               
-               $('#myModal').modal('show');
-            
-               $('#myModal').on('shown.bs.modal', function() {
-                  $('#categoryName').focus();
-               });
-              
-         })
-      
+         }
+         $('#categoryName').val(categoryName[1]);
+         $('#categoryID').val(categoryName[0]);
+         $('#myModal').modal('show');
+         $('#myModal').on('shown.bs.modal', function () {
+            $('#categoryName').focus();
+         });
+      }
+
+      if ((this.id == 'incomeDeleteButton') || ((this.id == 'expenseDeleteButton'))) {
+
+         if (this.id == 'incomeDeleteButton') {
+            var selectedIncomeCategory = $("#selectedIncomeCategory").val();
+            var categoryName = selectedIncomeCategory.split("|");
+            $('#categoryToDeleteType').val('income');
+
+         } else if (this.id == 'expenseDeleteButton') {
+            var selectedExpenseCategory = $("#selectedExpenseCategory").val();
+            var categoryName = selectedExpenseCategory.split("|");
+            $('#categoryToDeleteType').val('expense');
+
+         }
+         //$('#categoryName').val(categoryName[1]);
+         $('#categoryToDeleteID').val(categoryName[0]);
+
+         $('#categoryToDeleteName').text(categoryName[1]);
+
+         $('#deleteModal').modal('show');
+      }
+
+   })
 });
 
 

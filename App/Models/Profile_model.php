@@ -42,6 +42,28 @@ use PDO;
        $stmt->execute();
    }
 
+    public function deleteIncomeCategory(){
+
+        $sql = 'DELETE FROM incomes_category_assigned_to_users WHERE incomes_category_assigned_to_users.id = :categoryID';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':categoryID', $this->categoryID, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    public function deleteExpenseCategory(){
+        
+        $sql = 'DELETE FROM expenses_category_assigned_to_users WHERE expenses_category_assigned_to_users.id = :categoryID';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':categoryID', $this->categoryID, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
    
 }
 
