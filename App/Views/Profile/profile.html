@@ -37,7 +37,7 @@
           </div>
           <div class="col ms-lg-5 mt-5 mt-lg-0">
              <header>
-                <h1 class="text-start">Edycja kategorii</h1>
+                <h1 class="text-start">Ustawienia</h1>
              </header>
                 
                 <div class="mb-3">
@@ -63,6 +63,7 @@
                 
                 <button type="button" id="incomeButton" class="btn btn-info mb-4 p-2 incomeCategoryEdit" data-id="">Zmień nazwę</button>
                 <button type="button" id="incomeDeleteButton" class="btn btn-danger mb-4 p-2 incomeCategoryEdit" data-id="">Usuń</button>
+                <button type="button" id="incomeAddButton" class="btn btn-success mb-4 p-2 incomeCategoryEdit" data-id="">Dodaj</button>
 
                 <div class="mb-3">
                   <label for="selectExpenseCategory" class="form-label">Wybierz kategorię rozchodu do edycji</label>
@@ -87,6 +88,7 @@
                
                <button type="button" id="expenseButton" class="btn btn-info mb-4 p-2 expenseCategoryEdit" data-id="">Zmień nazwę</button>
                <button type="button" id="expenseDeleteButton" class="btn btn-danger mb-4 p-2 expenseCategoryEdit" data-id="">Usuń</button>
+               <button type="button" id="expenseAddButton" class="btn btn-success mb-4 p-2 expenseCategoryEdit" data-id="">Dodaj</button>
              
 
                 <!-- Edit Modal -->
@@ -146,6 +148,35 @@
                   </div>
                </div>
                <!-- End of Modal -->
+
+               <!-- Add Modal -->
+               <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <h5 class="modal-title" id="exampleModalLabel">Dodawanie kategorii</h5>
+                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                           <h5 class="mb-4">Wprowadź nazwę nowej kategorii</h5>                  
+
+                           <form action="/profile/addCategory" method="POST" class="needs-validation" id="editCategoryForm" novalidate>
+
+                           <input type="text" class="form-control fs-5 pt-3 pb-3 shadow-none mb-2" name="newCategoryName" id="newCategoryName" value="" autofocus>
+                           <input type="hidden" name="userID" id="userID" value="">
+                           <input type="hidden" name="categoryType" id="categoryToAddType">
+                    
+                        </div>
+                        <div class="modal-footer">
+                           <button type="submit" name="submitAddCategory" value="submitAddCategory" 
+                              class="btn btn-success" data-bs-toggle="modal">Zapisz</button>
+                        </div>
+                     </form>
+
+                     </div>
+                  </div>
+               </div>
+               <!-- End of Modal -->
                 
      
           </div>
@@ -195,12 +226,32 @@ $(document).ready(function(){
             $('#categoryToDeleteType').val('expense');
 
          }
-         //$('#categoryName').val(categoryName[1]);
+   
          $('#categoryToDeleteID').val(categoryName[0]);
-
          $('#categoryToDeleteName').text(categoryName[1]);
-
          $('#deleteModal').modal('show');
+      }
+
+      if ((this.id == 'incomeAddButton') || ((this.id == 'expenseAddButton'))) {
+
+         if (this.id == 'incomeAddButton') {
+            // var selectedIncomeCategory = $("#selectedIncomeCategory").val();
+            // var categoryName = selectedIncomeCategory.split("|");
+            $('#categoryToAddType').val('income');
+
+         } else if (this.id == 'expenseAddButton') {
+            // var selectedExpenseCategory = $("#selectedExpenseCategory").val();
+            // var categoryName = selectedExpenseCategory.split("|");
+            $('#categoryToAddType').val('expense');
+
+         }
+
+         // $('#categoryToDeleteID').val(categoryName[0]);
+         // $('#categoryToDeleteName').text(categoryName[1]);
+         $('#addModal').modal('show');
+         $('#addModal').on('shown.bs.modal', function () {
+            $('#newCategoryName').focus();
+         });
       }
 
    })

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Auth;
 use PDO;
 
 
@@ -63,6 +64,33 @@ use PDO;
         $stmt->bindValue(':categoryID', $this->categoryID, PDO::PARAM_INT);
         $stmt->execute();
     }
+
+    public function addIncomeCategory(){
+
+       $sql = 'INSERT INTO incomes_category_assigned_to_users (user_id, name) VALUES (:userID, :categoryName)';
+
+       $db = static::getDB();
+       $stmt = $db->prepare($sql);
+
+       $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_INT);
+       $stmt->bindValue(':categoryName', $this->newCategoryName, PDO::PARAM_STR);
+
+       $stmt->execute();
+   }
+
+   public function addExpenseCategory(){
+
+    $sql = 'INSERT INTO expenses_category_assigned_to_users (user_id, name) VALUES (:userID, :categoryName)';
+
+    $db = static::getDB();
+    $stmt = $db->prepare($sql);
+
+    $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_INT);
+    $stmt->bindValue(':categoryName', $this->newCategoryName, PDO::PARAM_STR);
+
+    $stmt->execute();
+}
+
 
    
 }

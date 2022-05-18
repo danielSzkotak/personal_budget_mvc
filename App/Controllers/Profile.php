@@ -96,4 +96,32 @@ class Profile extends Authenticated {
         }
     }
 
+    public function addCategoryAction()
+    {
+   
+        if(isset($_POST["submitAddCategory"])){
+
+            $category = new Profile_model($_POST);
+
+            if($category->categoryType == 'income'){
+                $category->addIncomeCategory();
+            } elseif ($category->categoryType == 'expense'){
+                $category->addExpenseCategory();
+            } else {
+                exit;
+            }
+            
+            $incomeCat = Categories::getIncomeCategories(Auth::getUser()->id);
+            $expenseCat = Categories::getExpenseCategories(Auth::getUser()->id);
+
+        
+            View::renderTemplate('Profile/profile.html', [
+                'income_cat' => $incomeCat,
+                'expense_cat' => $expenseCat,
+                'category_name' => $category->newCategoryName
+            ]);
+
+        }
+    }
+
 }
