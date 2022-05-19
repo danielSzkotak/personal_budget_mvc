@@ -77,17 +77,30 @@ class Profile extends Authenticated {
             $category = new Profile_model($_POST);
 
             if($category->categoryType == 'income'){
-                $category->deleteIncomeCategory();
+                
+               if (($category->isIncomeCategoryEmpty())){
+
+                    $category->deleteEmptyIncomeCategory();
+               } else {
+
+                   $category->transportIncomesFromDeletedCategory();
+                   $category->deleteEmptyIncomeCategory();
+               }
+
             } elseif ($category->categoryType == 'expense'){
-                $category->deleteExpenseCategory();
-            } else {
-                exit;
+                if (($category->isExpenseCategoryEmpty())){
+
+                    $category->deleteEmptyExpenseCategory();
+               } else {
+
+                   $category->transportExpensesFromDeletedCategory();
+                   $category->deleteEmptyExpenseCategory();
+               }
             }
             
             $incomeCat = Categories::getIncomeCategories(Auth::getUser()->id);
             $expenseCat = Categories::getExpenseCategories(Auth::getUser()->id);
 
-        
             View::renderTemplate('Profile/profile.html', [
                 'income_cat' => $incomeCat,
                 'expense_cat' => $expenseCat

@@ -43,7 +43,41 @@ use PDO;
        $stmt->execute();
    }
 
-    public function deleteIncomeCategory(){
+   public function isIncomeCategoryEmpty(){
+
+    $sql = 'SELECT * FROM incomes WHERE incomes.income_category_assigned_to_user_id = :categoryID';
+
+    $db = static::getDB();
+    $stmt = $db->prepare($sql);
+
+    $stmt->bindValue(':categoryID', $this->categoryID, PDO::PARAM_INT);
+    $stmt->execute();
+    
+    if (empty($stmt->fetchAll())){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+public function isExpenseCategoryEmpty(){
+
+    $sql = 'SELECT * FROM expenses WHERE expenses.expense_category_assigned_to_user_id = :categoryID';
+
+    $db = static::getDB();
+    $stmt = $db->prepare($sql);
+
+    $stmt->bindValue(':categoryID', $this->categoryID, PDO::PARAM_INT);
+    $stmt->execute();
+    
+    if (empty($stmt->fetchAll())){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+    public function deleteEmptyIncomeCategory(){
 
         $sql = 'DELETE FROM incomes_category_assigned_to_users WHERE incomes_category_assigned_to_users.id = :categoryID';
 
@@ -54,7 +88,7 @@ use PDO;
         $stmt->execute();
     }
 
-    public function deleteExpenseCategory(){
+    public function deleteEmptyExpenseCategory(){
         
         $sql = 'DELETE FROM expenses_category_assigned_to_users WHERE expenses_category_assigned_to_users.id = :categoryID';
 
@@ -78,18 +112,49 @@ use PDO;
        $stmt->execute();
    }
 
-   public function addExpenseCategory(){
+    public function addExpenseCategory()
+    {
 
-    $sql = 'INSERT INTO expenses_category_assigned_to_users (user_id, name) VALUES (:userID, :categoryName)';
+        $sql = 'INSERT INTO expenses_category_assigned_to_users (user_id, name) VALUES (:userID, :categoryName)';
 
-    $db = static::getDB();
-    $stmt = $db->prepare($sql);
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
 
-    $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_INT);
-    $stmt->bindValue(':categoryName', $this->newCategoryName, PDO::PARAM_STR);
+        $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_INT);
+        $stmt->bindValue(':categoryName', $this->newCategoryName, PDO::PARAM_STR);
 
-    $stmt->execute();
-}
+        $stmt->execute();
+    }
+
+    
+
+    public function transportIncomesFromDeletedCategory()
+    {
+
+        $sql = 'UPDATE incomes SET income_category_assigned_to_user_id = :inneID WHERE income_category_assigned_to_user_id = :categoryToDeleteID';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':inneID', Categories::getIncomeInneCategoryID(), PDO::PARAM_INT);
+        $stmt->bindValue(':categoryToDeleteID', $this->categoryID, PDO::PARAM_STR);
+
+        $stmt->execute();
+    }
+
+    public function transportExpensesFromDeletedCategory()
+    {
+
+        $sql = 'UPDATE expenses SET expense_category_assigned_to_user_id = :inneID WHERE expense_category_assigned_to_user_id = :categoryToDeleteID';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':inneID', Categories::getExpenseInneCategoryID(), PDO::PARAM_INT);
+        $stmt->bindValue(':categoryToDeleteID', $this->categoryID, PDO::PARAM_STR);
+
+        $stmt->execute();
+    }
 
 
    

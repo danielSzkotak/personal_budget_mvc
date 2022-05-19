@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use PDO;
+use App\Auth;
 
 /**
  * Remembered Logib model
@@ -59,6 +60,36 @@ use PDO;
 
       return User::findByID($this->user_id);
    }
+
+   public static function getIncomeInneCategoryID(){
+
+    $sql = 'SELECT id FROM incomes_category_assigned_to_users WHERE name = :inne AND user_id = :userID';
+
+    $db = static::getDB();
+    $stmt = $db->prepare($sql);
+
+    $stmt->bindValue(':inne', 'Inne', PDO::PARAM_STR);
+    $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_STR);
+
+    $stmt->execute();
+
+    return $stmt->fetchColumn();
+}
+
+public static function getExpenseInneCategoryID(){
+
+   $sql = 'SELECT id FROM expenses_category_assigned_to_users WHERE name = :inne AND user_id = :userID';
+
+   $db = static::getDB();
+   $stmt = $db->prepare($sql);
+
+   $stmt->bindValue(':inne', 'Inne', PDO::PARAM_STR);
+   $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_STR);
+
+   $stmt->execute();
+
+   return $stmt->fetchColumn();
+}
 
 
  }
