@@ -64,7 +64,7 @@
                 <button type="button" id="incomeAddButton" class="btn btn-success mb-4 p-2 incomeCategoryEdit editButton" data-id="">Dodaj</button>
                 <button type="button" id="incomeDeleteButton" class="btn btn-danger mb-4 p-2 incomeCategoryEdit editButton" data-id="">Usuń</button>
 
-                <div class="mb-3">
+                <div class="mb-3 mt-4">
                   <label for="selectExpenseCategory" class="form-label label-edit">Wybierz kategorię rozchodu do edycji</label>
                   <select name="expenseCategory"  class="form-select fs-5 pt-3 pb-3" id="selectedExpenseCategory" aria-label="Default select example">
 
@@ -89,7 +89,7 @@
                <button type="button" id="expenseAddButton" class="btn btn-success mb-4 p-2 expenseCategoryEdit editButton" data-id="">Dodaj</button>
                <button type="button" id="expenseDeleteButton" class="btn btn-danger mb-4 p-2 expenseCategoryEdit editButton" data-id="">Usuń</button>
 
-               <div class="mb-3">
+               <div class="mb-3 mt-4">
                   <label for="selectPaymentCategory" class="form-label label-edit">Wybierz metodę płatności do edycji</label>
                   <select name="paymentCategory"  class="form-select fs-5 pt-3 pb-3" id="selectedPaymentCategory" aria-label="Default select example">
 
@@ -165,8 +165,32 @@
                     
                         </div>
                         <div class="modal-footer">
+                           <button type="button" name="ok"
+                              class="btn btn-info" data-bs-dismiss="modal">Anuluj</button>
                            <button type="submit" name="submitDeleteCategory" value="submitDeleteCategory" 
                               class="btn btn-danger" data-bs-toggle="modal">Usuń</button>
+                        </div>
+                     </form>
+
+                     </div>
+                  </div>
+               </div>
+               <!-- End of Modal -->
+
+               <!-- Indelible Modal -->
+               <div class="modal fade" id="indelibleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <h5 class="modal-title" id="exampleModalLabel">Usuwanie kategorii</h5>
+                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                           <h5 class="mb-3">Ta kategoria nie może być usunięta</h5>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" name="ok"
+                              class="btn btn-danger" data-bs-dismiss="modal">Zamknij</button>
                         </div>
                      </form>
 
@@ -264,8 +288,14 @@ $(document).ready(function(){
          }
    
          $('#categoryToDeleteID').val(categoryName[0]);
-         $('#categoryToDeleteName').text(categoryName[1]);
-         $('#deleteModal').modal('show');
+         $('#categoryToDeleteName').text(categoryName[1]);     
+
+         if(categoryName[1] == 'Inne'){
+            $('#indelibleModal').modal('show');
+         } else {
+            $('#deleteModal').modal('show');
+         }
+         
       }
 
       if ((this.id == 'incomeAddButton') || ((this.id == 'expenseAddButton')) || ((this.id == 'paymentAddButton'))) {

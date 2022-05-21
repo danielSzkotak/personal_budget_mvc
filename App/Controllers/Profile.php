@@ -79,35 +79,44 @@ class Profile extends Authenticated {
 
             $category = new Profile_model($_POST);
 
-            if($category->categoryType == 'income'){
-                
-               if (($category->isIncomeCategoryEmpty())){
+            if ($category->categoryType == 'income') {
 
-                    $category->deleteEmptyIncomeCategory();
-               } else {
+                if (Categories::getIncomeIndelibleCategoryID() != $category->categoryID) {
+                   
+                    if (($category->isIncomeCategoryEmpty())) {
 
-                   $category->transportIncomesFromDeletedCategory();
-                   $category->deleteEmptyIncomeCategory();
-               }
+                        $category->deleteEmptyIncomeCategory();
+                    } else {
 
+                        $category->transportIncomesFromDeletedCategory();
+                        $category->deleteEmptyIncomeCategory();
+                    }
+                }
+                            
             } elseif ($category->categoryType == 'expense'){
-                if (($category->isExpenseCategoryEmpty())){
 
-                    $category->deleteEmptyExpenseCategory();
-               } else {
+                if (Categories::getExpenseIndelibleCategoryID() != $category->categoryID) {
 
-                   $category->transportExpensesFromDeletedCategory();
-                   $category->deleteEmptyExpenseCategory();
-               }
+                    if (($category->isExpenseCategoryEmpty())) {
+
+                        $category->deleteEmptyExpenseCategory();
+                    } else {
+
+                        $category->transportExpensesFromDeletedCategory();
+                        $category->deleteEmptyExpenseCategory();
+                    }
+                }
             } elseif ($category->categoryType == 'payment'){
 
-                if (($category->isPaymentCategoryEmpty())) {
+                if (Categories::getPaymentIndelibleCategoryID() != $category->categoryID) {
 
-                    $category->deleteEmptyPaymentCategory();
-                   
-                } else {        
-                    $category->transportPaymentFromDeletedCategory();
-                    $category->deleteEmptyPaymentCategory();
+                    if (($category->isPaymentCategoryEmpty())) {
+
+                        $category->deleteEmptyPaymentCategory();
+                    } else {
+                        $category->transportPaymentFromDeletedCategory();
+                        $category->deleteEmptyPaymentCategory();
+                    }
                 }
             }
             

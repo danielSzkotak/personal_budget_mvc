@@ -4,6 +4,7 @@ namespace App\Models;
 
 use PDO;
 use App\Auth;
+use App\Config;
 
 /**
  * Remembered Logib model
@@ -61,14 +62,14 @@ use App\Auth;
       return User::findByID($this->user_id);
    }
 
-   public static function getIncomeInneCategoryID(){
+   public static function getIncomeIndelibleCategoryID(){
 
     $sql = 'SELECT id FROM incomes_category_assigned_to_users WHERE name = :inne AND user_id = :userID';
 
     $db = static::getDB();
     $stmt = $db->prepare($sql);
 
-    $stmt->bindValue(':inne', 'Inne', PDO::PARAM_STR);
+    $stmt->bindValue(':inne', Config::INDELIBLE_CATEGORY, PDO::PARAM_STR);
     $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_STR);
 
     $stmt->execute();
@@ -76,14 +77,14 @@ use App\Auth;
     return $stmt->fetchColumn();
 }
 
-public static function getExpenseInneCategoryID(){
+public static function getExpenseIndelibleCategoryID(){
 
    $sql = 'SELECT id FROM expenses_category_assigned_to_users WHERE name = :inne AND user_id = :userID';
 
    $db = static::getDB();
    $stmt = $db->prepare($sql);
 
-   $stmt->bindValue(':inne', 'Inne', PDO::PARAM_STR);
+   $stmt->bindValue(':inne', Config::INDELIBLE_CATEGORY, PDO::PARAM_STR);
    $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_STR);
 
    $stmt->execute();
@@ -91,14 +92,14 @@ public static function getExpenseInneCategoryID(){
    return $stmt->fetchColumn();
 }
 
-public static function getPaymentInneCategoryID(){
+public static function getPaymentIndelibleCategoryID(){
 
    $sql = 'SELECT id FROM payment_methods_assigned_to_users WHERE name = :inne AND user_id = :userID';
 
    $db = static::getDB();
    $stmt = $db->prepare($sql);
 
-   $stmt->bindValue(':inne', 'Inne', PDO::PARAM_STR);
+   $stmt->bindValue(':inne', Config::INDELIBLE_CATEGORY, PDO::PARAM_STR);
    $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_STR);
 
    $stmt->execute();

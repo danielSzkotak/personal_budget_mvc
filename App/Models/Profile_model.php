@@ -191,7 +191,7 @@ public function isPaymentCategoryEmpty(){
         $db = static::getDB();
         $stmt = $db->prepare($sql);
 
-        $stmt->bindValue(':inneID', Categories::getIncomeInneCategoryID(), PDO::PARAM_INT);
+        $stmt->bindValue(':inneID', Categories::getIncomeIndelibleCategoryID(), PDO::PARAM_INT);
         $stmt->bindValue(':categoryToDeleteID', $this->categoryID, PDO::PARAM_STR);
 
         $stmt->execute();
@@ -205,7 +205,7 @@ public function isPaymentCategoryEmpty(){
         $db = static::getDB();
         $stmt = $db->prepare($sql);
 
-        $stmt->bindValue(':inneID', Categories::getExpenseInneCategoryID(), PDO::PARAM_INT);
+        $stmt->bindValue(':inneID', Categories::getExpenseIndelibleCategoryID(), PDO::PARAM_INT);
         $stmt->bindValue(':categoryToDeleteID', $this->categoryID, PDO::PARAM_STR);
 
         $stmt->execute();
@@ -219,7 +219,7 @@ public function isPaymentCategoryEmpty(){
         $db = static::getDB();
         $stmt = $db->prepare($sql);
 
-        $stmt->bindValue(':inneID', Categories::getPaymentInneCategoryID(), PDO::PARAM_INT);
+        $stmt->bindValue(':inneID', Categories::getPaymentIndelibleCategoryID(), PDO::PARAM_INT);
         $stmt->bindValue(':categoryToDeleteID', $this->categoryID, PDO::PARAM_STR);
 
         $stmt->execute();
