@@ -39,9 +39,8 @@
              <header>
                 <h1 class="text-start">Ustawienia</h1>
              </header>
-                
                 <div class="mb-3">
-                   <label for="selectIncomeCategory" class="form-label">Wybierz kategorię przychodu do edycji</label>
+                   <label for="selectIncomeCategory" class="form-label label-edit">Wybierz kategorię przychodu do edycji</label>
                    <select name="incomeCategory"  class="form-select fs-5 pt-3 pb-3" id="selectedIncomeCategory" aria-label="Default select example">
 
                       {% if income_cat %} 
@@ -61,12 +60,12 @@
                    </select>
                 </div>
                 
-                <button type="button" id="incomeButton" class="btn btn-info mb-4 p-2 incomeCategoryEdit" data-id="">Zmień nazwę</button>
-                <button type="button" id="incomeDeleteButton" class="btn btn-danger mb-4 p-2 incomeCategoryEdit" data-id="">Usuń</button>
-                <button type="button" id="incomeAddButton" class="btn btn-success mb-4 p-2 incomeCategoryEdit" data-id="">Dodaj</button>
+                <button type="button" id="incomeButton" class="btn btn-info mb-4 p-2 incomeCategoryEdit editButton" data-id="">Zmień nazwę</button>
+                <button type="button" id="incomeAddButton" class="btn btn-success mb-4 p-2 incomeCategoryEdit editButton" data-id="">Dodaj</button>
+                <button type="button" id="incomeDeleteButton" class="btn btn-danger mb-4 p-2 incomeCategoryEdit editButton" data-id="">Usuń</button>
 
                 <div class="mb-3">
-                  <label for="selectExpenseCategory" class="form-label">Wybierz kategorię rozchodu do edycji</label>
+                  <label for="selectExpenseCategory" class="form-label label-edit">Wybierz kategorię rozchodu do edycji</label>
                   <select name="expenseCategory"  class="form-select fs-5 pt-3 pb-3" id="selectedExpenseCategory" aria-label="Default select example">
 
                      {% if expense_cat %} 
@@ -86,9 +85,34 @@
                   </select>
                </div>
                
-               <button type="button" id="expenseButton" class="btn btn-info mb-4 p-2 expenseCategoryEdit" data-id="">Zmień nazwę</button>
-               <button type="button" id="expenseDeleteButton" class="btn btn-danger mb-4 p-2 expenseCategoryEdit" data-id="">Usuń</button>
-               <button type="button" id="expenseAddButton" class="btn btn-success mb-4 p-2 expenseCategoryEdit" data-id="">Dodaj</button>
+               <button type="button" id="expenseButton" class="btn btn-info mb-4 p-2 expenseCategoryEdit editButton" data-id="">Zmień nazwę</button>
+               <button type="button" id="expenseAddButton" class="btn btn-success mb-4 p-2 expenseCategoryEdit editButton" data-id="">Dodaj</button>
+               <button type="button" id="expenseDeleteButton" class="btn btn-danger mb-4 p-2 expenseCategoryEdit editButton" data-id="">Usuń</button>
+
+               <div class="mb-3">
+                  <label for="selectPaymentCategory" class="form-label label-edit">Wybierz metodę płatności do edycji</label>
+                  <select name="paymentCategory"  class="form-select fs-5 pt-3 pb-3" id="selectedPaymentCategory" aria-label="Default select example">
+
+                     {% if payment_cat %} 
+                       {% for key, value in payment_cat %}
+                          <option value="{{ value.id|e }}|{{ value.name|e }}" 
+                          
+                           {% if category_name is defined %}
+                           {% if category_name == value.name|e %}
+                                 selected
+                           {% endif %}
+                           {% endif %}
+                          
+                          >{{ value.name|e }}</option>
+                       {% endfor %}
+                     {% endif %}  
+                     
+                  </select>
+               </div>
+               
+               <button type="button" id="paymentButton" class="btn btn-info mb-4 p-2 paymentCategoryEdit editButton" data-id="">Zmień nazwę</button>
+               <button type="button " id="paymentAddButton" class="btn btn-success mb-4 p-2 paymentCategoryEdit editButton" data-id="">Dodaj</button>
+               <button type="button" id="paymentDeleteButton" class="btn btn-danger mb-4 p-2 paymentCategoryEdit editButton" data-id="">Usuń</button>
              
 
                 <!-- Edit Modal -->
@@ -129,10 +153,10 @@
                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                           <h5 class="mb-4">Czy na pewno chcesz usunąć kategorię?</h5>
-                           <p class="fs-2 text-danger" id="categoryToDeleteName"></p>
+                           <h5 class="mb-3">Czy na pewno chcesz usunąć kategorię ?</h5>
+                           <p class="fs-2" id="categoryToDeleteName"></p>
                          
-                           <p class=" fs-5 text-danger mb-0">Wszystkie wpisy z tej kategorii zostaną przeniesione do kategorii Inne!</p>
+                           <p class="mb-0 modal-delete-descrition">Uwaga: Wszystkie wpisy z tej kategorii zostaną przeniesione do kategorii Inne!</p>
 
                            <form action="/profile/deleteCategory" method="POST" class="needs-validation" id="editCategoryForm" novalidate>
                            
@@ -194,7 +218,7 @@ $(document).ready(function(){
 
    $("button").click(function (e) {
 
-      if ((this.id == 'incomeButton') || ((this.id == 'expenseButton'))) {
+      if ((this.id == 'incomeButton') || ((this.id == 'expenseButton')) || ((this.id == 'paymentButton'))) {
 
          if (this.id == 'incomeButton') {
             var selectedIncomeCategory = $("#selectedIncomeCategory").val();
@@ -206,6 +230,11 @@ $(document).ready(function(){
             var categoryName = selectedExpenseCategory.split("|");
             $('#categoryType').val('expense');
 
+         } else if (this.id == 'paymentButton') {
+            var selectedPaymentCategory = $("#selectedPaymentCategory").val();
+            var categoryName = selectedPaymentCategory.split("|");
+            $('#categoryType').val('payment');
+
          }
          $('#categoryName').val(categoryName[1]);
          $('#categoryID').val(categoryName[0]);
@@ -215,7 +244,7 @@ $(document).ready(function(){
          });
       }
 
-      if ((this.id == 'incomeDeleteButton') || ((this.id == 'expenseDeleteButton'))) {
+      if ((this.id == 'incomeDeleteButton') || ((this.id == 'expenseDeleteButton')) || ((this.id == 'paymentDeleteButton'))) {
 
          if (this.id == 'incomeDeleteButton') {
             var selectedIncomeCategory = $("#selectedIncomeCategory").val();
@@ -227,6 +256,11 @@ $(document).ready(function(){
             var categoryName = selectedExpenseCategory.split("|");
             $('#categoryToDeleteType').val('expense');
 
+         } else if (this.id == 'paymentDeleteButton') {
+            var selectedPaymentCategory = $("#selectedPaymentCategory").val();
+            var categoryName = selectedPaymentCategory.split("|");
+            $('#categoryToDeleteType').val('payment');
+
          }
    
          $('#categoryToDeleteID').val(categoryName[0]);
@@ -234,22 +268,20 @@ $(document).ready(function(){
          $('#deleteModal').modal('show');
       }
 
-      if ((this.id == 'incomeAddButton') || ((this.id == 'expenseAddButton'))) {
+      if ((this.id == 'incomeAddButton') || ((this.id == 'expenseAddButton')) || ((this.id == 'paymentAddButton'))) {
 
          if (this.id == 'incomeAddButton') {
-            // var selectedIncomeCategory = $("#selectedIncomeCategory").val();
-            // var categoryName = selectedIncomeCategory.split("|");
+
             $('#categoryToAddType').val('income');
 
          } else if (this.id == 'expenseAddButton') {
-            // var selectedExpenseCategory = $("#selectedExpenseCategory").val();
-            // var categoryName = selectedExpenseCategory.split("|");
+           
             $('#categoryToAddType').val('expense');
 
-         }
-
-         // $('#categoryToDeleteID').val(categoryName[0]);
-         // $('#categoryToDeleteName').text(categoryName[1]);
+         } else if (this.id == 'paymentAddButton') {
+           
+           $('#categoryToAddType').val('payment');
+        }
          $('#addModal').modal('show');
          $('#addModal').on('shown.bs.modal', function () {
             $('#newCategoryName').focus();

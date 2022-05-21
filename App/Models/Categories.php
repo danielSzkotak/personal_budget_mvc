@@ -91,5 +91,20 @@ public static function getExpenseInneCategoryID(){
    return $stmt->fetchColumn();
 }
 
+public static function getPaymentInneCategoryID(){
+
+   $sql = 'SELECT id FROM payment_methods_assigned_to_users WHERE name = :inne AND user_id = :userID';
+
+   $db = static::getDB();
+   $stmt = $db->prepare($sql);
+
+   $stmt->bindValue(':inne', 'Inne', PDO::PARAM_STR);
+   $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_STR);
+
+   $stmt->execute();
+
+   return $stmt->fetchColumn();
+}
+
 
  }

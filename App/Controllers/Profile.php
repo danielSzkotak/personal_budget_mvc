@@ -22,16 +22,15 @@ class Profile extends Authenticated {
      * @return void
      */
     public function showProfileAction()
-    {
-        
+    {   
         $incomeCat = Categories::getIncomeCategories(Auth::getUser()->id);
         $expenseCat = Categories::getExpenseCategories(Auth::getUser()->id);
-        //$_SESSION['income_cat'] = $incomeCat;
-        //$_SESSION['expense_cat'] = $expenseCat;
+        $paymentCat = Categories::getExpensePayment(Auth::getUser()->id);
      
         View::renderTemplate('Profile/profile.html',[
             'income_cat' => $incomeCat,
-            'expense_cat' => $expenseCat
+            'expense_cat' => $expenseCat,
+            'payment_cat' => $paymentCat
         ]);
     }
 
@@ -52,17 +51,21 @@ class Profile extends Authenticated {
                 $category->updateIncomeCategoryName();
             } elseif ($category->categoryType == 'expense'){
                 $category->updateExpenseCategoryName();
-            } else {
+            } elseif ($category->categoryType == 'payment'){
+                $category->updatePaymentCategoryName();
+            } else{
                 exit;
             }
             
             $incomeCat = Categories::getIncomeCategories(Auth::getUser()->id);
             $expenseCat = Categories::getExpenseCategories(Auth::getUser()->id);
+            $paymentCat = Categories::getExpensePayment(Auth::getUser()->id);
 
         
             View::renderTemplate('Profile/profile.html', [
                 'income_cat' => $incomeCat,
                 'expense_cat' => $expenseCat,
+                'payment_cat' => $paymentCat,
                 'category_name' =>$category->categoryName
             ]);
 
@@ -96,14 +99,26 @@ class Profile extends Authenticated {
                    $category->transportExpensesFromDeletedCategory();
                    $category->deleteEmptyExpenseCategory();
                }
+            } elseif ($category->categoryType == 'payment'){
+
+                if (($category->isPaymentCategoryEmpty())) {
+
+                    $category->deleteEmptyPaymentCategory();
+                   
+                } else {        
+                    $category->transportPaymentFromDeletedCategory();
+                    $category->deleteEmptyPaymentCategory();
+                }
             }
             
             $incomeCat = Categories::getIncomeCategories(Auth::getUser()->id);
             $expenseCat = Categories::getExpenseCategories(Auth::getUser()->id);
+            $paymentCat = Categories::getExpensePayment(Auth::getUser()->id);
 
             View::renderTemplate('Profile/profile.html', [
                 'income_cat' => $incomeCat,
-                'expense_cat' => $expenseCat
+                'expense_cat' => $expenseCat,
+                'payment_cat' => $paymentCat
             ]);
 
         }
@@ -120,17 +135,21 @@ class Profile extends Authenticated {
                 $category->addIncomeCategory();
             } elseif ($category->categoryType == 'expense'){
                 $category->addExpenseCategory();
+            } elseif ($category->categoryType == 'payment'){
+                $category->addPaymentCategory();
             } else {
                 exit;
             }
             
             $incomeCat = Categories::getIncomeCategories(Auth::getUser()->id);
             $expenseCat = Categories::getExpenseCategories(Auth::getUser()->id);
+            $paymentCat = Categories::getExpensePayment(Auth::getUser()->id);
 
         
             View::renderTemplate('Profile/profile.html', [
                 'income_cat' => $incomeCat,
                 'expense_cat' => $expenseCat,
+                'payment_cat' => $paymentCat,
                 'category_name' => $category->newCategoryName
             ]);
 

@@ -246,3 +246,13 @@ label{
  .icon-th-list{
     color:#ebbb3a;
  }
+
+ .label-edit{
+    color: black;
+ }
+
+ .modal-delete-descrition{
+    color:crimson;
+    font-size:medium;
+    font-weight: bold;
+ }
