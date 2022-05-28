@@ -4,7 +4,6 @@
 const togglePassword = document.querySelector('#togglePassword');
 const password = document.querySelector('#inputPassword');
 
-if(togglePassword){
   togglePassword.addEventListener('click', function (e) {
     // toggle the type attribute
     const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -12,7 +11,7 @@ if(togglePassword){
     // toggle the eye slash icon
     this.classList.toggle('fa-eye-slash');
     });
-}                
+              
   
 //---end-----
 
