@@ -148,7 +148,7 @@ public function isPaymentCategoryEmpty(){
        $stmt = $db->prepare($sql);
 
        $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_INT);
-       $stmt->bindValue(':categoryName', $this->newCategoryName, PDO::PARAM_STR);
+       $stmt->bindValue(':categoryName', $this->newIncomeCategoryName, PDO::PARAM_STR);
 
        $stmt->execute();
    }
@@ -162,7 +162,7 @@ public function isPaymentCategoryEmpty(){
         $stmt = $db->prepare($sql);
 
         $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_INT);
-        $stmt->bindValue(':categoryName', $this->newCategoryName, PDO::PARAM_STR);
+        $stmt->bindValue(':categoryName', $this->newExpenseCategoryName, PDO::PARAM_STR);
 
         $stmt->execute();
     }
@@ -176,7 +176,7 @@ public function isPaymentCategoryEmpty(){
         $stmt = $db->prepare($sql);
 
         $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_INT);
-        $stmt->bindValue(':categoryName', $this->newCategoryName, PDO::PARAM_STR);
+        $stmt->bindValue(':categoryName', $this->newPaymentCategoryName, PDO::PARAM_STR);
 
         $stmt->execute();
     }

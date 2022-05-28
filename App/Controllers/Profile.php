@@ -6,6 +6,7 @@ use App\Auth;
 use \Core\View;
 use \App\Models\Categories;
 use App\Models\Profile_model;
+use App\Models\User;
 use App\Serviceable;
 
 
@@ -133,36 +134,118 @@ class Profile extends Authenticated {
         }
     }
 
-    public function addCategoryAction()
+    public function addIncomeCategoryAction()
     {
    
-        if(isset($_POST["submitAddCategory"])){
+        if(isset($_POST["submitAddIncomeCategory"])){
 
             $category = new Profile_model($_POST);
+            $category->addIncomeCategory();
 
-            if($category->categoryType == 'income'){
-                $category->addIncomeCategory();
-            } elseif ($category->categoryType == 'expense'){
-                $category->addExpenseCategory();
-            } elseif ($category->categoryType == 'payment'){
-                $category->addPaymentCategory();
-            } else {
-                exit;
-            }
-            
             $incomeCat = Categories::getIncomeCategories(Auth::getUser()->id);
             $expenseCat = Categories::getExpenseCategories(Auth::getUser()->id);
             $paymentCat = Categories::getExpensePayment(Auth::getUser()->id);
 
-        
             View::renderTemplate('Profile/profile.html', [
                 'income_cat' => $incomeCat,
                 'expense_cat' => $expenseCat,
                 'payment_cat' => $paymentCat,
-                'category_name' => $category->newCategoryName
+                'category_name' => $category->newIncomeCategoryName
             ]);
 
         }
     }
+
+    public function addExpenseCategoryAction()
+    {
+   
+        if(isset($_POST["submitAddExpenseCategory"])){
+
+            $category = new Profile_model($_POST);
+            $category->addExpenseCategory();
+
+            $incomeCat = Categories::getIncomeCategories(Auth::getUser()->id);
+            $expenseCat = Categories::getExpenseCategories(Auth::getUser()->id);
+            $paymentCat = Categories::getExpensePayment(Auth::getUser()->id);
+
+            View::renderTemplate('Profile/profile.html', [
+                'income_cat' => $incomeCat,
+                'expense_cat' => $expenseCat,
+                'payment_cat' => $paymentCat,
+                'category_name' => $category->newExpenseCategoryName
+            ]);
+
+        }
+    }
+
+    public function addPaymentCategoryAction()
+    {
+   
+        if(isset($_POST["submitAddPaymentCategory"])){
+
+            $category = new Profile_model($_POST);
+            $category->addPaymentCategory();
+
+            $incomeCat = Categories::getIncomeCategories(Auth::getUser()->id);
+            $expenseCat = Categories::getExpenseCategories(Auth::getUser()->id);
+            $paymentCat = Categories::getExpensePayment(Auth::getUser()->id);
+
+            View::renderTemplate('Profile/profile.html', [
+                'income_cat' => $incomeCat,
+                'expense_cat' => $expenseCat,
+                'payment_cat' => $paymentCat,
+                'category_name' => $category->newPaymentCategoryName
+            ]);
+
+        }
+    }
+
+     /**
+     * Validate if new category name is available (AJAX).
+     *
+     * @return void
+     */
+    public function validateIncomeCategoryAction()
+    {
+        
+        $is_valid = !Categories::incomeCategoryExists($_GET['newIncomeCategoryName']);
+        
+        header('Content-Type: application/json');
+        echo json_encode($is_valid);
+    }
+
+    public function validateExpenseCategoryAction()
+    {
+        $is_valid = !Categories::expenseCategoryExists($_GET['newExpenseCategoryName']);
+
+        header('Content-Type: application/json');
+        echo json_encode($is_valid);
+    }
+
+    public function validatePaymentCategoryAction()
+    {
+        $is_valid = !Categories::paymentCategoryExists($_GET['newPaymentCategoryName']);
+
+        header('Content-Type: application/json');
+        echo json_encode($is_valid);
+    }
+
+    public function validateCategoryAction()
+    { 
+
+        if ($_GET['categoryType'] == 'income'){
+            $is_valid = !Categories::incomeCategoryExists($_GET['categoryName']);
+        }
+        if ($_GET['categoryType'] == 'expense'){
+            $is_valid = !Categories::expenseCategoryExists($_GET['categoryName']);
+        }
+        if ($_GET['categoryType'] == 'payment'){
+            $is_valid = !Categories::paymentCategoryExists($_GET['categoryName']);
+        }
+        
+        header('Content-Type: application/json');
+        echo json_encode($is_valid);
+    }
+
 
 }

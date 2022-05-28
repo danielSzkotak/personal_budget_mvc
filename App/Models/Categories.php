@@ -107,5 +107,83 @@ public static function getPaymentIndelibleCategoryID(){
    return $stmt->fetchColumn();
 }
 
+    public static function incomeCategoryExists($newCategory)
+    {
+        $category = static::findByIncomeCategoryName($newCategory);
+
+        if ($category) {
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function expenseCategoryExists($newCategory)
+    {
+        $category = static::findByExpenseCategoryName($newCategory);
+
+        if ($category) {
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function paymentCategoryExists($newCategory)
+    {
+        $category = static::findByPaymentCategoryName($newCategory);
+
+        if ($category) {
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function findByIncomeCategoryName($incomeCategoryName)
+    {
+        $sql = "SELECT * FROM incomes_category_assigned_to_users WHERE name = :name";
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':name', $incomeCategoryName, PDO::PARAM_STR);
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        $stmt->execute();
+
+        return $stmt->fetch();
+    }
+
+    public static function findByExpenseCategoryName($expenseCategoryName)
+    {
+        $sql = "SELECT * FROM expenses_category_assigned_to_users WHERE name = :name";
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':name', $expenseCategoryName, PDO::PARAM_STR);
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        $stmt->execute();
+
+        return $stmt->fetch();
+    }
+
+    public static function findByPaymentCategoryName($paymentCategoryName)
+    {
+        $sql = "SELECT * FROM payment_methods_assigned_to_users WHERE name = :name";
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':name', $paymentCategoryName, PDO::PARAM_STR);
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        $stmt->execute();
+
+        return $stmt->fetch();
+    }
+
 
  }

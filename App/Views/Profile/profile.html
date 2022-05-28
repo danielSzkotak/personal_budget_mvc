@@ -124,14 +124,13 @@
                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                           <h4></h4>
-
+                        
                            <form action="/profile/editCategoryName" method="POST" class="needs-validation" id="editCategoryForm" novalidate>
                            <input type="text" class="form-control fs-5 pt-3 pb-3 shadow-none mb-2" name="categoryName" id="categoryName" value="" autofocus>
                            <input type="hidden" name="categoryID" id="categoryID">
                            <input type="hidden" name="categoryType" id="categoryType">
                     
-                           
+                               
                         </div>
                         <div class="modal-footer">
                            <button type="submit" name="submitCategory" value="submitCategory" 
@@ -182,11 +181,11 @@
                   <div class="modal-dialog modal-dialog-centered">
                      <div class="modal-content">
                         <div class="modal-header">
-                           <h5 class="modal-title" id="exampleModalLabel">Usuwanie kategorii</h5>
+                           <h5 class="modal-title" id="exampleModalLabel">Kategoria <span class=" text-danger">Inne</span></h5>
                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                           <h5 class="mb-3">Ta kategoria nie może być usunięta</h5>
+                           <h5 class="mb-3">Ta kategoria nie może być usunięta ani edytowana</h5>
                         </div>
                         <div class="modal-footer">
                            <button type="button" name="ok"
@@ -199,26 +198,78 @@
                </div>
                <!-- End of Modal -->
 
-               <!-- Add Modal -->
-               <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+               <!-- Add Income Modal -->
+               <div class="modal fade" id="addIncomeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
                      <div class="modal-content">
                         <div class="modal-header">
-                           <h5 class="modal-title" id="exampleModalLabel">Dodawanie kategorii</h5>
+                           <h5 class="modal-title exampleModalLabel">Dodawanie kategorii przychodu</h5>
                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                            <h5 class="mb-4">Wprowadź nazwę nowej kategorii</h5>                  
 
-                           <form action="/profile/addCategory" method="POST" class="needs-validation" id="editCategoryForm" novalidate>
+                           <form action="/profile/addIncomeCategory" class="xxx" method="POST"  id="addNewIncomeCategory">
 
-                           <input type="text" class="form-control fs-5 pt-3 pb-3 shadow-none mb-2" name="newCategoryName" id="newCategoryName" value="" autofocus>
-                           <input type="hidden" name="userID" id="userID" value="">
-                           <input type="hidden" name="categoryType" id="categoryToAddType">
-                    
+                           <input type="text" class="form-control fs-5 pt-3 pb-3 shadow-none mb-2" name="newIncomeCategoryName" id="newIncomeCategoryName" value="" autofocus required>
+                         
                         </div>
                         <div class="modal-footer">
-                           <button type="submit" name="submitAddCategory" value="submitAddCategory" 
+                           <button type="submit" name="submitAddIncomeCategory" value="submitAddIncomeCategory" 
+                              class="btn btn-success" data-bs-toggle="modal">Zapisz</button>
+                        </div>
+                     </form>
+
+                     </div>
+                  </div>
+               </div>
+               <!-- End of Modal -->
+
+               <!-- Add Expense Modal -->
+               <div class="modal fade" id="addExpenseModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <h5 class="modal-title exampleModalLabel">Dodawanie kategorii wydatku</h5>
+                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                           <h5 class="mb-4">Wprowadź nazwę nowej kategorii</h5>                  
+
+                           <form action="/profile/addExpenseCategory" method="POST" class="xxx"  id="addNewExpenseCategory">
+
+                           <input type="text" class="form-control fs-5 pt-3 pb-3 shadow-none mb-2" name="newExpenseCategoryName" id="newExpenseCategoryName" value="" autofocus required>
+                           
+                        </div>
+                        <div class="modal-footer">
+                           <button type="submit" name="submitAddExpenseCategory" value="submitAddExpenseCategory" 
+                              class="btn btn-success" data-bs-toggle="modal">Zapisz</button>
+                        </div>
+                     </form>
+
+                     </div>
+                  </div>
+               </div>
+               <!-- End of Modal -->
+
+               <!-- Add Payment Modal -->
+               <div class="modal fade" id="addPaymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <h5 class="modal-title exampleModalLabel">Dodawanie metody płatności</h5>
+                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                           <h5 class="mb-4">Wprowadź nazwę nowej metody płatności</h5>                  
+
+                           <form action="/profile/addPaymentCategory" method="POST"  id="addNewPaymentCategory">
+
+                           <input type="text" class="form-control fs-5 pt-3 pb-3 shadow-none mb-2" name="newPaymentCategoryName" id="newPaymentCategoryName" value="" autofocus required>
+                         
+                        </div>
+                        <div class="modal-footer">
+                           <button type="submit" name="submitAddPaymentCategory" value="submitAddPaymentCategory" 
                               class="btn btn-success" data-bs-toggle="modal">Zapisz</button>
                         </div>
                      </form>
@@ -235,7 +286,9 @@
  </section>
 <!-- end of main section -->
 
+
 <script>
+
 
 
 $(document).ready(function(){
@@ -248,6 +301,7 @@ $(document).ready(function(){
             var selectedIncomeCategory = $("#selectedIncomeCategory").val();
             var categoryName = selectedIncomeCategory.split("|");
             $('#categoryType').val('income');
+                   
 
          } else if (this.id == 'expenseButton') {
             var selectedExpenseCategory = $("#selectedExpenseCategory").val();
@@ -262,10 +316,17 @@ $(document).ready(function(){
          }
          $('#categoryName').val(categoryName[1]);
          $('#categoryID').val(categoryName[0]);
-         $('#myModal').modal('show');
-         $('#myModal').on('shown.bs.modal', function () {
+
+         if(categoryName[1] == 'Inne'){
+            $('#indelibleModal').modal('show');
+         } else {
+            $('#myModal').modal('show');
+            $('#myModal').on('shown.bs.modal', function () {
             $('#categoryName').focus();
          });
+         }
+
+         
       }
 
       if ((this.id == 'incomeDeleteButton') || ((this.id == 'expenseDeleteButton')) || ((this.id == 'paymentDeleteButton'))) {
@@ -302,75 +363,133 @@ $(document).ready(function(){
 
          if (this.id == 'incomeAddButton') {
 
-            $('#categoryToAddType').val('income');
+            $('#newIncomeCategoryName').removeClass('is-invalid');
+            $('#newIncomeCategoryName').removeClass('is-valid');
+            $('#newIncomeCategoryName').val('');
+            $('#addIncomeModal').modal('show');
+            $('#addIncomeModal').on('shown.bs.modal', function () {
+               $('#newIncomeCategoryName').focus();
+            }); 
 
-         } else if (this.id == 'expenseAddButton') {
-           
-            $('#categoryToAddType').val('expense');
+         }  if (this.id == 'expenseAddButton') {
 
-         } else if (this.id == 'paymentAddButton') {
+            $('#newExpenseCategoryName').removeClass('is-invalid');
+            $('#newExpenseCategoryName').removeClass('is-valid');
+            $('#newExpenseCategoryName').val('');
+            $('#addExpenseModal').modal('show');
+            $('#addExpenseModal').on('shown.bs.modal', function () {
+               $('#newExpenseCategoryName').focus();
+            });
            
-           $('#categoryToAddType').val('payment');
+         }  if (this.id == 'paymentAddButton') {
+           
+            $('#newPaymentCategoryName').removeClass('is-invalid');
+            $('#newPaymentCategoryName').removeClass('is-valid');
+            $('#newPaymentCategoryName').val('');
+            $('#addPaymentModal').modal('show');
+            $('#addPaymentModal').on('shown.bs.modal', function () {
+               $('#newPaymentCategoryName').focus();
+            });
         }
-         $('#addModal').modal('show');
-         $('#addModal').on('shown.bs.modal', function () {
-            $('#newCategoryName').focus();
-         });
       }
-
    })
+
 });
 
-
-    //Jquery Validation
-$.validator.setDefaults({
-  errorClass: 'invalid-feedback',
-  highlight: function(element){
-      $(element)
-          .addClass('is-invalid');
-  },
-  unhighlight: function(element){
-      $(element)
-          .removeClass('is-invalid')
-          .addClass('is-valid')
-  },
-});
-
-$.validator.addMethod('validDates',
-  function(value, element, param){
-      if (value != '') {
-          if (value < '2000-01-01') {
-              return false;
-          }
-      }
-      return true;
-  },
-  'Data musi być większa od 01-01-2000'
-
-);
 
 
 $(document).ready(function(){
-  $('#addIncomeForm').validate({
-      rules: {
-         incomeAmount: { 
-          required: true 
-          },
-         incomeDate: {
+
+   //Jquery Validation
+   $.validator.setDefaults({
+      errorClass: 'invalid-feedback',
+      highlight: function (element) {
+         $(element)
+            .addClass('is-invalid');
+      },
+      unhighlight: function (element) {
+         $(element)
+            .removeClass('is-invalid')
+            .addClass('is-valid')
+      },
+   });   
+
+   jQuery.validator.addMethod("alphanumeric", function (value, element) {
+      return this.optional(element) || /^[a-zA-Z]+[a-zA-Z0-9_ ]*$/i.test(value);
+   });
+
+   $('form').each(function() {  
+        $(this).validate({      
+         rules: {
+         newIncomeCategoryName: {
             required: true,
-            validDates: true
-         }                     
+            minlength: 3,
+            alphanumeric: true,
+            remote: '/profile/validateIncomeCategory'
+         },
+         newExpenseCategoryName: {
+            required: true,
+            minlength: 3,
+            alphanumeric: true,
+            remote: '/profile/validateExpenseCategory'
+
+         },
+         newPaymentCategoryName: {
+            required: true,
+            minlength: 3,
+            alphanumeric: true,
+            remote: '/profile/validatePaymentCategory'
+
+         },
+         categoryName: {
+            required: true,
+            minlength: 3,
+            alphanumeric: true,
+            remote: {
+                url: '/profile/validateCategory',
+                data: {
+                  categoryName: function () {
+                      return $("#categoryName").val();
+                   },
+                   categoryType: function () {
+                      return $("#categoryType").val();
+                   }
+               }
+         }
+         }
       },
       messages: {
-         incomeAmount: {
-              required: '<span class="text-danger">To pole jest wymagane</span>'
-          },
-          incomeDate: {
-            required: '<span class="text-danger">To pole jest wymagane</span>'
-          }   
+         newIncomeCategoryName: {
+            required: 'Pole z nazwą mie może byc puste',
+            minlength: 'Wprowadź minimum 3 znaki',
+            alphanumeric: 'Nie używaj spacji na początku lub znaków specjalnych',
+            remote: 'Ta nazwa jest już zajęta'
+         },
+         newExpenseCategoryName: {
+            required: 'Pole z nazwą mie może byc puste',
+            minlength: 'Wprowadź minimum 3 znaki',
+            alphanumeric: 'Nie używaj spacji na początku lub znaków specjalnych',
+            remote: 'Ta nazwa jest już zajęta'
+         },
+         newPaymentCategoryName: {
+            required: 'Pole z nazwą mie może byc puste',
+            minlength: 'Wprowadź minimum 3 znaki',
+            alphanumeric: 'Nie używaj spacji na początku lub znaków specjalnych',
+            remote: 'Ta nazwa jest już zajęta'
+         },
+         categoryName: {
+            required: 'Pole z nazwą mie może byc puste',
+            minlength: 'Wprowadź minimum 3 znaki',
+            alphanumeric: 'Nie używaj spacji na początku lub znaków specjalnych',
+            remote: 'Ta nazwa jest już zajęta'
+         }
       }
-  });           
+        });
+    });
+
+
 });
+
 
 //---end---
 </script>
