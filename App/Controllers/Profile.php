@@ -134,6 +134,37 @@ class Profile extends Authenticated {
         }
     }
 
+    public function addCategoryAction()
+    {
+   
+        if(isset($_POST["submitAddCategory"])){
+
+            $category = new Profile_model($_POST);
+
+            if($category->categoryToAddType == 'income'){
+                $category->addIncomeCategory();
+            } elseif ($category->categoryToAddType == 'expense'){
+                $category->addExpenseCategory();
+            } elseif ($category->categoryToAddType == 'payment'){
+                $category->addPaymentCategory();
+            } else{
+                exit;
+            }
+
+            $incomeCat = Categories::getIncomeCategories(Auth::getUser()->id);
+            $expenseCat = Categories::getExpenseCategories(Auth::getUser()->id);
+            $paymentCat = Categories::getExpensePayment(Auth::getUser()->id);
+
+            View::renderTemplate('Profile/profile.html', [
+                'income_cat' => $incomeCat,
+                'expense_cat' => $expenseCat,
+                'payment_cat' => $paymentCat,
+                'category_name' => $category->categoryToAddName
+            ]);
+
+        }
+    }
+
     public function addIncomeCategoryAction()
     {
    
@@ -205,32 +236,32 @@ class Profile extends Authenticated {
      *
      * @return void
      */
-    public function validateIncomeCategoryAction()
-    {
+    // public function validateIncomeCategoryAction()
+    // {
         
-        $is_valid = !Categories::incomeCategoryExists($_GET['newIncomeCategoryName']);
+    //     $is_valid = !Categories::incomeCategoryExists($_GET['newIncomeCategoryName']);
         
-        header('Content-Type: application/json');
-        echo json_encode($is_valid);
-    }
+    //     header('Content-Type: application/json');
+    //     echo json_encode($is_valid);
+    // }
 
-    public function validateExpenseCategoryAction()
-    {
-        $is_valid = !Categories::expenseCategoryExists($_GET['newExpenseCategoryName']);
+    // public function validateExpenseCategoryAction()
+    // {
+    //     $is_valid = !Categories::expenseCategoryExists($_GET['newExpenseCategoryName']);
 
-        header('Content-Type: application/json');
-        echo json_encode($is_valid);
-    }
+    //     header('Content-Type: application/json');
+    //     echo json_encode($is_valid);
+    // }
 
-    public function validatePaymentCategoryAction()
-    {
-        $is_valid = !Categories::paymentCategoryExists($_GET['newPaymentCategoryName']);
+    // public function validatePaymentCategoryAction()
+    // {
+    //     $is_valid = !Categories::paymentCategoryExists($_GET['newPaymentCategoryName']);
 
-        header('Content-Type: application/json');
-        echo json_encode($is_valid);
-    }
+    //     header('Content-Type: application/json');
+    //     echo json_encode($is_valid);
+    // }
 
-    public function validateCategoryAction()
+    public function validateCategoryEditAction()
     { 
 
         if ($_GET['categoryType'] == 'income'){
@@ -241,6 +272,23 @@ class Profile extends Authenticated {
         }
         if ($_GET['categoryType'] == 'payment'){
             $is_valid = !Categories::paymentCategoryExists($_GET['categoryName']);
+        }
+        
+        header('Content-Type: application/json');
+        echo json_encode($is_valid);
+    }
+
+    public function validateCategoryAddAction()
+    { 
+
+        if ($_GET['categoryToAddType'] == 'income'){
+            $is_valid = !Categories::incomeCategoryExists($_GET['categoryToAddName']);
+        }
+        if ($_GET['categoryToAddType'] == 'expense'){
+            $is_valid = !Categories::expenseCategoryExists($_GET['categoryToAddName']);
+        }
+        if ($_GET['categoryToAddType'] == 'payment'){
+            $is_valid = !Categories::paymentCategoryExists($_GET['categoryToAddName']);
         }
         
         header('Content-Type: application/json');

@@ -148,20 +148,16 @@
                   <div class="modal-dialog modal-dialog-centered">
                      <div class="modal-content">
                         <div class="modal-header">
-                           <h5 class="modal-title" id="exampleModalLabel">Usuwanie kategorii</h5>
+                           <h5 class="modal-title text-danger" id="exampleModalLabel">Usuwanie kategorii</h5>
                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                           <h5 class="mb-3">Czy na pewno chcesz usunąć kategorię ?</h5>
+                           <h5 class="mb-3">Czy na pewno chcesz usunąć kategorię</h5>
                            <p class="fs-2" id="categoryToDeleteName"></p>
-                         
                            <p class="mb-0 modal-delete-descrition">Uwaga: Wszystkie wpisy z tej kategorii zostaną przeniesione do kategorii Inne!</p>
-
                            <form action="/profile/deleteCategory" method="POST" class="needs-validation" id="editCategoryForm" novalidate>
-                           
                            <input type="hidden" name="categoryID" id="categoryToDeleteID">
                            <input type="hidden" name="categoryType" id="categoryToDeleteType">
-                    
                         </div>
                         <div class="modal-footer">
                            <button type="button" name="ok"
@@ -198,24 +194,25 @@
                </div>
                <!-- End of Modal -->
 
-               <!-- Add Income Modal -->
-               <div class="modal fade" id="addIncomeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+               <!-- Add Category Modal -->
+               <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
                      <div class="modal-content">
                         <div class="modal-header">
-                           <h5 class="modal-title exampleModalLabel">Dodawanie kategorii przychodu</h5>
+                           <h5 class="modal-title exampleModalLabel">Dodawanie kategorii</h5>
                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                            <h5 class="mb-4">Wprowadź nazwę nowej kategorii</h5>                  
 
-                           <form action="/profile/addIncomeCategory" class="xxx" method="POST"  id="addNewIncomeCategory">
+                           <form action="/profile/addCategory" class="needs-validation" method="POST"  id="addNewCategory" novalidate>
 
-                           <input type="text" class="form-control fs-5 pt-3 pb-3 shadow-none mb-2" name="newIncomeCategoryName" id="newIncomeCategoryName" value="" autofocus required>
+                           <input type="text" class="form-control fs-5 pt-3 pb-3 shadow-none mb-2" name="categoryToAddName" id="categoryToAddName" value="" required>
+                           <input type="hidden" name="categoryToAddType" id="categoryToAddType">
                          
                         </div>
                         <div class="modal-footer">
-                           <button type="submit" name="submitAddIncomeCategory" value="submitAddIncomeCategory" 
+                           <button type="submit" name="submitAddCategory" value="submitAddCategory" 
                               class="btn btn-success" data-bs-toggle="modal">Zapisz</button>
                         </div>
                      </form>
@@ -224,62 +221,7 @@
                   </div>
                </div>
                <!-- End of Modal -->
-
-               <!-- Add Expense Modal -->
-               <div class="modal fade" id="addExpenseModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered">
-                     <div class="modal-content">
-                        <div class="modal-header">
-                           <h5 class="modal-title exampleModalLabel">Dodawanie kategorii wydatku</h5>
-                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                           <h5 class="mb-4">Wprowadź nazwę nowej kategorii</h5>                  
-
-                           <form action="/profile/addExpenseCategory" method="POST" class="xxx"  id="addNewExpenseCategory">
-
-                           <input type="text" class="form-control fs-5 pt-3 pb-3 shadow-none mb-2" name="newExpenseCategoryName" id="newExpenseCategoryName" value="" autofocus required>
-                           
-                        </div>
-                        <div class="modal-footer">
-                           <button type="submit" name="submitAddExpenseCategory" value="submitAddExpenseCategory" 
-                              class="btn btn-success" data-bs-toggle="modal">Zapisz</button>
-                        </div>
-                     </form>
-
-                     </div>
-                  </div>
-               </div>
-               <!-- End of Modal -->
-
-               <!-- Add Payment Modal -->
-               <div class="modal fade" id="addPaymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered">
-                     <div class="modal-content">
-                        <div class="modal-header">
-                           <h5 class="modal-title exampleModalLabel">Dodawanie metody płatności</h5>
-                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                           <h5 class="mb-4">Wprowadź nazwę nowej metody płatności</h5>                  
-
-                           <form action="/profile/addPaymentCategory" method="POST"  id="addNewPaymentCategory">
-
-                           <input type="text" class="form-control fs-5 pt-3 pb-3 shadow-none mb-2" name="newPaymentCategoryName" id="newPaymentCategoryName" value="" autofocus required>
-                         
-                        </div>
-                        <div class="modal-footer">
-                           <button type="submit" name="submitAddPaymentCategory" value="submitAddPaymentCategory" 
-                              class="btn btn-success" data-bs-toggle="modal">Zapisz</button>
-                        </div>
-                     </form>
-
-                     </div>
-                  </div>
-               </div>
-               <!-- End of Modal -->
-                
-     
+  
           </div>
        </div>
     </div>
@@ -289,35 +231,39 @@
 
 <script>
 
+function getSelectedCategoryName(value){
+   fetchCategoryName = value.split("|");
+   return fetchCategoryName[1];
+}
 
+function getSelectedCategoryID(value){
+   fetchCategoryID = value.split("|");
+   return fetchCategoryName[0];
+}
 
 $(document).ready(function(){
 
    $("button").click(function (e) {
 
       if ((this.id == 'incomeButton') || ((this.id == 'expenseButton')) || ((this.id == 'paymentButton'))) {
-
          if (this.id == 'incomeButton') {
-            var selectedIncomeCategory = $("#selectedIncomeCategory").val();
-            var categoryName = selectedIncomeCategory.split("|");
             $('#categoryType').val('income');
-                   
-
-         } else if (this.id == 'expenseButton') {
-            var selectedExpenseCategory = $("#selectedExpenseCategory").val();
-            var categoryName = selectedExpenseCategory.split("|");
+            $('#categoryName').val(getSelectedCategoryName($("#selectedIncomeCategory").val()));
+            $('#categoryID').val(getSelectedCategoryID($("#selectedIncomeCategory").val()));
+         } 
+         if (this.id == 'expenseButton') {
             $('#categoryType').val('expense');
-
-         } else if (this.id == 'paymentButton') {
-            var selectedPaymentCategory = $("#selectedPaymentCategory").val();
-            var categoryName = selectedPaymentCategory.split("|");
-            $('#categoryType').val('payment');
+            $('#categoryName').val(getSelectedCategoryName($("#selectedExpenseCategory").val()));
+            $('#categoryID').val(getSelectedCategoryID($("#selectedExpenseCategory").val()));
 
          }
-         $('#categoryName').val(categoryName[1]);
-         $('#categoryID').val(categoryName[0]);
+         if (this.id == 'paymentButton') {
+            $('#categoryType').val('payment');
+            $('#categoryName').val(getSelectedCategoryName($("#selectedPaymentCategory").val()));
+            $('#categoryID').val(getSelectedCategoryID($("#selectedPaymentCategory").val()));
+         }     
 
-         if(categoryName[1] == 'Inne'){
+         if($('#categoryName').val() == 'Inne' ){
             $('#indelibleModal').modal('show');
          } else {
             $('#myModal').modal('show');
@@ -326,77 +272,64 @@ $(document).ready(function(){
          });
          }
 
-         
       }
-
       if ((this.id == 'incomeDeleteButton') || ((this.id == 'expenseDeleteButton')) || ((this.id == 'paymentDeleteButton'))) {
 
          if (this.id == 'incomeDeleteButton') {
-            var selectedIncomeCategory = $("#selectedIncomeCategory").val();
-            var categoryName = selectedIncomeCategory.split("|");
+            $('#categoryToDeleteName').text(getSelectedCategoryName($("#selectedIncomeCategory").val()));
+            $('#categoryToDeleteID').val(getSelectedCategoryID($("#selectedIncomeCategory").val()));
             $('#categoryToDeleteType').val('income');
-
+           
          } else if (this.id == 'expenseDeleteButton') {
-            var selectedExpenseCategory = $("#selectedExpenseCategory").val();
-            var categoryName = selectedExpenseCategory.split("|");
+            $('#categoryToDeleteName').text(getSelectedCategoryName($("#selectedExpenseCategory").val()));
+            $('#categoryToDeleteID').val(getSelectedCategoryID($("#selectedExpenseCategory").val()));
             $('#categoryToDeleteType').val('expense');
 
          } else if (this.id == 'paymentDeleteButton') {
-            var selectedPaymentCategory = $("#selectedPaymentCategory").val();
-            var categoryName = selectedPaymentCategory.split("|");
+            $('#categoryToDeleteName').text(getSelectedCategoryName($("#selectedPaymentCategory").val()));
+            $('#categoryToDeleteID').val(getSelectedCategoryID($("#selectedPaymentCategory").val()));
             $('#categoryToDeleteType').val('payment');
-
          }
    
-         $('#categoryToDeleteID').val(categoryName[0]);
-         $('#categoryToDeleteName').text(categoryName[1]);     
-
-         if(categoryName[1] == 'Inne'){
+         if($('#categoryToDeleteName').text() == 'Inne'){
             $('#indelibleModal').modal('show');
          } else {
             $('#deleteModal').modal('show');
          }
-         
+      }
+
+      function clearInputValidationClasses(value){
+         $(value).removeClass('is-invalid');
+         $(value).removeClass('is-valid');
+         $(value).val('');
       }
 
       if ((this.id == 'incomeAddButton') || ((this.id == 'expenseAddButton')) || ((this.id == 'paymentAddButton'))) {
 
          if (this.id == 'incomeAddButton') {
 
-            $('#newIncomeCategoryName').removeClass('is-invalid');
-            $('#newIncomeCategoryName').removeClass('is-valid');
-            $('#newIncomeCategoryName').val('');
-            $('#addIncomeModal').modal('show');
-            $('#addIncomeModal').on('shown.bs.modal', function () {
-               $('#newIncomeCategoryName').focus();
-            }); 
+            clearInputValidationClasses('#categoryToAddName');
+            $('#categoryToAddType').val('income');
 
          }  if (this.id == 'expenseAddButton') {
 
-            $('#newExpenseCategoryName').removeClass('is-invalid');
-            $('#newExpenseCategoryName').removeClass('is-valid');
-            $('#newExpenseCategoryName').val('');
-            $('#addExpenseModal').modal('show');
-            $('#addExpenseModal').on('shown.bs.modal', function () {
-               $('#newExpenseCategoryName').focus();
-            });
-           
+            clearInputValidationClasses('#categoryToAddName');
+            $('#categoryToAddType').val('expense');
+
          }  if (this.id == 'paymentAddButton') {
-           
-            $('#newPaymentCategoryName').removeClass('is-invalid');
-            $('#newPaymentCategoryName').removeClass('is-valid');
-            $('#newPaymentCategoryName').val('');
-            $('#addPaymentModal').modal('show');
-            $('#addPaymentModal').on('shown.bs.modal', function () {
-               $('#newPaymentCategoryName').focus();
-            });
+
+            clearInputValidationClasses('#categoryToAddName');
+            $('#categoryToAddType').val('payment');
         }
+
+        $('#addModal').modal('show');
+            $('#addModal').on('shown.bs.modal', function () {
+               $('#categoryToAddName').focus();
+            }); 
+
       }
    })
-
 });
-
-
 
 $(document).ready(function(){
 
@@ -418,65 +351,51 @@ $(document).ready(function(){
       return this.optional(element) || /^[a-zA-Z]+[a-zA-Z0-9_ ]*$/i.test(value);
    });
 
-   $('form').each(function() {  
-        $(this).validate({      
+   $('form').each(function () {
+      $(this).validate({
          rules: {
-         newIncomeCategoryName: {
-            required: true,
-            minlength: 3,
-            alphanumeric: true,
-            remote: '/profile/validateIncomeCategory'
-         },
-         newExpenseCategoryName: {
-            required: true,
-            minlength: 3,
-            alphanumeric: true,
-            remote: '/profile/validateExpenseCategory'
-
-         },
-         newPaymentCategoryName: {
-            required: true,
-            minlength: 3,
-            alphanumeric: true,
-            remote: '/profile/validatePaymentCategory'
-
-         },
-         categoryName: {
-            required: true,
-            minlength: 3,
-            alphanumeric: true,
-            remote: {
-                url: '/profile/validateCategory',
-                data: {
-                  categoryName: function () {
-                      return $("#categoryName").val();
-                   },
-                   categoryType: function () {
-                      return $("#categoryType").val();
-                   }
+            categoryToAddName: {
+               required: true,
+               minlength: 3,
+               alphanumeric: true,
+               remote: {
+                  url: '/profile/validateCategoryAdd',
+                  data: {
+                     categoryToAddName: function () {
+                        return $("#categoryToAddName").val();
+                     },
+                     categoryToAddType: function () {
+                        return $("#categoryToAddType").val();
+                     }
+                  }
                }
-         }
-         }
-      },
-      messages: {
-         newIncomeCategoryName: {
-            required: 'Pole z nazwą mie może byc puste',
-            minlength: 'Wprowadź minimum 3 znaki',
-            alphanumeric: 'Nie używaj spacji na początku lub znaków specjalnych',
-            remote: 'Ta nazwa jest już zajęta'
+            },
+
+            categoryName: {
+               required: true,
+               minlength: 3,
+               alphanumeric: true,
+               remote: {
+                  url: '/profile/validateCategoryEdit',
+                  data: {
+                     categoryName: function () {
+                        return $("#categoryName").val();
+                     },
+                     categoryType: function () {
+                        return $("#categoryType").val();
+                     }
+                  }
+               }
+            }
          },
-         newExpenseCategoryName: {
-            required: 'Pole z nazwą mie może byc puste',
-            minlength: 'Wprowadź minimum 3 znaki',
-            alphanumeric: 'Nie używaj spacji na początku lub znaków specjalnych',
-            remote: 'Ta nazwa jest już zajęta'
-         },
-         newPaymentCategoryName: {
-            required: 'Pole z nazwą mie może byc puste',
-            minlength: 'Wprowadź minimum 3 znaki',
-            alphanumeric: 'Nie używaj spacji na początku lub znaków specjalnych',
-            remote: 'Ta nazwa jest już zajęta'
-         },
+         messages: {
+            categoryToAddName: {
+               required: 'Pole z nazwą mie może byc puste',
+               minlength: 'Wprowadź minimum 3 znaki',
+               alphanumeric: 'Nie używaj spacji na początku lub znaków specjalnych',
+               remote: 'Ta nazwa jest już zajęta'
+            },
+         
          categoryName: {
             required: 'Pole z nazwą mie może byc puste',
             minlength: 'Wprowadź minimum 3 znaki',
@@ -484,10 +403,12 @@ $(document).ready(function(){
             remote: 'Ta nazwa jest już zajęta'
          }
       }
-        });
-    });
+
+      });
 
 
+   });
+   
 });
 
 
