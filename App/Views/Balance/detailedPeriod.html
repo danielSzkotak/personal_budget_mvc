@@ -7,53 +7,6 @@
 
 <script>
                 
-   // Load google charts
-   google.charts.load('current', {'packages':['corechart']});
-   google.charts.setOnLoadCallback(drawIncomesChart);
-   google.charts.setOnLoadCallback(drawExpensesChart);
-   
-   function drawIncomesChart() {
-
-      var data1 = google.visualization.arrayToDataTable([
-         ['Przychody', 'suma'],
-
-            {% for key, value in incomes %}
-               ['{{ value.name|e }}', {{ value.category_sum|e }}],
-            {% endfor %}
-        
-      ]);
-     
-         // Optional; add a title and set the width and height of the chart
-         var options1 = { width: '600', height: '500', backgroundColor: 'transparent',
-         title: 'Przychody' };
-
-         // Display the chart inside the <div> element with id="piechart"
-            
-            var chart1 = new google.visualization.PieChart(document.getElementById('piechart1'));
-            {% if incomes is not empty %}chart1.draw(data1, options1);{% endif %}
-            
-   };
-   
-
-   function drawExpensesChart() {
-      var data2 = google.visualization.arrayToDataTable([
-      ['Wydatki', 'suma'],
-
-            {% for k, val in expenses %}
-               ['{{ val.name|e }}', {{ val.category_sum|e }}],
-            {% endfor %}
-
-      ]);
-
-         // Optional; add a title and set the width and height of the chart
-         var options2 = { width: '600', height: '500', backgroundColor: 'transparent',
-         title: 'Wydatki' };
-         // Display the chart inside the <div> element with id="piechart"
-
-            var chart2 = new google.visualization.PieChart(document.getElementById('piechart2'));
-            {% if expenses is not empty %}chart2.draw(data2, options2);{% endif %} 
-   };
-
       //Jquery Validation
 $.validator.setDefaults({
   errorClass: 'invalid-feedback',
@@ -243,9 +196,9 @@ $(document).ready(function(){
          <tbody>          
             {% for key, value in detailedIncomes %}
             <tr> 
-               <td style="width: 4rem;">{{ value.id|e }} </td> 
-               <td style="width: 17rem;">{{ value.name|e }}</td>
-               <td style="width: 20rem;">{{ value.amount|e }}</td>
+               <td>{{ value.id|e }} </td> 
+               <td>{{ value.name|e }}</td>
+               <td>{{ value.amount|e }}</td>
                <td>{{ value.date_of_income|e }}</td>
                <td><button type="button" class="btn btn-danger showDetailedBalance" data-id="{{ value.id|e }}|income">Usuń</button></td>
             </tr>
@@ -259,7 +212,7 @@ $(document).ready(function(){
          </thead>
          <tbody class="fs-4">
             <tr class="bg-light">
-               <th style="width: 21rem;">Suma przychodów</th>
+               <th style="width: 15rem;">Suma przychodów</th>
                {% for key in incomesSum %}
                <th>{{ key.total|e }} zł</th>
                {% endfor %}
@@ -291,9 +244,9 @@ $(document).ready(function(){
       <tbody>          
          {% for key, value in detailedExpenses %}
          <tr> 
-            <td style="width: 4rem;">{{ value.id|e }} </td> 
-            <td style="width: 17rem;">{{ value.name|e }}</td>
-            <td style="width: 20rem;">{{ value.amount|e }}</td>
+            <td>{{ value.id|e }} </td> 
+            <td>{{ value.name|e }}</td>
+            <td>{{ value.amount|e }}</td>
             <td>{{ value.date_of_expense|e }}</td>
             <td>{{ value.payment|e }}</td>
             <td><button type="button" class="btn btn-danger showDetailedBalance" data-id="{{ value.id|e }}|expense">Usuń</button></td>
@@ -308,7 +261,7 @@ $(document).ready(function(){
       </thead>
       <tbody class="fs-4">
          <tr class="bg-secondary">
-            <th style="width: 21rem;">Suma wydatków</th>
+            <th style="width: 15rem;">Suma wydatków</th>
             {% for key in expensesSum %}
             <th>{{ key.total|e }} zł</th>
             {% endfor %}
