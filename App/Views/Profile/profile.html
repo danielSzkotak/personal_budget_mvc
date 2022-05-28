@@ -348,7 +348,7 @@ $(document).ready(function(){
    });   
 
    jQuery.validator.addMethod("alphanumeric", function (value, element) {
-      return this.optional(element) || /^[a-zA-Z]+[a-zA-Z0-9_ ]*$/i.test(value);
+      return this.optional(element) || /^[AaĄąBbCcĆćDdEeĘęFfGgHhIiJjKkLlŁłMmNnŃńOoÓóPpRrSsŚśTtUuWwYyZzŹźŻż]+[0-9_ ]*$/i.test(value);
    });
 
    $('form').each(function () {
