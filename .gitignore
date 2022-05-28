@@ -5,3 +5,4 @@ logs/
 App/Config.php
 personalbudget.sql
 .htaccess
+.bak
