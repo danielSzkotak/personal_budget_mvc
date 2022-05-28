@@ -362,6 +362,6 @@ class User extends \Core\Model
             $stmt->execute();
     }
 
-
+    
 }
 

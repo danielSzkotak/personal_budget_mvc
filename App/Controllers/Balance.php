@@ -201,7 +201,6 @@ class Balance extends Authenticated {
             'expensesSum' => $expensesSum,
             'periods' => $periods,
             'balancePeriod' => $balancePeriod,
-            //'balanceSum' => $balanceSum,
             'startDate' => $_POST['startDate'],
             'endDate' => $_POST['endDate']
         ]);

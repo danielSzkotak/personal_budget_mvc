@@ -285,7 +285,7 @@ $(document).ready(function(){
             <th scope="col">Kategoria</th>
             <th scope="col">Kwota</th>
             <th scope="col">Data</th>
-          
+            <th scope="col">Metoda płatności</th>
          </tr>  
       </thead>
       <tbody>          
@@ -295,6 +295,7 @@ $(document).ready(function(){
             <td style="width: 17rem;">{{ value.name|e }}</td>
             <td style="width: 20rem;">{{ value.amount|e }}</td>
             <td>{{ value.date_of_expense|e }}</td>
+            <td>{{ value.payment|e }}</td>
             <td><button type="button" class="btn btn-danger showDetailedBalance" data-id="{{ value.id|e }}|expense">Usuń</button></td>
          </tr>
          {% endfor %} 

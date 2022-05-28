@@ -1,0 +1,420 @@
+{% extends "baseAfterLogin.html" %}
+
+{% block title %}Profil{% endblock %}
+
+{% block body %}
+
+{% block footer %}
+
+
+
+
+<!-- main secion -->
+<section id="main">
+    <div class="container-xxl mt-5">
+       <div class="row align-items-start">
+          <div class="col-lg-6 align-self-start dupa">
+             <header>
+
+               {% if currentUser %}
+                  <span><h1 class='text-start'>Witaj <span class='text-success'>{{currentUser.username}}</h1></span>
+               {% endif %} 
+
+             </header>
+             <div class="row">
+                <a href="/addIncome" class="col bg-light mb-2 me-2 p-5 rounded-3 text-center text-white text-nowrap fs-2">
+                   Dodaj przychód
+                </a>
+                <a href="/addExpense" class="col bg-secondary mb-2 me-2 p-5 rounded-3 text-center text-white text-nowrap fs-2">
+                   Dodaj rozchód
+                </a>
+             </div>
+             <div class="row">
+                <a href="/period" class="col bg-info me-2 p-5 rounded-3 text-center text-nowrap text-white fs-2">
+                   Przeglądaj bilans
+                </a>
+             </div>
+          </div>
+          <div class="col ms-lg-5 mt-5 mt-lg-0">
+             <header>
+                <h1 class="text-start">Ustawienia</h1>
+             </header>
+                <div class="mb-3">
+                   <label for="selectIncomeCategory" class="form-label label-edit">Wybierz kategorię przychodu do edycji</label>
+                   <select name="incomeCategory"  class="form-select fs-5 pt-3 pb-3" id="selectedIncomeCategory" aria-label="Default select example">
+
+                      {% if income_cat %} 
+                        {% for key, value in income_cat %}
+                           <option value="{{ value.id|e }}|{{ value.name|e }}"
+                           
+                           {% if category_name is defined %}
+                           {% if category_name == value.name|e %}
+                                 selected
+                           {% endif %}
+                           {% endif %}
+                           
+                           >{{ value.name|e }}</option>
+                        {% endfor %}
+                      {% endif %}                      
+
+                   </select>
+                </div>
+                
+                <button type="button" id="incomeButton" class="btn btn-info mb-4 p-2 incomeCategoryEdit editButton" data-id="">Zmień nazwę</button>
+                <button type="button" id="incomeAddButton" class="btn btn-success mb-4 p-2 incomeCategoryEdit editButton" data-id="">Dodaj</button>
+                <button type="button" id="incomeDeleteButton" class="btn btn-danger mb-4 p-2 incomeCategoryEdit editButton" data-id="">Usuń</button>
+
+                <div class="mb-3 mt-4">
+                  <label for="selectExpenseCategory" class="form-label label-edit">Wybierz kategorię rozchodu do edycji</label>
+                  <select name="expenseCategory"  class="form-select fs-5 pt-3 pb-3" id="selectedExpenseCategory" aria-label="Default select example">
+
+                     {% if expense_cat %} 
+                       {% for key, value in expense_cat %}
+                          <option value="{{ value.id|e }}|{{ value.name|e }}" 
+                          
+                           {% if category_name is defined %}
+                           {% if category_name == value.name|e %}
+                                 selected
+                           {% endif %}
+                           {% endif %}
+                          
+                          >{{ value.name|e }}</option>
+                       {% endfor %}
+                     {% endif %}  
+                     
+                  </select>
+               </div>
+               
+               <button type="button" id="expenseButton" class="btn btn-info mb-4 p-2 expenseCategoryEdit editButton" data-id="">Zmień nazwę</button>
+               <button type="button" id="expenseAddButton" class="btn btn-success mb-4 p-2 expenseCategoryEdit editButton" data-id="">Dodaj</button>
+               <button type="button" id="expenseDeleteButton" class="btn btn-danger mb-4 p-2 expenseCategoryEdit editButton" data-id="">Usuń</button>
+
+               <div class="mb-3 mt-4">
+                  <label for="selectPaymentCategory" class="form-label label-edit">Wybierz metodę płatności do edycji</label>
+                  <select name="paymentCategory"  class="form-select fs-5 pt-3 pb-3" id="selectedPaymentCategory" aria-label="Default select example">
+
+                     {% if payment_cat %} 
+                       {% for key, value in payment_cat %}
+                          <option value="{{ value.id|e }}|{{ value.name|e }}" 
+                          
+                           {% if category_name is defined %}
+                           {% if category_name == value.name|e %}
+                                 selected
+                           {% endif %}
+                           {% endif %}
+                          
+                          >{{ value.name|e }}</option>
+                       {% endfor %}
+                     {% endif %}  
+                     
+                  </select>
+               </div>
+               
+               <button type="button" id="paymentButton" class="btn btn-info mb-4 p-2 paymentCategoryEdit editButton" data-id="">Zmień nazwę</button>
+               <button type="button " id="paymentAddButton" class="btn btn-success mb-4 p-2 paymentCategoryEdit editButton" data-id="">Dodaj</button>
+               <button type="button" id="paymentDeleteButton" class="btn btn-danger mb-4 p-2 paymentCategoryEdit editButton" data-id="">Usuń</button>
+             
+
+                <!-- Edit Modal -->
+               <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <h5 class="modal-title" id="exampleModalLabel">Zmiana nazwy kategorii</h5>
+                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                        
+                           <form action="/profile/editCategoryName" method="POST" class="needs-validation" id="editCategoryForm" novalidate>
+                           <input type="text" class="form-control fs-5 pt-3 pb-3 shadow-none mb-2" name="categoryName" id="categoryName" value="" autofocus>
+                           <input type="hidden" name="categoryID" id="categoryID">
+                           <input type="hidden" name="categoryType" id="categoryType">
+                    
+                               
+                        </div>
+                        <div class="modal-footer">
+                           <button type="submit" name="submitCategory" value="submitCategory" 
+                              class="btn btn-success" data-bs-toggle="modal">Zapisz</button>
+                        </div>
+                     </form>
+
+                     </div>
+                  </div>
+               </div>
+               <!-- End of Modal -->
+
+               <!-- Delete Modal -->
+               <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <h5 class="modal-title text-danger" id="exampleModalLabel">Usuwanie kategorii</h5>
+                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                           <h5 class="mb-3">Czy na pewno chcesz usunąć kategorię</h5>
+                           <p class="fs-2" id="categoryToDeleteName"></p>
+                           <p class="mb-0 modal-delete-descrition">Uwaga: Wszystkie wpisy z tej kategorii zostaną przeniesione do kategorii Inne!</p>
+                           <form action="/profile/deleteCategory" method="POST" class="needs-validation" id="editCategoryForm" novalidate>
+                           <input type="hidden" name="categoryID" id="categoryToDeleteID">
+                           <input type="hidden" name="categoryType" id="categoryToDeleteType">
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" name="ok"
+                              class="btn btn-info" data-bs-dismiss="modal">Anuluj</button>
+                           <button type="submit" name="submitDeleteCategory" value="submitDeleteCategory" 
+                              class="btn btn-danger" data-bs-toggle="modal">Usuń</button>
+                        </div>
+                     </form>
+
+                     </div>
+                  </div>
+               </div>
+               <!-- End of Modal -->
+
+               <!-- Indelible Modal -->
+               <div class="modal fade" id="indelibleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <h5 class="modal-title" id="exampleModalLabel">Kategoria <span class=" text-danger">Inne</span></h5>
+                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                           <h5 class="mb-3">Ta kategoria nie może być usunięta ani edytowana</h5>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" name="ok"
+                              class="btn btn-danger" data-bs-dismiss="modal">Zamknij</button>
+                        </div>
+                     </form>
+
+                     </div>
+                  </div>
+               </div>
+               <!-- End of Modal -->
+
+               <!-- Add Category Modal -->
+               <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <h5 class="modal-title exampleModalLabel">Dodawanie kategorii</h5>
+                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                           <h5 class="mb-4">Wprowadź nazwę nowej kategorii</h5>                  
+
+                           <form action="/profile/addCategory" class="needs-validation" method="POST"  id="addNewCategory" novalidate>
+
+                           <input type="text" class="form-control fs-5 pt-3 pb-3 shadow-none mb-2" name="categoryToAddName" id="categoryToAddName" value="" required>
+                           <input type="hidden" name="categoryToAddType" id="categoryToAddType">
+                         
+                        </div>
+                        <div class="modal-footer">
+                           <button type="submit" name="submitAddCategory" value="submitAddCategory" 
+                              class="btn btn-success" data-bs-toggle="modal">Zapisz</button>
+                        </div>
+                     </form>
+
+                     </div>
+                  </div>
+               </div>
+               <!-- End of Modal -->
+  
+          </div>
+       </div>
+    </div>
+ </section>
+<!-- end of main section -->
+
+
+<script>
+
+function getSelectedCategoryName(value){
+   fetchCategoryName = value.split("|");
+   return fetchCategoryName[1];
+}
+
+function getSelectedCategoryID(value){
+   fetchCategoryID = value.split("|");
+   return fetchCategoryName[0];
+}
+
+$(document).ready(function(){
+
+   $("button").click(function (e) {
+
+      if ((this.id == 'incomeButton') || ((this.id == 'expenseButton')) || ((this.id == 'paymentButton'))) {
+         if (this.id == 'incomeButton') {
+            $('#categoryType').val('income');
+            $('#categoryName').val(getSelectedCategoryName($("#selectedIncomeCategory").val()));
+            $('#categoryID').val(getSelectedCategoryID($("#selectedIncomeCategory").val()));
+         } 
+         if (this.id == 'expenseButton') {
+            $('#categoryType').val('expense');
+            $('#categoryName').val(getSelectedCategoryName($("#selectedExpenseCategory").val()));
+            $('#categoryID').val(getSelectedCategoryID($("#selectedExpenseCategory").val()));
+
+         }
+         if (this.id == 'paymentButton') {
+            $('#categoryType').val('payment');
+            $('#categoryName').val(getSelectedCategoryName($("#selectedPaymentCategory").val()));
+            $('#categoryID').val(getSelectedCategoryID($("#selectedPaymentCategory").val()));
+         }     
+
+         if($('#categoryName').val() == 'Inne' ){
+            $('#indelibleModal').modal('show');
+         } else {
+            $('#myModal').modal('show');
+            $('#myModal').on('shown.bs.modal', function () {
+            $('#categoryName').focus();
+         });
+         }
+
+      }
+      if ((this.id == 'incomeDeleteButton') || ((this.id == 'expenseDeleteButton')) || ((this.id == 'paymentDeleteButton'))) {
+
+         if (this.id == 'incomeDeleteButton') {
+            $('#categoryToDeleteName').text(getSelectedCategoryName($("#selectedIncomeCategory").val()));
+            $('#categoryToDeleteID').val(getSelectedCategoryID($("#selectedIncomeCategory").val()));
+            $('#categoryToDeleteType').val('income');
+           
+         } else if (this.id == 'expenseDeleteButton') {
+            $('#categoryToDeleteName').text(getSelectedCategoryName($("#selectedExpenseCategory").val()));
+            $('#categoryToDeleteID').val(getSelectedCategoryID($("#selectedExpenseCategory").val()));
+            $('#categoryToDeleteType').val('expense');
+
+         } else if (this.id == 'paymentDeleteButton') {
+            $('#categoryToDeleteName').text(getSelectedCategoryName($("#selectedPaymentCategory").val()));
+            $('#categoryToDeleteID').val(getSelectedCategoryID($("#selectedPaymentCategory").val()));
+            $('#categoryToDeleteType').val('payment');
+         }
+   
+         if($('#categoryToDeleteName').text() == 'Inne'){
+            $('#indelibleModal').modal('show');
+         } else {
+            $('#deleteModal').modal('show');
+         }
+      }
+
+      function clearInputValidationClasses(value){
+         $(value).removeClass('is-invalid');
+         $(value).removeClass('is-valid');
+         $(value).val('');
+      }
+
+      if ((this.id == 'incomeAddButton') || ((this.id == 'expenseAddButton')) || ((this.id == 'paymentAddButton'))) {
+
+         if (this.id == 'incomeAddButton') {
+
+            clearInputValidationClasses('#categoryToAddName');
+            $('#categoryToAddType').val('income');
+
+         }  if (this.id == 'expenseAddButton') {
+
+            clearInputValidationClasses('#categoryToAddName');
+            $('#categoryToAddType').val('expense');
+
+         }  if (this.id == 'paymentAddButton') {
+
+            clearInputValidationClasses('#categoryToAddName');
+            $('#categoryToAddType').val('payment');
+        }
+
+        $('#addModal').modal('show');
+            $('#addModal').on('shown.bs.modal', function () {
+               $('#categoryToAddName').focus();
+            }); 
+
+      }
+   })
+});
+
+$(document).ready(function(){
+
+   //Jquery Validation
+   $.validator.setDefaults({
+      errorClass: 'invalid-feedback',
+      highlight: function (element) {
+         $(element)
+            .addClass('is-invalid');
+      },
+      unhighlight: function (element) {
+         $(element)
+            .removeClass('is-invalid')
+            .addClass('is-valid')
+      },
+   });   
+
+   jQuery.validator.addMethod("alphanumeric", function (value, element) {
+      return this.optional(element) || /^\S[AaĄąBbCcĆćDdEeĘęFfGgHhIiJjKkLlŁłMmNnŃńOoÓóPpRrSsŚśTtUuWwYyZzŹźŻż123456789_ ]*$/i.test(value);
+   });
+
+   $('form').each(function () {
+      $(this).validate({
+         rules: {
+            categoryToAddName: {
+               required: true,
+               minlength: 3,
+               alphanumeric: true,
+               remote: {
+                  url: '/profile/validateCategoryAdd',
+                  data: {
+                     categoryToAddName: function () {
+                        return $("#categoryToAddName").val();
+                     },
+                     categoryToAddType: function () {
+                        return $("#categoryToAddType").val();
+                     }
+                  }
+               }
+            },
+
+            categoryName: {
+               required: true,
+               minlength: 3,
+               alphanumeric: true,
+               remote: {
+                  url: '/profile/validateCategoryEdit',
+                  data: {
+                     categoryName: function () {
+                        return $("#categoryName").val();
+                     },
+                     categoryType: function () {
+                        return $("#categoryType").val();
+                     }
+                  }
+               }
+            }
+         },
+         messages: {
+            categoryToAddName: {
+               required: 'Pole z nazwą mie może byc puste',
+               minlength: 'Wprowadź minimum 3 znaki',
+               alphanumeric: 'Nie używaj spacji na początku lub znaków specjalnych',
+               remote: 'Ta nazwa jest już zajęta'
+            },
+         
+         categoryName: {
+            required: 'Pole z nazwą mie może byc puste',
+            minlength: 'Wprowadź minimum 3 znaki',
+            alphanumeric: 'Nie używaj spacji na początku lub znaków specjalnych',
+            remote: 'Ta nazwa jest już zajęta'
+         }
+      }
+
+      });
+
+
+   });
+   
+});
+
+
+//---end---
+</script>
+
+{% endblock %}
+{% endblock %}
+

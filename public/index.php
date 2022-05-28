@@ -44,6 +44,7 @@ $router->add('addIncome', ['controller' => 'Income', 'action' => 'addIncome']);
 $router->add('addExpense', ['controller' => 'Expense', 'action' => 'addExpense']);
 $router->add('period', ['controller' => 'Balance', 'action' => 'period']);
 $router->add('balance', ['controller' => 'Balance', 'action' => 'balance']);
+$router->add('profile', ['controller' => 'Profile', 'action' => 'showProfile']);
 $router->add('password/reset/{token:[\da-f]+}', ['controller' => 'Password', 'action' => 'reset']);
 $router->add('signup/activate/{token:[\da-f]+}', ['controller' => 'Signup', 'action' => 'activate']);
 $router->add('{controller}/{action}');
