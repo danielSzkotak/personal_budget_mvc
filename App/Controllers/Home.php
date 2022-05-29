@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Auth;
 use \Core\View;
+use App\Models\Categories;
 
 /**
  * Home controller
@@ -44,6 +45,8 @@ class Home extends \Core\Controller
 
         if (Auth::getUser()){
 
+            $incomeCat = Categories::getIncomeCategories(Auth::getUser()->id);
+            $_SESSION['income_cat'] = $incomeCat;
             View::renderTemplate('/Income/addIncome.html');
 
         } else {
