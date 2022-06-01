@@ -182,9 +182,6 @@ class Balance extends Authenticated {
          
           if($incomesSum[0]['total'] == NULL && $expensesSum[0]['total'] == NULL){
             $balanceSum = NULL;
-          } else {
-            //$balanceSum = $incomesSum[0]['total'] - $expensesSum[0]['total'];
-            //$balanceSum = Serviceable::formatAmountToModal($balanceSum);
           }
 
           //$incomes = Serviceable::formatAmountToView($incomes);

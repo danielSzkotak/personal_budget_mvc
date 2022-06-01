@@ -145,11 +145,12 @@ public static function getPaymentIndelibleCategoryID(){
 
     public static function findByIncomeCategoryName($incomeCategoryName)
     {
-        $sql = "SELECT * FROM incomes_category_assigned_to_users WHERE name = :name";
+        $sql = "SELECT * FROM incomes_category_assigned_to_users WHERE name = :name AND user_id = :userID";
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':name', $incomeCategoryName, PDO::PARAM_STR);
+        $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_STR);
 
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
         $stmt->execute();
@@ -159,11 +160,12 @@ public static function getPaymentIndelibleCategoryID(){
 
     public static function findByExpenseCategoryName($expenseCategoryName)
     {
-        $sql = "SELECT * FROM expenses_category_assigned_to_users WHERE name = :name";
+        $sql = "SELECT * FROM expenses_category_assigned_to_users WHERE name = :name AND user_id = :userID";
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':name', $expenseCategoryName, PDO::PARAM_STR);
+        $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_STR);
 
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
         $stmt->execute();
@@ -173,11 +175,12 @@ public static function getPaymentIndelibleCategoryID(){
 
     public static function findByPaymentCategoryName($paymentCategoryName)
     {
-        $sql = "SELECT * FROM payment_methods_assigned_to_users WHERE name = :name";
+        $sql = "SELECT * FROM payment_methods_assigned_to_users WHERE name = :name AND user_id = :userID";
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':name', $paymentCategoryName, PDO::PARAM_STR);
+        $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_STR);
 
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
         $stmt->execute();

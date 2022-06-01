@@ -133,7 +133,7 @@
                                
                         </div>
                         <div class="modal-footer">
-                           <button type="submit" name="submitCategory" value="submitCategory" 
+                           <button type="submit" name="submitEditCategory" value="submitEditCategory" 
                               class="btn btn-success" data-bs-toggle="modal">Zapisz</button>
                         </div>
                      </form>
@@ -348,7 +348,7 @@ $(document).ready(function(){
    });   
 
    jQuery.validator.addMethod("alphanumeric", function (value, element) {
-      return this.optional(element) || /^\S[AaĄąBbCcĆćDdEeĘęFfGgHhIiJjKkLlŁłMmNnŃńOoÓóPpRrSsŚśTtUuWwYyZzŹźŻż123456789_ ]*$/i.test(value);
+      return this.optional(element) || /^\S[AaĄąBbCcĆćDdEeĘęFfGgHhIiJjKkLlŁłMmNnŃńOoÓóPpRrSsŚśTtUuWwXxYyZzŹźŻż123456789_ ]*$/i.test(value);
    });
 
    $('form').each(function () {
