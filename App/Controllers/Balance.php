@@ -30,9 +30,10 @@ class Balance extends Authenticated {
     public function balanceAction()
     {
 
-        if(isset($_POST['submitBalance'])){
-
         $balance = new Balance_model($_POST);
+
+        if ($balance){
+
         $balancePeriod = $balance->getBalancePeriod();
 
         switch ($balancePeriod) {
@@ -89,11 +90,8 @@ class Balance extends Authenticated {
             $balanceSum = Serviceable::formatAmountToModal($balanceSum);
           }
 
-          //$incomes = Serviceable::formatAmountToView($incomes);
           $incomesSum = Serviceable::formatAmountToView($incomesSum);
-          //$expenses = Serviceable::formatAmountToView($expenses);
           $expensesSum = Serviceable::formatAmountToView($expensesSum);
-
 
         View::renderTemplate('Balance/period.html',[
             'incomes' => $incomes,
@@ -106,8 +104,6 @@ class Balance extends Authenticated {
             'startDate' => $_POST['startDate'],
             'endDate' => $_POST['endDate']
         ]);
-
-        
         
     } else {
 
@@ -119,12 +115,14 @@ class Balance extends Authenticated {
     public function detailedBalanceAction()
     {
 
-        if(isset($_POST['submitBalance'])){
 
         $detailedBalance = new Detailed_balance_model($_POST);
         $balance = new Balance_model($_POST);
-        $balancePeriod = $balance->getBalancePeriod();
 
+
+        if($detailedBalance && $balance){
+
+        $balancePeriod = $balance->getBalancePeriod();
 
         if (isset($_POST['dataid'])){
 
@@ -183,10 +181,8 @@ class Balance extends Authenticated {
           if($incomesSum[0]['total'] == NULL && $expensesSum[0]['total'] == NULL){
             $balanceSum = NULL;
           }
-
-          //$incomes = Serviceable::formatAmountToView($incomes);
+         
           $incomesSum = Serviceable::formatAmountToView($incomesSum);
-          //$expenses = Serviceable::formatAmountToView($expenses);
           $expensesSum = Serviceable::formatAmountToView($expensesSum);
 
 
