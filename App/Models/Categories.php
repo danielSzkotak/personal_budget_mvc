@@ -188,5 +188,23 @@ public static function getPaymentIndelibleCategoryID(){
         return $stmt->fetch();
     }
 
+    //-----------------------------API------------------------------------------
+
+    public static function getCategoryLimit($categoryID){
+
+        $sql = 'SELECT control_limit FROM expenses_category_assigned_to_users WHERE user_id = :userID AND id = :ID';
+    
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_INT);
+        $stmt->bindValue(':ID', $categoryID, PDO::PARAM_INT);
+    
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    
+        $stmt->execute();
+    
+        return $stmt->fetchAll();
+       }
+
 
  }
