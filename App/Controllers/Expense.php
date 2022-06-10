@@ -71,4 +71,8 @@ class Expense extends Authenticated {
         echo json_encode(Categories::getCategoryLimit($categoryID), JSON_UNESCAPED_UNICODE);
     }
 
+    public function testAction(){
+        View::renderTemplate('Expense/test.html');
+    }
+
 }

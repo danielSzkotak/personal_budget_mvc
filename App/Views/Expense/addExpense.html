@@ -24,7 +24,7 @@
                {% if session.expense_submitted %}
                  <script>
                   $(document).ready(function(){
-                     $('#exampleModal').modal('show');
+                     $('#confirmModal').modal('show');
                   });
                   </script>
                {% endif %}
@@ -84,39 +84,55 @@
 
                   </select>
                </div>
-
-                
                <!-- Modal -->
-               <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered">
-                     <div class="modal-content">
-                        <div class="modal-header">
-                           <h4 class="modal-title text-success" id="exampleModalLabel">Dodano przychód</h5>
-                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                           <h5 class="text-start">Data: {{expense_date}}</h5>
-                           <h5 class="text-start">Kategoria: {{expense_cat}}</h5>
-                           <h5 class="text-start">Sposób płatności: {{expense_payment}}</h5>
-                           <h5 class="text-start">Kwota: {{expense_amount}}<h5>                          
-                        </div>
-                        <div class="modal-footer">
-                           <button type="button" class="btn btn-success" data-bs-dismiss="modal">Zamknij</button>                
-                        </div>
+             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+               <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <h4 class="modal-title text-success" id="exampleModalLabel">Czy na pewno dodać wydatek?</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                     </div>
+                     <div class="modal-body">
+                        <h5 class="text-start" id="expense_date"></h5>
+                        <h5 class="text-start" id="expense_cat"></h5>
+                        <h5 class="text-start" id="expense_payment"></h5>
+                        <h5 class="text-start" id="expense_amount"></h5>
+                     </div>
+                     <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Anuluj</button>
+                        <button type="submit" name="submitExpense" class="btn btn-success">Dodaj</button>                
                      </div>
                   </div>
-               </div>              
-                <!-- End of Modal -->
-                
-                <button type="submit" name="submitExpense" id="myButton" class="btn btn-light p-3" data-bs-toggle="modal">Dodaj rozchód</button>
-                
+               </div>
+            </div>              
+             <!-- End of Modal -->
+
              </form>
 
-             <script>
-               document.addEventListener("DOMContentLoaded", function(event) { 
-                  document.getElementById('inputExpenseDate').valueAsDate = new Date();
-               });
-             </script>
+                 <!-- Button trigger modal -->
+            <button type="button" id="myButton" class="btn btn-light p-3" data-toggle="modal" data-target="#exampleModal">
+               Dodaj rozchód
+            </button>
+             
+            <!-- Confirm modal -->
+            <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+               <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <h3 class="modal-title text-success" id="exampleModalLabel">Potwierdzenie</h3>
+               
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                     </div>
+                     <div class="modal-body">
+                        <h3 class="text-center label-edit">Dodano wydatek</h3>
+                     </div>
+                     <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Zamknij</button>             
+                     </div>
+                  </div>
+               </div>
+            </div>              
+             <!-- End of Modal -->
 
           </div>
        </div>
@@ -124,7 +140,13 @@
  </section>
 <!-- end of main section -->
 
+
 <script>
+
+document.addEventListener("DOMContentLoaded", function (event) {
+      document.getElementById('inputExpenseDate').valueAsDate = new Date();
+});
+
     //Jquery Validation
 $.validator.setDefaults({
   errorClass: 'invalid-feedback',
@@ -153,13 +175,19 @@ $.validator.addMethod('validDates',
 
 );
 
+jQuery.validator.addMethod("validAmount", function (value, element) {
+        return this.optional(element) || /^\d{0,4}(\,||.\d{0,2})?$/i.test(value);
+}, "Wprowadź poprawną datę, max 2 miejsca po przecinku");
+
 
 
 $(document).ready(function(){
+
   $('#addExpenseForm').validate({
       rules: {
          expenseAmount: { 
-          required: true 
+          required: true,
+          validAmount: true 
           },
          expenseDate: {
             required: true,
@@ -175,6 +203,28 @@ $(document).ready(function(){
          }
       }
   });           
+
+  $("#myButton").click(function(){  // capture the click
+        if($("#addExpenseForm").valid()){   // test for validity
+            // do stuff if form is valid
+            $('#expense_date').text('Data: ' +  $('#inputExpenseDate').val());
+            $('#expense_cat').text('Kategoria: ' +  $('#selectExpenseCategory option:selected').text());
+            $('#expense_payment').text('Typ płatności: ' +  $('#selectExpensePayment option:selected').text());
+            $('#expense_amount').text('Kwota: ' +  $('#inputExpenseAmount').val() + ' zł');
+
+
+            $('#exampleModal').modal('show');
+        } else {
+            // do stuff if form is not valid
+        }
+    });
+
+// document.getElementById("myButton").onclick = function() {
+//    if($("#addExpenseForm").valid()){
+    
+//    }
+// };
+
 });
 
 //---end---
