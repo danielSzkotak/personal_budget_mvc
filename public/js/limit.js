@@ -1,6 +1,4 @@
-document.addEventListener("DOMContentLoaded", function (event) {
-   document.getElementById('inputExpenseDate').valueAsDate = new Date();
-});
+
 
  //Jquery Validation
 $.validator.setDefaults({
@@ -67,9 +65,7 @@ $("#myButton").click(function(){  // capture the click
          $('#expense_amount').text('Kwota: ' +  $('#inputExpenseAmount').val() + ' zł');
          $('#exampleModalLabel').text('Kategoria: ' +  $('#selectExpenseCategory option:selected').text());
          
-
          checkCategory();
-
 
          $('#exampleModal').modal('show');
      } else {
@@ -95,21 +91,59 @@ const getSelectedCategoryID = () => {
    }
 }
 
-const getLimitForCategory = (id) => {
-   
-   fetch(`/api/limit/${id}`)
-      .then((response) => response.json())
-      .then((data) => showLimit(data[0].control_limit))
-      .catch((e) =>{console.log(e)});
-};
 
-const showLimit =(limit) =>{
-   if (limit > 0) document.getElementById("myLimit").textContent = 'Limit kategorii: ' + limit + ' zł';
+
+   // const getLimitForCategory = (id) => {
+   
+   //    fetch(`/api/limit/${id}`)
+   //       .then((response) => response.json())
+   //       //.then((data) => data[0].control_limit)
+   //       .then((data) => console.log(data))
+   //       .catch((e) =>{console.log(e)});
+   // };
+
+//    async function fetchCategoryLimit(id) {
+//       let response = await fetch(`/api/limit/${id}`);
+//       if (response.status === 200) {
+//          let data = await response.json();
+//          console.log(data);
+//      }
+//   }
+
+  async function getCategoryLimit(id) {
+   let url = `/api/limit/${id}`;
+   try {
+       let res = await fetch(url);
+       return await res.json();
+   } catch (error) {
+       console.log(error);
+   }
+}
+
+async function showLimit(id) {
+   let limit = await getCategoryLimit(id);
+   limit.forEach(limit => {
+     let categoryLimit = `${limit.control_limit}`;
+     document.getElementById("limit-description").textContent = 'Limit kategorii: ' + categoryLimit + ' zł'; 
+   });
+}
+
+
+const showLimitInModal =(limit) =>{
+   if (limit > 0) document.getElementById("myLimit").textContent = 'Pozostały limit kategorii: ' + limit + ' zł';
    else document.getElementById("myLimit").textContent = '';
 }
 
-const checkCategory = () => {
-   getLimitForCategory(getSelectedCategoryID());
-};
+document.getElementById("selectExpenseCategory").onchange = function(){
+   showLimit(getSelectedCategoryID());
+} 
+
+document.addEventListener("DOMContentLoaded", function () {
+   document.getElementById('inputExpenseDate').valueAsDate = new Date();
+   showLimit(getSelectedCategoryID());
+});
+
+
+
 
 
