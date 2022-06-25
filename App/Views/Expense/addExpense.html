@@ -51,16 +51,28 @@
 
              <form action="/expense/add" method="POST" class="needs-validation" id="addExpenseForm" novalidate>
                 <div class="mb-3 mt-5">
-                   <label for="inputExpenseAmount" class="form-label">Podaj kwotę rozchodu</label>
+                   <label for="inputExpenseAmount" class="form-label mb-1">Podaj kwotę rozchodu</label>
                    <input type="number" name="expenseAmount" class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputExpenseAmount" step="any" min="0.01">
                 </div>
                 <div class="mb-3">
-                   <label for="inputExpenseDate" class="form-label">Wprowadź datę rozchodu</label>
+                   <label for="inputExpenseDate" class="form-label mb-1">Wprowadź datę rozchodu</label>
                    <input type="date" required name="expenseDate" value="" class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputExpenseDate" aria-describedby="emailHelp">
-                  
                 </div>
+
                 <div class="mb-3">
-                   <label for="selectExpenseCategory" class="form-label">Wybierz typ rozchodu</label>
+                  <label for="selectExpensePayment" class="form-label mb-1">Wybierz metodę płatności</label>
+                  <select name="expensePayment"  class="form-select fs-5 pt-3 pb-3" id="selectExpensePayment" aria-label="Default select example">
+
+                     {% if session.expense_cat %} 
+                       {% for key, value in session.expense_payment %}
+                          <option value="{{ value.id|e }}|{{ value.name|e }}">{{ value.name|e }}</option>
+                       {% endfor %}
+                     {% endif %}                      
+                  </select>
+               </div>
+
+                <div class="mb-3">
+                   <label for="selectExpenseCategory" class="form-label mb-1">Wybierz typ rozchodu</label>
                    <select name="expenseCategory"  class="form-select fs-5 pt-3 pb-3" id="selectExpenseCategory" aria-label="Default select example">
 
                       {% if session.expense_cat %} 
@@ -73,18 +85,6 @@
                    <p class="ms-1 limit-descrition" id="limit-description">Limit kategorii: 500.99 zł</p>
                 </div>
 
-                <div class="mb-3">
-                  <label for="selectExpensePayment" class="form-label">Wybierz metodę płatności</label>
-                  <select name="expensePayment"  class="form-select fs-5 pt-3 pb-3" id="selectExpensePayment" aria-label="Default select example">
-
-                     {% if session.expense_cat %} 
-                       {% for key, value in session.expense_payment %}
-                          <option value="{{ value.id|e }}|{{ value.name|e }}">{{ value.name|e }}</option>
-                       {% endfor %}
-                     {% endif %}                      
-
-                  </select>
-               </div>
                <!-- Modal -->
              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                <div class="modal-dialog modal-dialog-centered">

@@ -65,11 +65,26 @@ class Expense extends Authenticated {
         }
     }
 
+    public function checkLimit(){
+
+        $categoryID = $this->route_params['id'];
+        echo json_encode(Categories::isSetLimit($categoryID), JSON_UNESCAPED_UNICODE);
+    }
+
     public function categoryLimit(){
 
         $categoryID = $this->route_params['id'];
         echo json_encode(Categories::getCategoryLimit($categoryID), JSON_UNESCAPED_UNICODE);
     }
+
+    public function categoryMonthLimit(){
+
+        $categoryID = $this->route_params['id'];
+        $date = $_REQUEST['date'];
+        echo json_encode(Categories::getCategorySumFromSelectedMonth($categoryID, $date), JSON_UNESCAPED_UNICODE);
+    }
+
+    
 
     public function testAction(){
         View::renderTemplate('Expense/test.html');

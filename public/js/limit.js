@@ -10,7 +10,7 @@ highlight: function(element){
 unhighlight: function(element){
    $(element)
        .removeClass('is-invalid')
-       .addClass('is-valid')
+       //.addClass('is-valid')
 },
 });
 
@@ -55,7 +55,10 @@ $('#addExpenseForm').validate({
       required: '<span class="text-danger">To pole jest wymagane</span>' 
       }
    }
-});           
+});     
+
+
+
 
 $("#myButton").click(function(){  // capture the click
      if($("#addExpenseForm").valid()){   // test for validity
@@ -64,23 +67,18 @@ $("#myButton").click(function(){  // capture the click
          $('#expense_payment').text('Typ płatności: ' +  $('#selectExpensePayment option:selected').text());
          $('#expense_amount').text('Kwota: ' +  $('#inputExpenseAmount').val() + ' zł');
          $('#exampleModalLabel').text('Kategoria: ' +  $('#selectExpenseCategory option:selected').text());
-         
          checkCategory();
-
          $('#exampleModal').modal('show');
      } else {
          // do stuff if form is not valid
      }
  });
-
-// document.getElementById("myButton").onclick = function() {
-//    if($("#addExpenseForm").valid()){
- 
-//    }
-// };
-
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+   document.getElementById('inputExpenseDate').valueAsDate = new Date();
+   renderLimit(getSelectedCategoryID());
+});
 
 const getSelectedCategoryID = () => {
    let select = document.getElementById("selectExpenseCategory");
@@ -91,24 +89,16 @@ const getSelectedCategoryID = () => {
    }
 }
 
+   async function checkLimit(id) {
+      let url = `/api/limit/check/${id}`;
+      try {
+          let res = await fetch(url);
+          return await res.json();
+      } catch (error) {
+          console.log(error);
+      }
+   }
 
-
-   // const getLimitForCategory = (id) => {
-   
-   //    fetch(`/api/limit/${id}`)
-   //       .then((response) => response.json())
-   //       //.then((data) => data[0].control_limit)
-   //       .then((data) => console.log(data))
-   //       .catch((e) =>{console.log(e)});
-   // };
-
-//    async function fetchCategoryLimit(id) {
-//       let response = await fetch(`/api/limit/${id}`);
-//       if (response.status === 200) {
-//          let data = await response.json();
-//          console.log(data);
-//      }
-//   }
 
   async function getCategoryLimit(id) {
    let url = `/api/limit/${id}`;
@@ -120,12 +110,33 @@ const getSelectedCategoryID = () => {
    }
 }
 
-async function showLimit(id) {
+async function getSelectedMonthExpenses(id) {
+
+   let date = document.getElementById("inputExpenseDate").value;
+   let url = `api/expenses/${id}?date=${date}`;
+   try {
+       let res = await fetch(url);
+       return await res.json();
+   } catch (error) {
+       console.log(error);
+   }
+}
+
+const calculateLimit = async (id) => {
+   let categoryExpenses = await getSelectedMonthExpenses(id);
    let limit = await getCategoryLimit(id);
-   limit.forEach(limit => {
-     let categoryLimit = `${limit.control_limit}`;
-     document.getElementById("limit-description").textContent = 'Limit kategorii: ' + categoryLimit + ' zł'; 
-   });
+   let calculateLimit = (limit[0].control_limit - categoryExpenses[0].category_sum).toFixed(2);
+   return calculateLimit;
+}
+
+async function renderLimit(id) {
+
+   let isLimit = await checkLimit(id);
+
+   if(isLimit.is_limit){
+      let calculatedLimit = await calculateLimit(id);
+      document.getElementById("limit-description").textContent = 'Pozostały limit: ' + calculatedLimit + ' zł'; 
+   } else document.getElementById("limit-description").textContent = '';
 }
 
 
@@ -135,13 +146,9 @@ const showLimitInModal =(limit) =>{
 }
 
 document.getElementById("selectExpenseCategory").onchange = function(){
-   showLimit(getSelectedCategoryID());
+   renderLimit(getSelectedCategoryID());
 } 
 
-document.addEventListener("DOMContentLoaded", function () {
-   document.getElementById('inputExpenseDate').valueAsDate = new Date();
-   showLimit(getSelectedCategoryID());
-});
 
 
 
