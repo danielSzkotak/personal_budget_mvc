@@ -82,7 +82,8 @@
                       {% endif %}                      
 
                    </select>
-                   <p class="ms-1 limit-descrition" id="limit-description">Limit kategorii: 500.99 zł</p>
+                   <p class="ms-1 limit-descrition" id="limit-description"></p>
+                   <p id="limitAmount"></p>
                 </div>
 
                <!-- Modal -->
@@ -98,7 +99,7 @@
                         <h5 class="text-start" id="expense_cat"></h5>
                         <h5 class="text-start" id="expense_payment"></h5>
                         <h5 class="text-start" id="expense_amount"></h5>
-                        <h5 class="text-start text-danger" id="myLimit"></h5>
+                        <h5 class="text-start" id="myLimit"></h5>
                      </div>
                      <div class="modal-footer">
                         <button type="button" class="btn btn-danger p-2" data-bs-dismiss="modal">Anuluj</button>
@@ -115,6 +116,10 @@
             <button type="button" id="myButton" class="btn btn-light p-3" data-toggle="modal" data-target="#exampleModal">
                Dodaj rozchód
             </button>
+
+            <a href="/profile" id="categorySettings" class="btn btn-info p-3" data-toggle="modal">
+               Ustawienia Kategorii
+            </a>
              
             <!-- Confirm modal -->
             <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

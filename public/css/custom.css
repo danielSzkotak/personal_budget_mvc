@@ -262,3 +262,7 @@ label{
    font-weight: 500;
  }
 
+ #limitAmount{
+   display: none;
+ }
+

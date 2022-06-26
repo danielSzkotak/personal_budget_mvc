@@ -39,7 +39,7 @@ class Expense extends Authenticated {
     public function addAction()
     {
    
-        if(isset($_POST["submitExpense"])){
+        if(isset($_POST)){
 
             $_SESSION['expense_submitted'] = true;
           
