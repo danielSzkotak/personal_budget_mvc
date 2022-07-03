@@ -1,4 +1,3 @@
-var obj;
 
 //Jquery Validation
 $.validator.setDefaults({
@@ -30,7 +29,7 @@ $.validator.addMethod('validDates',
 
 jQuery.validator.addMethod("validAmount", function (value, element) {
    return this.optional(element) || /^\d{0,4}(\,||.\d{0,2})?$/i.test(value);
-}, "Wprowadź poprawną datę, max 2 miejsca po przecinku");
+}, "Wprowadź poprawną kwotę, max 2 miejsca po przecinku");
 
 
 
@@ -57,16 +56,19 @@ $(document).ready(function () {
       }
    });
 
+   const renderAddedExpenseDetails = () => {
+      $('#expense_date').text('Data: ' + $('#inputExpenseDate').val());
+      $('#expense_payment').text('Typ płatności: ' + $('#selectExpensePayment option:selected').text());
+      $('#expense_amount').text('Kwota: ' + $('#inputExpenseAmount').val() + ' zł');
+      $('#exampleModalLabel').text('Kategoria: ' + $('#selectExpenseCategory option:selected').text());
+   }
+
 
    $("#myButton").click(function () {
 
-
       if ($("#addExpenseForm").valid()) {
          if(window.isLimit){
-            $('#expense_date').text('Data: ' + $('#inputExpenseDate').val());
-            $('#expense_payment').text('Typ płatności: ' + $('#selectExpensePayment option:selected').text());
-            $('#expense_amount').text('Kwota: ' + $('#inputExpenseAmount').val() + ' zł');
-            $('#exampleModalLabel').text('Kategoria: ' + $('#selectExpenseCategory option:selected').text());
+            renderAddedExpenseDetails();
             renderUpdatedLimitInModal();
             $('#exampleModal').modal('show');
          } else {
@@ -118,7 +120,7 @@ const checkLimit = async (categoryID) => {
 }
 
 const getCategoryLimit = async (categoryID) => {
-   let url = `/api/limit/${categoryID}`;
+   let url = `/api/limit/GET/${categoryID}`;
    try {
       let res = await fetch(url);
       return await res.json();

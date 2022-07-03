@@ -52,7 +52,7 @@
              <form action="/expense/add" method="POST" class="needs-validation" id="addExpenseForm" novalidate>
                 <div class="mb-3 mt-5">
                    <label for="inputExpenseAmount" class="form-label mb-1">Podaj kwotę rozchodu</label>
-                   <input type="number" name="expenseAmount" class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputExpenseAmount" step="any" min="0.01">
+                   <input type="number" name="expenseAmount" class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputExpenseAmount" step="0.01" min="0.01">
                 </div>
                 <div class="mb-3">
                    <label for="inputExpenseDate" class="form-label mb-1">Wprowadź datę rozchodu</label>
@@ -61,7 +61,7 @@
 
                 <div class="mb-3">
                   <label for="selectExpensePayment" class="form-label mb-1">Wybierz metodę płatności</label>
-                  <select name="expensePayment"  class="form-select fs-5 pt-3 pb-3" id="selectExpensePayment" aria-label="Default select example">
+                  <select name="expensePayment" class="form-select fs-5 pt-3 pb-3" id="selectExpensePayment" aria-label="Default select example">
 
                      {% if session.expense_cat %} 
                        {% for key, value in session.expense_payment %}
@@ -118,7 +118,7 @@
             </button>
 
             <a href="/profile" id="categorySettings" class="btn btn-info p-3" data-toggle="modal">
-               Ustawienia Kategorii
+               Edytuj kategurie
             </a>
              
             <!-- Confirm modal -->
@@ -126,12 +126,14 @@
                <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
                      <div class="modal-header">
-                        <h3 class="modal-title text-success" id="exampleModalLabel">Potwierdzenie</h3>
-               
+                        <h4 class="modal-title text-success" id="exampleModalLabel">Dodano wydatek</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                      </div>
                      <div class="modal-body">
-                        <h3 class="text-center label-edit">Dodano wydatek</h3>
+                        <h5 class="text-start">Data: {{expense_date}}</h5>
+                        <h5 class="text-start">Kategoria: {{expense_cat}}</h5>
+                        <h5 class="text-start">Kwota: {{expense_amount}}</h5>  
+                        <h5 class="text-start">Typ płatności: {{expense_payment}}</h5>  
                      </div>
                      <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Zamknij</button>             

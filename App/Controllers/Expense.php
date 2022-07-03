@@ -86,8 +86,20 @@ class Expense extends Authenticated {
 
     
 
-    public function testAction(){
-        View::renderTemplate('Expense/test.html');
+    public function turnOnLimitAction(){
+        $categoryID = $this->route_params['id'];
+        echo json_encode(Categories::turnOnLimit($categoryID),JSON_UNESCAPED_UNICODE);
+    }
+
+    public function turnOffLimitAction(){
+        $categoryID = $this->route_params['id'];
+        echo json_encode(Categories::turnOffLimit($categoryID),JSON_UNESCAPED_UNICODE);
+    }
+
+    public function setAmountAction(){
+        $categoryID = $this->route_params['id'];
+        $amount = $_REQUEST['amount'];
+        echo json_encode(Categories::setLimitAmount($categoryID, $amount),JSON_UNESCAPED_UNICODE);
     }
 
 }

@@ -191,6 +191,55 @@ public static function getPaymentIndelibleCategoryID(){
 
     //-----------------------------API------------------------------------------
 
+    public static function turnOnLimit($categoryID){
+
+        $sql = 'UPDATE expenses_category_assigned_to_users SET is_limit = 1 WHERE expenses_category_assigned_to_users.id = :ID AND expenses_category_assigned_to_users.user_id = :userID';
+    
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_INT);
+        $stmt->bindValue(':ID', $categoryID, PDO::PARAM_INT);
+    
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    
+        $stmt->execute();
+    
+        return $stmt->fetchAll();
+    }
+
+    public static function turnOffLimit($categoryID){
+
+        $sql = 'UPDATE expenses_category_assigned_to_users SET is_limit = 0 WHERE expenses_category_assigned_to_users.id = :ID AND expenses_category_assigned_to_users.user_id = :userID';
+    
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_INT);
+        $stmt->bindValue(':ID', $categoryID, PDO::PARAM_INT);
+    
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    
+        $stmt->execute();
+    
+        return $stmt->fetchAll();
+    }
+
+    public static function setLimitAmount($categoryID, $amount){
+
+        $sql = 'UPDATE expenses_category_assigned_to_users SET control_limit = :amount WHERE expenses_category_assigned_to_users.id = :ID AND expenses_category_assigned_to_users.user_id = :userID';
+    
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_INT);
+        $stmt->bindValue(':ID', $categoryID, PDO::PARAM_INT);
+        $stmt->bindValue(':amount', $amount, PDO::PARAM_STR);
+    
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    
+        $stmt->execute();
+    
+        return $stmt->fetchAll();
+    }
+
     public static function isSetLimit($categoryID){
 
         $sql = 'SELECT is_limit FROM expenses_category_assigned_to_users WHERE user_id = :userID AND id = :ID';

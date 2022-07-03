@@ -51,7 +51,8 @@
          // Display the chart inside the <div> element with id="piechart"
 
             var chart2 = new google.visualization.PieChart(document.getElementById('piechart2'));
-            {% if expenses is not empty %}chart2.draw(data2, options2);{% endif %} 
+            {% if expenses is not empty %}chart2.draw(data2, options2);
+            {% endif %} 
    };
 
       //Jquery Validation
