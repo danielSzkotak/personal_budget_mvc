@@ -57,6 +57,4 @@ $router->add('api/limit/turnOff/{id:[\da-f]+}', ['controller' => 'Expense', 'act
 $router->add('api/limit/setAmount/{id:[\da-f]+}', ['controller' => 'Expense', 'action' => 'setAmount']);
 $router->add('api/expenses/{id:[\da-f]+}', ['controller' => 'Expense', 'action' => 'categoryMonthLimit']);
 
-
-    
 $router->dispatch($_SERVER['QUERY_STRING']);

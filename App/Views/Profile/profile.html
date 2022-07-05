@@ -65,8 +65,8 @@
                 <button type="button" id="incomeDeleteButton" class="btn btn-danger mb-4 p-2 incomeCategoryEdit editButton" data-id="">Usuń</button>
 
                 <div class="mb-3 mt-4">
-                  <label for="selectExpenseCategory" class="form-label label-edit">Wybierz kategorię rozchodu do edycji</label>
-                  <select name="expenseCategory"  class="form-select fs-5 pt-3 pb-3" id="selectedExpenseCategory" aria-label="Default select example">
+                  <label for="selectedExpenseCategory" class="form-label label-edit">Wybierz kategorię rozchodu do edycji</label>
+                  <select name="selectedExpenseCategory"  class="form-select fs-5 pt-3 pb-3" id="selectedExpenseCategory" aria-label="Default select example">
 
                      {% if expense_cat %} 
                        {% for key, value in expense_cat %}
@@ -461,7 +461,7 @@ $(document).ready(function(){
 
 //---end---
 </script>
-<script src="/js/editlimit.js"></script>
+<script src="/js/limit.js"></script>
 
 {% endblock %}
 {% endblock %}

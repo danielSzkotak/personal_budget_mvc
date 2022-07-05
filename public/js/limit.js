@@ -1,113 +1,16 @@
 
-//Jquery Validation
-$.validator.setDefaults({
-   errorClass: 'invalid-feedback',
-   highlight: function (element) {
-      $(element)
-         .addClass('is-invalid');
-   },
-   unhighlight: function (element) {
-      $(element)
-         .removeClass('is-invalid')
-      //.addClass('is-valid')
-   },
-});
-
-
-$.validator.addMethod('validDates',
-   function (value, element, param) {
-      if (value != '') {
-         if (value < '2000-01-01') {
-            return false;
-         }
-      }
-      return true;
-   },
-   'Data musi być większa od 01-01-2000'
-
-);
-
-jQuery.validator.addMethod("validAmount", function (value, element) {
-   return this.optional(element) || /^\d{0,4}(\,||.\d{0,2})?$/i.test(value);
-}, "Wprowadź poprawną kwotę, max 2 miejsca po przecinku");
-
-
-
-$(document).ready(function () {
-
-   $('#addExpenseForm').validate({
-      rules: {
-         expenseAmount: {
-            required: true,
-            validAmount: true
-         },
-         expenseDate: {
-            required: true,
-            validDates: true
-         }
-      },
-      messages: {
-         expenseAmount: {
-            required: '<span class="text-danger">To pole jest wymagane</span>'
-         },
-         expenseDate: {
-            required: '<span class="text-danger">To pole jest wymagane</span>'
-         }
-      }
-   });
-
-   const renderAddedExpenseDetails = () => {
-      $('#expense_date').text('Data: ' + $('#inputExpenseDate').val());
-      $('#expense_payment').text('Typ płatności: ' + $('#selectExpensePayment option:selected').text());
-      $('#expense_amount').text('Kwota: ' + $('#inputExpenseAmount').val() + ' zł');
-      $('#exampleModalLabel').text('Kategoria: ' + $('#selectExpenseCategory option:selected').text());
-   }
-
-
-   $("#myButton").click(function () {
-
-      if ($("#addExpenseForm").valid()) {
-         if(window.isLimit){
-            renderAddedExpenseDetails();
-            renderUpdatedLimitInModal();
-            $('#exampleModal').modal('show');
-         } else {
-            document.getElementById("addExpenseForm").submit();
-         }
-      }
-   });
-});
-
-const renderUpdatedLimitInModal = () => {
-  
-     if(window.isLimit){
-      let expenseAmount = document.getElementById('inputExpenseAmount').value;
-      let updatedLimit = -(Number(expenseAmount) - Number(window.value));
-      if (updatedLimit < 0){
-         document.getElementById('myLimit').style.color = "red";
-         document.getElementById('myLimit').textContent = 'Uwaga: limit po transakcji: ' + updatedLimit.toFixed(2) + ' zł';
-      } else {
-         document.getElementById('myLimit').style.color = "green";
-         document.getElementById('myLimit').textContent = 'Limit po transakcji: ' + updatedLimit.toFixed(2) + ' zł';
-      }
-     } else {
-      document.getElementById('myLimit').textContent = '';
-     }
+const getCategoryName = (value) =>{
+   return value.split("|")[1];
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-   document.getElementById('inputExpenseDate').valueAsDate = new Date();
-   renderLimit(getSelectedCategoryID());
-});
-
-const getSelectedCategoryID = () => {
-   let select = document.getElementById("selectExpenseCategory");
-   let value = select.options[select.selectedIndex].value;
+const getCategoryID = (v) => {
+   let value = v.options[v.selectedIndex].value;
    if (value) {
       let id = value.split("|");
       return id[0];
    }
 }
+
 
 const checkLimit = async (categoryID) => {
    let url = `/api/limit/check/${categoryID}`;
@@ -170,12 +73,103 @@ const renderLimit = async (categoryID) => {
 }
 
 
-document.getElementById("selectExpenseCategory").onchange = function () {
-   renderLimit(getSelectedCategoryID());
+
+const turnOnLimit = async (categoryID) => {
+     
+   let url = `/api/limit/turnOn/${categoryID}`;
+   try {
+      response = await fetch(url);
+      
+   } catch (error) {
+      console.log(error);
+   }
+}
+
+const turnOffLimit = async (categoryID) => {
+     
+   let url = `/api/limit/turnOff/${categoryID}`;
+   try {
+      response = await fetch(url);
+   } catch (error) {
+      console.log(error);
+   }
+}
+
+const setLimitAmount = async (categoryID) => {
+
+   let amount = document.getElementById("editCategoryLimit").value;
+   let url = `/api/limit/setAmount/${categoryID}?amount=${amount}`;
+   try {
+      response = await fetch(url);
+   } catch (error) {
+      console.log(error);
+   }
 }
 
 
+let editLimitButton = document.getElementById("expenseAddLimitButton");
+if(editLimitButton) editLimitButton.addEventListener("click", editLimit);
 
+let switchLimitButton = document.getElementById("flexSwitchCheckChecked");
+if(switchLimitButton) switchLimitButton.addEventListener("click", switchCheckBox);
 
+let saveLimitButton = document.getElementById("submitLimitCategory");
+if(saveLimitButton) saveLimitButton.addEventListener("click", setLimit);
 
+function switchCheckBox() {
+   let switchState = document.getElementById('flexSwitchCheckChecked');
+   let editCategoryState = document.getElementById('editCategoryLimit');
+
+   if(switchState.checked) {
+      editCategoryState.disabled = false; 
+   }
+   else {
+      editCategoryState.disabled = true; 
+     
+   }
+}
+
+async function setLimit(){
+
+   if ($("#categoryLimit").valid()) {
+      let limitState = document.getElementById('flexSwitchCheckChecked');
+      if(limitState.checked){
+         let setLimit = await turnOnLimit(getCategoryID(document.getElementById("selectedExpenseCategory")));
+         let setAmount = await setLimitAmount(getCategoryID(document.getElementById("selectedExpenseCategory"))); 
+         $('#limitModal').modal('hide');
+      } else {
+         let setLimit = await turnOffLimit(getCategoryID(document.getElementById("selectedExpenseCategory")));
+         $('#limitModal').modal('hide');
+      }
+   }
+}
+
+async function editLimit() {
+
+   document.getElementById('category').textContent = getCategoryName(document.getElementById('selectedExpenseCategory').value);
+   let editCategoryState = document.getElementById('editCategoryLimit');
+   let isLimit = await checkLimit(getCategoryID(document.getElementById("selectedExpenseCategory")));
+   if (isLimit.is_limit){
+     
+      let limitAmount = await getCategoryLimit(getCategoryID(document.getElementById("selectedExpenseCategory")));
+   
+      editCategoryState.value = limitAmount[0].control_limit;
+      document.getElementById('flexSwitchCheckChecked').checked = true;
+      editCategoryState.disabled = false;
+   } else {
+      document.getElementById('flexSwitchCheckChecked').checked = false;
+      editCategoryState.disabled = true;
+      editCategoryState.value = '';
+      $('#editCategoryLimit').removeClass('is-invalid');
+   }
+   $('#limitModal').modal('show');
+}
+
+let selectCategory = document.getElementById("selectExpenseCategory");
+
+if (selectCategory) {
+   selectCategory.onchange = function () {
+      renderLimit(getCategoryID(selectCategory));
+   }
+}
 
