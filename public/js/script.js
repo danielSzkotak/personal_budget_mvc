@@ -12,9 +12,7 @@ const password = document.querySelector('#inputPassword');
     this.classList.toggle('fa-eye-slash');
     });
               
-  
 //---end-----
-
 
 
 //Bootstrap validation
