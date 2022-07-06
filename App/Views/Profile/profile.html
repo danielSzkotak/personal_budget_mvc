@@ -65,8 +65,8 @@
                 <button type="button" id="incomeDeleteButton" class="btn btn-danger mb-4 p-2 incomeCategoryEdit editButton" data-id="">Usuń</button>
 
                 <div class="mb-3 mt-4">
-                  <label for="selectExpenseCategory" class="form-label label-edit">Wybierz kategorię rozchodu do edycji</label>
-                  <select name="expenseCategory"  class="form-select fs-5 pt-3 pb-3" id="selectedExpenseCategory" aria-label="Default select example">
+                  <label for="selectedExpenseCategory" class="form-label label-edit">Wybierz kategorię rozchodu do edycji</label>
+                  <select name="selectedExpenseCategory"  class="form-select fs-5 pt-3 pb-3" id="selectedExpenseCategory" aria-label="Default select example">
 
                      {% if expense_cat %} 
                        {% for key, value in expense_cat %}
@@ -86,6 +86,7 @@
                </div>
                
                <button type="button" id="expenseButton" class="btn btn-info mb-4 p-2 expenseCategoryEdit editButton" data-id="">Zmień nazwę</button>
+               <button type="button" id="expenseAddLimitButton" class="btn btn-secondary mb-4 p-2 expenseCategoryEdit editButton" data-id="">Edytuj limit</button>
                <button type="button" id="expenseAddButton" class="btn btn-success mb-4 p-2 expenseCategoryEdit editButton" data-id="">Dodaj</button>
                <button type="button" id="expenseDeleteButton" class="btn btn-danger mb-4 p-2 expenseCategoryEdit editButton" data-id="">Usuń</button>
 
@@ -138,6 +139,37 @@
                         </div>
                      </form>
 
+                     </div>
+                  </div>
+               </div>
+               <!-- End of Modal -->
+
+               <!-- Limit Modal -->
+               <div class="modal fade" id="limitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <h5 class="modal-title" id="exampleModalLabel">Ustaw limit dla kategorii: <span id="category" class="text-green"></span></h5>
+                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                        <form class="needs-validation" id="categoryLimit" novalidate>
+                           <input type="number" class="form-control fs-5 pt-3 pb-3 shadow-none mb-2" name="editCategoryLimit" id="editCategoryLimit" min="0" step="0.01">
+                           <div class="form-check form-switch">
+                              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" unchecked>
+                              <label class="form-check-label" for="flexSwitchCheckChecked">Ustaw limit dla kategorii</label>
+                            </div>
+                        
+                           
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" name="anauluj"
+                              class="btn btn-danger" data-bs-dismiss="modal">Anuluj</button>
+                           <button type="button" name="submitLimitCategory" id="submitLimitCategory" 
+                              class="btn btn-success">Zapisz</button>
+                        </div>
+                     </form>
+                     
                      </div>
                   </div>
                </div>
@@ -245,6 +277,8 @@ $(document).ready(function(){
 
    $("button").click(function (e) {
 
+
+
       if ((this.id == 'incomeButton') || ((this.id == 'expenseButton')) || ((this.id == 'paymentButton'))) {
          if (this.id == 'incomeButton') {
             $('#categoryType').val('income');
@@ -297,7 +331,7 @@ $(document).ready(function(){
             $('#deleteModal').modal('show');
          }
       }
-
+   
       function clearInputValidationClasses(value){
          $(value).removeClass('is-invalid');
          $(value).removeClass('is-valid');
@@ -343,13 +377,17 @@ $(document).ready(function(){
       unhighlight: function (element) {
          $(element)
             .removeClass('is-invalid')
-            .addClass('is-valid')
+            //.addClass('is-valid')
       },
    });   
 
    jQuery.validator.addMethod("alphanumeric", function (value, element) {
       return this.optional(element) || /^\S[AaĄąBbCcĆćDdEeĘęFfGgHhIiJjKkLlŁłMmNnŃńOoÓóPpRrSsŚśTtUuWwXxYyZzŹźŻż123456789_ ]*$/i.test(value);
    });
+
+   jQuery.validator.addMethod("validAmount", function (value, element) {
+   return this.optional(element) || /^\d{0,4}(\,||.\d{0,2})?$/i.test(value);
+}, "Wprowadź poprawną kwotę, max 2 miejsca po przecinku");
 
    $('form').each(function () {
       $(this).validate({
@@ -371,6 +409,12 @@ $(document).ready(function(){
                }
             },
 
+            editCategoryLimit: {
+               required: true,
+               validAmount: true,
+               min: 0
+            },
+
             categoryName: {
                required: true,
                minlength: 3,
@@ -390,30 +434,34 @@ $(document).ready(function(){
          },
          messages: {
             categoryToAddName: {
-               required: 'Pole z nazwą mie może byc puste',
+               required: 'Pole z nazwą mie może być puste',
                minlength: 'Wprowadź minimum 3 znaki',
                alphanumeric: 'Nie używaj spacji na początku lub znaków specjalnych',
                remote: 'Ta nazwa jest już zajęta'
             },
          
          categoryName: {
-            required: 'Pole z nazwą mie może byc puste',
+            required: 'Pole z nazwą nie może byc puste',
             minlength: 'Wprowadź minimum 3 znaki',
             alphanumeric: 'Nie używaj spacji na początku lub znaków specjalnych',
             remote: 'Ta nazwa jest już zajęta'
+         },
+
+         editCategoryLimit: {
+            required: 'To pole jest wymagane',
+            min: 'Limit nie może być mniejszy niż 0',
+            number: 'Wprowadź poprawną kwotę'
          }
+      
       }
-
       });
-
-
    });
-   
 });
 
 
 //---end---
 </script>
+<script src="/js/limit.js"></script>
 
 {% endblock %}
 {% endblock %}

@@ -24,7 +24,7 @@
                {% if session.expense_submitted %}
                  <script>
                   $(document).ready(function(){
-                     $('#exampleModal').modal('show');
+                     $('#confirmModal').modal('show');
                   });
                   </script>
                {% endif %}
@@ -51,16 +51,28 @@
 
              <form action="/expense/add" method="POST" class="needs-validation" id="addExpenseForm" novalidate>
                 <div class="mb-3 mt-5">
-                   <label for="inputExpenseAmount" class="form-label">Podaj kwotę rozchodu</label>
-                   <input type="number" name="expenseAmount" class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputExpenseAmount" step="any" min="0.01">
+                   <label for="inputExpenseAmount" class="form-label mb-1">Podaj kwotę rozchodu</label>
+                   <input type="number" name="expenseAmount" class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputExpenseAmount" step="0.01" min="0.01">
                 </div>
                 <div class="mb-3">
-                   <label for="inputExpenseDate" class="form-label">Wprowadź datę rozchodu</label>
+                   <label for="inputExpenseDate" class="form-label mb-1">Wprowadź datę rozchodu</label>
                    <input type="date" required name="expenseDate" value="" class="form-control fs-5 pt-3 pb-3 shadow-none" id="inputExpenseDate" aria-describedby="emailHelp">
-                  
                 </div>
+
                 <div class="mb-3">
-                   <label for="selectExpenseCategory" class="form-label">Wybierz typ rozchodu</label>
+                  <label for="selectExpensePayment" class="form-label mb-1">Wybierz metodę płatności</label>
+                  <select name="expensePayment" class="form-select fs-5 pt-3 pb-3" id="selectExpensePayment" aria-label="Default select example">
+
+                     {% if session.expense_cat %} 
+                       {% for key, value in session.expense_payment %}
+                          <option value="{{ value.id|e }}|{{ value.name|e }}">{{ value.name|e }}</option>
+                       {% endfor %}
+                     {% endif %}                      
+                  </select>
+               </div>
+
+                <div class="mb-3">
+                   <label for="selectExpenseCategory" class="form-label mb-1">Wybierz typ rozchodu</label>
                    <select name="expenseCategory"  class="form-select fs-5 pt-3 pb-3" id="selectExpenseCategory" aria-label="Default select example">
 
                       {% if session.expense_cat %} 
@@ -70,53 +82,66 @@
                       {% endif %}                      
 
                    </select>
+                   <p class="ms-1 limit-descrition" id="limit-description"></p>
+                   <p id="limitAmount"></p>
                 </div>
 
-                <div class="mb-3">
-                  <label for="selectExpensePayment" class="form-label">Wybierz metodę płatności</label>
-                  <select name="expensePayment"  class="form-select fs-5 pt-3 pb-3" id="selectExpensePayment" aria-label="Default select example">
-
-                     {% if session.expense_cat %} 
-                       {% for key, value in session.expense_payment %}
-                          <option value="{{ value.id|e }}|{{ value.name|e }}">{{ value.name|e }}</option>
-                       {% endfor %}
-                     {% endif %}                      
-
-                  </select>
-               </div>
-
-                
                <!-- Modal -->
-               <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered">
-                     <div class="modal-content">
-                        <div class="modal-header">
-                           <h4 class="modal-title text-success" id="exampleModalLabel">Dodano przychód</h5>
-                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                           <h5 class="text-start">Data: {{expense_date}}</h5>
-                           <h5 class="text-start">Kategoria: {{expense_cat}}</h5>
-                           <h5 class="text-start">Sposób płatności: {{expense_payment}}</h5>
-                           <h5 class="text-start">Kwota: {{expense_amount}}<h5>                          
-                        </div>
-                        <div class="modal-footer">
-                           <button type="button" class="btn btn-success" data-bs-dismiss="modal">Zamknij</button>                
-                        </div>
+             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+               <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <h4 class="modal-title text-secondary text-center" id="exampleModalLabel"></h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                     </div>
+                     <div class="modal-body">
+                        <h5 class="text-start" id="expense_date"></h5>
+                        <h5 class="text-start" id="expense_cat"></h5>
+                        <h5 class="text-start" id="expense_payment"></h5>
+                        <h5 class="text-start" id="expense_amount"></h5>
+                        <h5 class="text-start" id="myLimit"></h5>
+                     </div>
+                     <div class="modal-footer">
+                        <button type="button" class="btn btn-danger p-2" data-bs-dismiss="modal">Anuluj</button>
+                        <button type="submit" name="submitExpense" class="btn btn-success p-2">Dodaj wydatek</button>                
                      </div>
                   </div>
-               </div>              
-                <!-- End of Modal -->
-                
-                <button type="submit" name="submitExpense" id="myButton" class="btn btn-light p-3" data-bs-toggle="modal">Dodaj rozchód</button>
-                
+               </div>
+            </div>              
+             <!-- End of Modal -->
+
              </form>
 
-             <script>
-               document.addEventListener("DOMContentLoaded", function(event) { 
-                  document.getElementById('inputExpenseDate').valueAsDate = new Date();
-               });
-             </script>
+                 <!-- Button trigger modal -->
+            <button type="button" id="myButton" class="btn btn-light p-3" data-toggle="modal" data-target="#exampleModal">
+               Dodaj rozchód
+            </button>
+
+            <a href="/profile" id="categorySettings" class="btn btn-info p-3" data-toggle="modal">
+               Edytuj kategurie
+            </a>
+             
+            <!-- Confirm modal -->
+            <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+               <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <h4 class="modal-title text-success" id="exampleModalLabel">Dodano wydatek</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                     </div>
+                     <div class="modal-body">
+                        <h5 class="text-start">Data: {{expense_date}}</h5>
+                        <h5 class="text-start">Kategoria: {{expense_cat}}</h5>
+                        <h5 class="text-start">Kwota: {{expense_amount}}</h5>  
+                        <h5 class="text-start">Typ płatności: {{expense_payment}}</h5>  
+                     </div>
+                     <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Zamknij</button>             
+                     </div>
+                  </div>
+               </div>
+            </div>              
+             <!-- End of Modal -->
 
           </div>
        </div>
@@ -124,60 +149,111 @@
  </section>
 <!-- end of main section -->
 
+
 <script>
-    //Jquery Validation
+//Jquery Validation
 $.validator.setDefaults({
-  errorClass: 'invalid-feedback',
-  highlight: function(element){
+   errorClass: 'invalid-feedback',
+   highlight: function (element) {
       $(element)
-          .addClass('is-invalid');
-  },
-  unhighlight: function(element){
+         .addClass('is-invalid');
+   },
+   unhighlight: function (element) {
       $(element)
-          .removeClass('is-invalid')
-          .addClass('is-valid')
-  },
+         .removeClass('is-invalid')
+      //.addClass('is-valid')
+   },
 });
 
 
 $.validator.addMethod('validDates',
-  function(value, element, param){
+   function (value, element, param) {
       if (value != '') {
-          if (value < '2000-01-01') {
-              return false;
-          }
+         if (value < '2000-01-01') {
+            return false;
+         }
       }
       return true;
-  },
-  'Data musi być większa od 01-01-2000'
+   },
+   'Data musi być większa od 01-01-2000'
 
 );
 
+jQuery.validator.addMethod("validAmount", function (value, element) {
+   return this.optional(element) || /^\d{0,4}(\,||.\d{0,2})?$/i.test(value);
+}, "Wprowadź poprawną kwotę, max 2 miejsca po przecinku");
 
 
-$(document).ready(function(){
-  $('#addExpenseForm').validate({
+
+$(document).ready(function () {
+
+   $('#addExpenseForm').validate({
       rules: {
-         expenseAmount: { 
-          required: true 
-          },
+         expenseAmount: {
+            required: true,
+            validAmount: true
+         },
          expenseDate: {
             required: true,
             validDates: true
-         }                    
+         }
       },
       messages: {
          expenseAmount: {
-              required: '<span class="text-danger">To pole jest wymagane</span>'
-          },
+            required: '<span class="text-danger">To pole jest wymagane</span>'
+         },
          expenseDate: {
-         required: '<span class="text-danger">To pole jest wymagane</span>' 
+            required: '<span class="text-danger">To pole jest wymagane</span>'
          }
       }
-  });           
+   });
+
+   const renderAddedExpenseDetails = () => {
+      $('#expense_date').text('Data: ' + $('#inputExpenseDate').val());
+      $('#expense_payment').text('Typ płatności: ' + $('#selectExpensePayment option:selected').text());
+      $('#expense_amount').text('Kwota: ' + $('#inputExpenseAmount').val() + ' zł');
+      $('#exampleModalLabel').text('Kategoria: ' + $('#selectExpenseCategory option:selected').text());
+   }
+
+   const renderUpdatedLimitInModal = () => {
+  
+  if(window.isLimit){
+   let expenseAmount = document.getElementById('inputExpenseAmount').value;
+   let updatedLimit = -(Number(expenseAmount) - Number(window.value));
+   if (updatedLimit < 0){
+      document.getElementById('myLimit').style.color = "red";
+      document.getElementById('myLimit').textContent = 'Uwaga: limit po transakcji: ' + updatedLimit.toFixed(2) + ' zł';
+   } else {
+      document.getElementById('myLimit').style.color = "green";
+      document.getElementById('myLimit').textContent = 'Limit po transakcji: ' + updatedLimit.toFixed(2) + ' zł';
+   }
+  } else {
+   document.getElementById('myLimit').textContent = '';
+  }
+}
+
+   $("#myButton").click(function () {
+
+      if ($("#addExpenseForm").valid()) {
+         if(window.isLimit){
+            renderAddedExpenseDetails();
+            renderUpdatedLimitInModal();
+            $('#exampleModal').modal('show');
+         } else {
+            document.getElementById("addExpenseForm").submit();
+         }
+      }
+   });
 });
 
-//---end---
+
+</script>
+<script src="/js/limit.js"></script>
+<script>
+   document.addEventListener("DOMContentLoaded", function () {
+   document.getElementById('inputExpenseDate').valueAsDate = new Date();
+   renderLimit(getCategoryID(document.getElementById("selectExpenseCategory")));
+});
 </script>
 
 {% endblock %}

@@ -2,24 +2,26 @@
 
 {% block title %}Przeglądaj bilans{% endblock %}
 
-
 {% block body %}
 
 <script>
                 
    // Load google charts
    google.charts.load('current', {'packages':['corechart']});
-   google.charts.setOnLoadCallback(drawIncomesChart);
-   google.charts.setOnLoadCallback(drawExpensesChart);
+   // google.charts.setOnLoadCallback(drawIncomesChart);
+   // google.charts.setOnLoadCallback(drawExpensesChart);
    
+   {% if incomes is defined %}
+   google.charts.setOnLoadCallback(drawIncomesChart);
    function drawIncomesChart() {
 
       var data1 = google.visualization.arrayToDataTable([
          ['Przychody', 'suma'],
-
+            
             {% for key, value in incomes %}
                ['{{ value.name|e }}', {{ value.category_sum|e }}],
             {% endfor %}
+            
         
       ]);
      
@@ -32,9 +34,12 @@
             var chart1 = new google.visualization.PieChart(document.getElementById('piechart1'));
             {% if incomes is not empty %}chart1.draw(data1, options1);{% endif %}
             
+            
    };
+   {% endif %}
    
-
+   {% if incomes is defined %}
+   google.charts.setOnLoadCallback(drawExpensesChart);
    function drawExpensesChart() {
       var data2 = google.visualization.arrayToDataTable([
       ['Wydatki', 'suma'],
@@ -51,8 +56,10 @@
          // Display the chart inside the <div> element with id="piechart"
 
             var chart2 = new google.visualization.PieChart(document.getElementById('piechart2'));
-            {% if expenses is not empty %}chart2.draw(data2, options2);{% endif %} 
+            {% if expenses is not empty %}chart2.draw(data2, options2);
+            {% endif %} 
    };
+   {% endif %}
 
       //Jquery Validation
 $.validator.setDefaults({
@@ -347,14 +354,10 @@ $(document).ready(function(){
 <script>
    // self executing function here
    (function() {
-      // your page initialization code here
-      // the DOM will be available here
-      // var element = document.querySelector("#start");
-      // element.scrollIntoView();
       document.documentElement.scrollTop = document.body.scrollTop = 220;
-   
    })();
 </script>
+<script src="/js/addExpense.js"></script>
 
 {% endblock %}
 

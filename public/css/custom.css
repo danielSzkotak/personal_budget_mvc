@@ -236,7 +236,6 @@ label{
 
  #detailedBalanceIcon{
     cursor: pointer;
-   
  }
 
  .showDetailedBalance{
@@ -256,3 +255,39 @@ label{
     font-size:medium;
     font-weight: bold;
  }
+
+ .limit-descrition{
+   color: dimgray;
+   font-weight: 500;
+ }
+
+ #limitAmount{
+   display: none;
+ }
+
+ select:focus{
+   outline:0;
+   box-shadow:none !important;
+  }
+
+  .form-check-input:checked {
+   background-color: rgb(93, 221, 93);
+   border-color: rgb(244, 239, 239);
+}
+
+.text-green{
+   color: rgb(50, 136, 50);
+}
+
+input[type="number"][disabled] {
+   color: rgb(183, 183, 183);
+}
+
+.btn {
+   font-weight: 500;
+}
+
+.editButton{
+   font-weight: 400;
+   font-size:medium;
+}

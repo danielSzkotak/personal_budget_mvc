@@ -39,7 +39,7 @@ class Expense extends Authenticated {
     public function addAction()
     {
    
-        if(isset($_POST["submitExpense"])){
+        if(isset($_POST)){
 
             $_SESSION['expense_submitted'] = true;
           
@@ -63,6 +63,43 @@ class Expense extends Authenticated {
 
             unset( $_SESSION['expense_submitted']);
         }
+    }
+
+    public function checkLimit(){
+
+        $categoryID = $this->route_params['id'];
+        echo json_encode(Categories::isSetLimit($categoryID), JSON_UNESCAPED_UNICODE);
+    }
+
+    public function categoryLimit(){
+
+        $categoryID = $this->route_params['id'];
+        echo json_encode(Categories::getCategoryLimit($categoryID), JSON_UNESCAPED_UNICODE);
+    }
+
+    public function categoryMonthLimit(){
+
+        $categoryID = $this->route_params['id'];
+        $date = $_REQUEST['date'];
+        echo json_encode(Categories::getCategorySumFromSelectedMonth($categoryID, $date), JSON_UNESCAPED_UNICODE);
+    }
+
+    
+
+    public function turnOnLimitAction(){
+        $categoryID = $this->route_params['id'];
+        echo json_encode(Categories::turnOnLimit($categoryID),JSON_UNESCAPED_UNICODE);
+    }
+
+    public function turnOffLimitAction(){
+        $categoryID = $this->route_params['id'];
+        echo json_encode(Categories::turnOffLimit($categoryID),JSON_UNESCAPED_UNICODE);
+    }
+
+    public function setAmountAction(){
+        $categoryID = $this->route_params['id'];
+        $amount = $_REQUEST['amount'];
+        echo json_encode(Categories::setLimitAmount($categoryID, $amount),JSON_UNESCAPED_UNICODE);
     }
 
 }

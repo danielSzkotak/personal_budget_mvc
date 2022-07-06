@@ -49,5 +49,12 @@ $router->add('password/reset/{token:[\da-f]+}', ['controller' => 'Password', 'ac
 $router->add('signup/activate/{token:[\da-f]+}', ['controller' => 'Signup', 'action' => 'activate']);
 $router->add('{controller}/{action}');
 
-    
+//------------------API------------------
+$router->add('api/limit/check/{id:[\da-f]+}', ['controller' => 'Expense', 'action' => 'checkLimit']);
+$router->add('api/limit/GET/{id:[\da-f]+}', ['controller' => 'Expense', 'action' => 'categoryLimit']);
+$router->add('api/limit/turnOn/{id:[\da-f]+}', ['controller' => 'Expense', 'action' => 'turnOnLimit']);
+$router->add('api/limit/turnOff/{id:[\da-f]+}', ['controller' => 'Expense', 'action' => 'turnOffLimit']);
+$router->add('api/limit/setAmount/{id:[\da-f]+}', ['controller' => 'Expense', 'action' => 'setAmount']);
+$router->add('api/expenses/{id:[\da-f]+}', ['controller' => 'Expense', 'action' => 'categoryMonthLimit']);
+
 $router->dispatch($_SERVER['QUERY_STRING']);

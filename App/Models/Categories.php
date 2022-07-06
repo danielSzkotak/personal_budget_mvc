@@ -5,6 +5,7 @@ namespace App\Models;
 use PDO;
 use App\Auth;
 use App\Config;
+use App\Serviceable;
 
 /**
  * Remembered Logib model
@@ -187,6 +188,109 @@ public static function getPaymentIndelibleCategoryID(){
 
         return $stmt->fetch();
     }
+
+    //-----------------------------API------------------------------------------
+
+    public static function turnOnLimit($categoryID){
+
+        $sql = 'UPDATE expenses_category_assigned_to_users SET is_limit = 1 WHERE expenses_category_assigned_to_users.id = :ID AND expenses_category_assigned_to_users.user_id = :userID';
+    
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_INT);
+        $stmt->bindValue(':ID', $categoryID, PDO::PARAM_INT);
+    
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    
+        $stmt->execute();
+    
+        return $stmt->fetchAll();
+    }
+
+    public static function turnOffLimit($categoryID){
+
+        $sql = 'UPDATE expenses_category_assigned_to_users SET is_limit = 0 WHERE expenses_category_assigned_to_users.id = :ID AND expenses_category_assigned_to_users.user_id = :userID';
+    
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_INT);
+        $stmt->bindValue(':ID', $categoryID, PDO::PARAM_INT);
+    
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    
+        $stmt->execute();
+    
+        return $stmt->fetchAll();
+    }
+
+    public static function setLimitAmount($categoryID, $amount){
+
+        $sql = 'UPDATE expenses_category_assigned_to_users SET control_limit = :amount WHERE expenses_category_assigned_to_users.id = :ID AND expenses_category_assigned_to_users.user_id = :userID';
+    
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_INT);
+        $stmt->bindValue(':ID', $categoryID, PDO::PARAM_INT);
+        $stmt->bindValue(':amount', $amount, PDO::PARAM_STR);
+    
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    
+        $stmt->execute();
+    
+        return $stmt->fetchAll();
+    }
+
+    public static function isSetLimit($categoryID){
+
+        $sql = 'SELECT is_limit FROM expenses_category_assigned_to_users WHERE user_id = :userID AND id = :ID';
+    
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_INT);
+        $stmt->bindValue(':ID', $categoryID, PDO::PARAM_INT);
+    
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    
+        $stmt->execute();
+    
+        return $stmt->fetch();
+    }
+
+    public static function getCategoryLimit($categoryID){
+
+        $sql = 'SELECT control_limit FROM expenses_category_assigned_to_users WHERE user_id = :userID AND id = :ID';
+    
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_INT);
+        $stmt->bindValue(':ID', $categoryID, PDO::PARAM_INT);
+    
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    
+        $stmt->execute();
+    
+        return $stmt->fetchAll();
+    }
+
+       public static function getCategorySumFromSelectedMonth($categoryID, $date){
+
+        $firstDayOfTheMonth = date('Y-m-01', strtotime($date));
+        $lastDayOfTheMonth = date('Y-m-t', strtotime($date));
+        
+        $sql = "SELECT ROUND(SUM(expenses.amount),2) AS category_sum FROM expenses_category_assigned_to_users, expenses WHERE (expenses.date_of_expense BETWEEN '$firstDayOfTheMonth' AND '$lastDayOfTheMonth') AND (expenses_category_assigned_to_users.user_id=:userID) AND (expenses_category_assigned_to_users.user_id = expenses.user_id) AND (expenses.expense_category_assigned_to_user_id=expenses_category_assigned_to_users.id) AND expenses.expense_category_assigned_to_user_id=:categoryID";
+  
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':userID', Auth::getUser()->id, PDO::PARAM_INT);
+        $stmt->bindValue(':categoryID', $categoryID, PDO::PARAM_INT);
+    
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+        
+     }
 
 
  }
