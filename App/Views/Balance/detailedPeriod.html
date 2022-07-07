@@ -186,7 +186,7 @@ $(document).ready(function(){
       <table class="table table-striped mb-0">
          <thead>
             <tr>
-               <th scope="col">Id</th>
+               <th scope="col">Lp.</th>
                <th scope="col">Kategoria</th>
                <th scope="col">Kwota</th>
                <th scope="col">Data</th>
@@ -196,7 +196,7 @@ $(document).ready(function(){
          <tbody>          
             {% for key, value in detailedIncomes %}
             <tr> 
-               <td>{{ value.id|e }} </td> 
+               <td>{{ key + 1 }} </td> 
                <td>{{ value.name|e }}</td>
                <td>{{ value.amount|e }}</td>
                <td>{{ value.date_of_income|e }}</td>
@@ -234,7 +234,7 @@ $(document).ready(function(){
    <table class="table table-striped mb-0">
       <thead>
          <tr>
-            <th scope="col">Id</th>
+            <th scope="col">Lp.</th>
             <th scope="col">Kategoria</th>
             <th scope="col">Kwota</th>
             <th scope="col">Data</th>
@@ -244,7 +244,7 @@ $(document).ready(function(){
       <tbody>          
          {% for key, value in detailedExpenses %}
          <tr> 
-            <td>{{ value.id|e }} </td> 
+            <td>{{ key + 1 }} </td> 
             <td>{{ value.name|e }}</td>
             <td>{{ value.amount|e }}</td>
             <td>{{ value.date_of_expense|e }}</td>

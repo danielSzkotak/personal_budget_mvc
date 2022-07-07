@@ -54,20 +54,20 @@ const calculateLimit = async (categoryID) => {
 const renderLimit = async (categoryID) => {
    let isLimit = await checkLimit(categoryID);
    window.isLimit = false;
-   if (isLimit.is_limit) {
+   if (isLimit.is_limit == 1) {
       let calculatedLimit = await calculateLimit(categoryID);
       let limitDescritpion = document.getElementById("limit-description");
-      let limitAmount = document.getElementById("limitAmount");
+      let selectAmount = document.getElementById('inputExpenseAmount').value;
+      let limitAmount = (calculatedLimit - selectAmount).toFixed(2);
       window.value = calculatedLimit;
       window.isLimit = true;
-      limitAmount = calculatedLimit;
-      if (calculatedLimit < 0) {
+      if (limitAmount < 0) {
          limitDescritpion.style.color = "red";
-         limitDescritpion.textContent = 'Limit: ' + limitAmount 
+         limitDescritpion.textContent = 'Pozostały limit: ' + limitAmount 
          + ' zł';
       } else {
          limitDescritpion.style.color = "dimgrey";
-         limitDescritpion.textContent = 'Limit: ' + limitAmount + ' zł';
+         limitDescritpion.textContent = 'Pozostały limit: ' + limitAmount + ' zł';
       }
    } else document.getElementById("limit-description").textContent = '';
 }
@@ -133,7 +133,7 @@ async function setLimit(){
 
    if ($("#categoryLimit").valid()) {
       let limitState = document.getElementById('flexSwitchCheckChecked');
-      if(limitState.checked){
+      if(limitState.checked == true){
          let setLimit = await turnOnLimit(getCategoryID(document.getElementById("selectedExpenseCategory")));
          let setAmount = await setLimitAmount(getCategoryID(document.getElementById("selectedExpenseCategory"))); 
          $('#limitModal').modal('hide');
@@ -149,7 +149,7 @@ async function editLimit() {
    document.getElementById('category').textContent = getCategoryName(document.getElementById('selectedExpenseCategory').value);
    let editCategoryState = document.getElementById('editCategoryLimit');
    let isLimit = await checkLimit(getCategoryID(document.getElementById("selectedExpenseCategory")));
-   if (isLimit.is_limit){
+   if (isLimit.is_limit == 1){
      
       let limitAmount = await getCategoryLimit(getCategoryID(document.getElementById("selectedExpenseCategory")));
    
@@ -169,6 +169,35 @@ let selectCategory = document.getElementById("selectExpenseCategory");
 
 if (selectCategory) {
    selectCategory.onchange = function () {
+      renderLimit(getCategoryID(selectCategory));
+   }
+}
+
+let selectDate = document.getElementById("inputExpenseDate");
+
+if (selectDate) {
+   selectDate.onchange = function () {
+      renderLimit(getCategoryID(selectCategory));
+   }
+}
+
+let selectAmount = document.getElementById('inputExpenseAmount');
+
+var invalidChars = [
+   "-",
+   "+",
+   "e",
+ ];
+
+if (selectAmount) {
+   selectAmount.onkeydown = function (e) {
+      if (invalidChars.includes(e.key)) {
+         e.preventDefault();
+      }
+      renderLimit(getCategoryID(selectCategory));
+
+   }
+   selectAmount.onchange = function () {
       renderLimit(getCategoryID(selectCategory));
    }
 }
